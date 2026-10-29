@@ -1,0 +1,2020 @@
+{
+  "years": {
+    "2021": [
+      {
+        "sheet": "Prilog 1. KO-2021.",
+        "rows": 556,
+        "headers": {
+          "A": "Županija",
+          "B": "JLS",
+          "C": "Ukupno sakupljeni komunalni otpad u sklopu javne usluge (tona)",
+          "D": "Miješani komunalni otpad sakupljen u sklopu javne usluge (tona)",
+          "E": "Broj stanovnika obuhvaćenih organiziranim sakupljanjem komunalnog otpada",
+          "F": "Kg/stanovnik",
+          "G": "Stopa odvojenog sakupljanja (%)"
+        },
+        "missing": {
+          "A": 0,
+          "B": 0,
+          "C": 0,
+          "D": 0,
+          "E": 0,
+          "F": 0,
+          "G": 0
+        },
+        "zeros": {
+          "A": 0,
+          "B": 0,
+          "C": 0,
+          "D": 0,
+          "E": 0,
+          "F": 0,
+          "G": 38
+        },
+        "non_numeric": {
+          "A": 556,
+          "B": 556,
+          "C": 0,
+          "D": 0,
+          "E": 0,
+          "F": 0,
+          "G": 0
+        },
+        "ranges": {
+          "C": [
+            31.0,
+            253524.0
+          ],
+          "D": [
+            28.0,
+            173904.0
+          ],
+          "E": [
+            171.0,
+            769944.0
+          ],
+          "F": [
+            44.0,
+            2054.0
+          ],
+          "G": [
+            0.0,
+            80.9
+          ]
+        },
+        "unique_jls": 556,
+        "duplicate_jls_keys": 0,
+        "formula_count": 0,
+        "excel_errors": [],
+        "bjelovar": {
+          "row": 163,
+          "A": "7. Bjelovarsko-bilogorska",
+          "B": "Bjelovar",
+          "C": 11054.0,
+          "D": 8180.0,
+          "E": 36433.0,
+          "F": 303.0,
+          "G": 26.0
+        },
+        "issues": [],
+        "rate_normalization_multiplier": 1,
+        "rate_inconsistent": [],
+        "kg_inconsistent": [
+          {
+            "row": 246,
+            "jls": "Virovitica",
+            "county": "10. Virovitičko-podravska",
+            "total_t": 7039.0,
+            "mixed_t": 4649.0,
+            "population": 19366.0,
+            "published": 364.0,
+            "derived": 363.47206444283796
+          }
+        ],
+        "rate_delta_max": [
+          [
+            1.32258064516129,
+            176,
+            "Severin",
+            9.67741935483871,
+            11.0
+          ],
+          [
+            0.6763440860215049,
+            101,
+            "Plaški",
+            5.376344086021505,
+            4.7
+          ],
+          [
+            0.5942148760330577,
+            445,
+            "Primorski Dolac",
+            3.3057851239669422,
+            3.9
+          ],
+          [
+            0.5876288659793829,
+            55,
+            "Novi Golubovec",
+            19.587628865979383,
+            19.0
+          ],
+          [
+            0.5833333333333339,
+            181,
+            "Velika Trnovitica",
+            10.416666666666666,
+            11.0
+          ],
+          [
+            0.5538461538461541,
+            184,
+            "Zrinski Topolovac",
+            3.8461538461538463,
+            4.4
+          ],
+          [
+            0.4111111111111114,
+            166,
+            "Dežanovac",
+            8.88888888888889,
+            9.3
+          ],
+          [
+            0.40515463917525807,
+            141,
+            "Gola",
+            16.49484536082474,
+            16.9
+          ],
+          [
+            0.3912408759124091,
+            282,
+            "Stara Gradiška",
+            12.408759124087592,
+            12.8
+          ],
+          [
+            0.36666666666666714,
+            121,
+            "Ljubešćica",
+            25.333333333333332,
+            25.7
+          ]
+        ],
+        "kg_delta_max": [
+          [
+            1.2222222222222285,
+            365,
+            "Civljane",
+            222.22222222222223,
+            221.0
+          ],
+          [
+            1.1041388518024178,
+            316,
+            "Tkon",
+            421.8958611481976,
+            423.0
+          ],
+          [
+            1.037037037037038,
+            484,
+            "Lanišće",
+            162.96296296296296,
+            164.0
+          ],
+          [
+            0.9634273772204835,
+            225,
+            "Lovinac",
+            254.96342737722048,
+            254.0
+          ],
+          [
+            0.8914616497829115,
+            445,
+            "Primorski Dolac",
+            175.1085383502171,
+            176.0
+          ],
+          [
+            0.8787878787878753,
+            94,
+            "Kamanje",
+            212.12121212121212,
+            213.0
+          ],
+          [
+            0.875,
+            232,
+            "Vrhovine",
+            196.875,
+            196.0
+          ],
+          [
+            0.8524173027989832,
+            143,
+            "Hlebine",
+            94.14758269720102,
+            95.0
+          ],
+          [
+            0.8372093023256184,
+            295,
+            "Kukljica",
+            651.1627906976744,
+            652.0
+          ],
+          [
+            0.8129154795821592,
+            88,
+            "Bosiljevo",
+            248.81291547958216,
+            248.0
+          ]
+        ],
+        "sums": {
+          "C": 1293254.0,
+          "D": 993192.0,
+          "E": 3890658.0
+        },
+        "rate_delta_over_005": 223,
+        "kg_delta_over_05": 80
+      },
+      {
+        "sheet": "Prilog 2. KO-2021.",
+        "rows": 556,
+        "headers": {
+          "A": "Županija sakupljanja otpada",
+          "B": "JLS (grad/općina) sakupljanja otpada",
+          "C": "Papir (kg/stan.)",
+          "D": "Plastika (kg/stan.)",
+          "E": "Staklo (kg/stan.)",
+          "F": "Metal (kg/stan.)",
+          "G": "Glomazni otpad (kg/stan.)",
+          "H": "Tekstil (kg/stan.)",
+          "I": "Biootpad (kg/stan.)"
+        },
+        "missing": {
+          "A": 0,
+          "B": 0,
+          "C": 0,
+          "D": 0,
+          "E": 0,
+          "F": 0,
+          "G": 0,
+          "H": 0,
+          "I": 0
+        },
+        "zeros": {
+          "A": 0,
+          "B": 0,
+          "C": 51,
+          "D": 74,
+          "E": 142,
+          "F": 250,
+          "G": 126,
+          "H": 288,
+          "I": 341
+        },
+        "non_numeric": {
+          "A": 556,
+          "B": 556,
+          "C": 0,
+          "D": 0,
+          "E": 0,
+          "F": 0,
+          "G": 0,
+          "H": 0,
+          "I": 0
+        },
+        "ranges": {
+          "C": [
+            0.0,
+            95.63658099222954
+          ],
+          "D": [
+            0.0,
+            81.0150891632373
+          ],
+          "E": [
+            0.0,
+            52.306082589285715
+          ],
+          "F": [
+            0.0,
+            16.62939732751568
+          ],
+          "G": [
+            0.0,
+            615.0656530753282
+          ],
+          "H": [
+            0.0,
+            16.842105263157894
+          ],
+          "I": [
+            0.0,
+            355.51504102096624
+          ]
+        },
+        "unique_jls": 556,
+        "duplicate_jls_keys": 0,
+        "formula_count": 0,
+        "excel_errors": [],
+        "keys_vs_main": {
+          "only_material": [],
+          "only_main": []
+        }
+      }
+    ],
+    "2022": [
+      {
+        "sheet": "Prilog 1. KO 2022.",
+        "rows": 556,
+        "headers": {
+          "A": "Županija sakupljanja otpada",
+          "B": "JLS sakupljanja otpada",
+          "C": "Ukupno sakupljeni komunalni otpad u okviru javne usluge po JLS (t)",
+          "D": "Miješani komunalni otpad sakupljen u okviru javne usluge (obrazac SO-1) (t)",
+          "E": "Broj stanovnika obuhvaćenih organiziranim sakupljanjem komunalnog otpada",
+          "F": "Kg/stanovnik",
+          "G": "Stopa odvojenog sakupljanja u okviru javne usluge"
+        },
+        "missing": {
+          "A": 0,
+          "B": 0,
+          "C": 0,
+          "D": 0,
+          "E": 0,
+          "F": 0,
+          "G": 0
+        },
+        "zeros": {
+          "A": 0,
+          "B": 0,
+          "C": 0,
+          "D": 0,
+          "E": 0,
+          "F": 0,
+          "G": 49
+        },
+        "non_numeric": {
+          "A": 556,
+          "B": 556,
+          "C": 0,
+          "D": 0,
+          "E": 0,
+          "F": 0,
+          "G": 0
+        },
+        "ranges": {
+          "C": [
+            36.0,
+            231453.0
+          ],
+          "D": [
+            27.0,
+            167548.0
+          ],
+          "E": [
+            171.0,
+            769944.0
+          ],
+          "F": [
+            55.0,
+            2054.0
+          ],
+          "G": [
+            0.0,
+            0.74
+          ]
+        },
+        "unique_jls": 556,
+        "duplicate_jls_keys": 0,
+        "formula_count": 0,
+        "excel_errors": [],
+        "bjelovar": {
+          "row": 3,
+          "A": "Bjelovarsko-bilogorska",
+          "B": "Bjelovar",
+          "C": 9035.0,
+          "D": 7617.0,
+          "E": 36433.0,
+          "F": 248.0,
+          "G": 0.16
+        },
+        "issues": [],
+        "rate_normalization_multiplier": 100,
+        "rate_inconsistent": [],
+        "kg_inconsistent": [
+          {
+            "row": 552,
+            "jls": "Sveta Nedelja",
+            "county": "Zagrebačka",
+            "total_t": 5542.0,
+            "mixed_t": 4315.0,
+            "population": 18221.0,
+            "published": 320.0,
+            "derived": 304.1545469513199
+          }
+        ],
+        "rate_delta_max": [
+          [
+            1.0919540229885065,
+            254,
+            "Levanjska Varoš",
+            16.091954022988507,
+            15.0
+          ],
+          [
+            0.9053254437869853,
+            139,
+            "Drnje",
+            36.094674556213015,
+            37.0
+          ],
+          [
+            0.8235294117647065,
+            370,
+            "Prgomet",
+            8.823529411764707,
+            8.0
+          ],
+          [
+            0.794871794871792,
+            16,
+            "Severin",
+            28.205128205128204,
+            28.999999999999996
+          ],
+          [
+            0.7092198581560284,
+            126,
+            "Krnjak",
+            0.7092198581560284,
+            0.0
+          ],
+          [
+            0.6666666666666679,
+            255,
+            "Magadenovac",
+            13.333333333333334,
+            14.000000000000002
+          ],
+          [
+            0.666666666666667,
+            406,
+            "Promina",
+            6.666666666666667,
+            6.0
+          ],
+          [
+            0.6666666666666643,
+            147,
+            "Kalnik",
+            33.333333333333336,
+            34.0
+          ],
+          [
+            0.6593406593406588,
+            408,
+            "Ružić",
+            9.340659340659341,
+            10.0
+          ],
+          [
+            0.621621621621621,
+            133,
+            "Ribnik",
+            21.62162162162162,
+            21.0
+          ]
+        ],
+        "kg_delta_max": [
+          [
+            15.845453048680099,
+            552,
+            "Sveta Nedelja",
+            304.1545469513199,
+            320.0
+          ],
+          [
+            1.3333333333333428,
+            91,
+            "Lanišće",
+            133.33333333333334,
+            132.0
+          ],
+          [
+            1.1134020618556661,
+            254,
+            "Levanjska Varoš",
+            112.11340206185567,
+            111.0
+          ],
+          [
+            0.9861495844875208,
+            133,
+            "Ribnik",
+            204.98614958448752,
+            204.0
+          ],
+          [
+            0.9530516431924809,
+            381,
+            "Sućuraj",
+            230.04694835680752,
+            231.0
+          ],
+          [
+            0.8166089965397987,
+            392,
+            "Zadvarje",
+            276.8166089965398,
+            276.0
+          ],
+          [
+            0.7948442534908509,
+            360,
+            "Milna",
+            539.2051557465091,
+            540.0
+          ],
+          [
+            0.7834274952919031,
+            63,
+            "Mljet",
+            664.7834274952919,
+            664.0
+          ],
+          [
+            0.7676767676767611,
+            355,
+            "Lećevica",
+            123.23232323232324,
+            124.0
+          ],
+          [
+            0.7633587786259568,
+            145,
+            "Hlebine",
+            99.23664122137404,
+            100.0
+          ]
+        ],
+        "sums": {
+          "C": 1270430.0,
+          "D": 965264.0,
+          "E": 3866847.0
+        },
+        "rate_delta_over_005": 459,
+        "kg_delta_over_05": 66
+      },
+      {
+        "sheet": "Prilog 2. KO 2022.",
+        "rows": 556,
+        "headers": {
+          "A": "Županija sakupljanja otpada",
+          "B": "JLS sakupljanja otpada",
+          "C": "Papir (kg/stan.)",
+          "D": "Plastika(kg/stan.)",
+          "E": "Staklo (kg/stan.)",
+          "F": "Metal(kg/stan.)",
+          "G": "Glomazni otpad (kg/stan.)",
+          "H": "Tekstil (kg/stan.)",
+          "I": "Biootpad (kg/stan)"
+        },
+        "missing": {
+          "A": 0,
+          "B": 0,
+          "C": 0,
+          "D": 0,
+          "E": 0,
+          "F": 0,
+          "G": 0,
+          "H": 0,
+          "I": 0
+        },
+        "zeros": {
+          "A": 0,
+          "B": 0,
+          "C": 40,
+          "D": 52,
+          "E": 99,
+          "F": 206,
+          "G": 77,
+          "H": 232,
+          "I": 317
+        },
+        "non_numeric": {
+          "A": 556,
+          "B": 556,
+          "C": 0,
+          "D": 0,
+          "E": 0,
+          "F": 0,
+          "G": 0,
+          "H": 0,
+          "I": 0
+        },
+        "ranges": {
+          "C": [
+            0.0,
+            212.19366407650926
+          ],
+          "D": [
+            0.0,
+            73.8468550592525
+          ],
+          "E": [
+            0.0,
+            296.551724137931
+          ],
+          "F": [
+            0.0,
+            21.417322834645667
+          ],
+          "G": [
+            0.0,
+            767.3757225433526
+          ],
+          "H": [
+            0.0,
+            8.552845528455284
+          ],
+          "I": [
+            0.0,
+            386.13269575612674
+          ]
+        },
+        "unique_jls": 556,
+        "duplicate_jls_keys": 0,
+        "formula_count": 0,
+        "excel_errors": [],
+        "keys_vs_main": {
+          "only_material": [],
+          "only_main": []
+        }
+      },
+      {
+        "sheet": "Prilog 3. ELOO 2022.",
+        "rows": 8525,
+        "headers": {
+          "A": "Županija",
+          "B": "Općina/Grad JLS-a",
+          "C": "Naselje",
+          "D": "Datum prijave lokacije otpada",
+          "E": "Datum zadnjeg ažuriranja otpada",
+          "F": "Status administrativnog postupanja",
+          "G": "Datum potvrde lokacije otpada",
+          "H": "Status lokacije otpada",
+          "I": "Status prijave",
+          "J": "X koordinata (HTRS96/TM)",
+          "K": "Y koordinata (HTRS96/TM)",
+          "L": "Izvor prijave"
+        },
+        "missing": {
+          "A": 0,
+          "B": 0,
+          "C": 0,
+          "D": 0,
+          "E": 0,
+          "F": 0,
+          "G": 5200,
+          "H": 0,
+          "I": 0,
+          "J": 0,
+          "K": 0,
+          "L": 0
+        },
+        "zeros": {
+          "A": 0,
+          "B": 0,
+          "C": 0,
+          "D": 0,
+          "E": 0,
+          "F": 0,
+          "G": 0,
+          "H": 0,
+          "I": 0,
+          "J": 0,
+          "K": 0,
+          "L": 0
+        },
+        "non_numeric": {
+          "A": 8525,
+          "B": 8525,
+          "C": 8525,
+          "D": 0,
+          "E": 0,
+          "F": 8525,
+          "G": 0,
+          "H": 8525,
+          "I": 8525,
+          "J": 8525,
+          "K": 8525,
+          "L": 8525
+        },
+        "ranges": {
+          "D": [
+            43760.3681824421,
+            44692.7134981482
+          ],
+          "E": [
+            43762.3615308681,
+            44693.1682672801
+          ],
+          "G": [
+            43482.4216527431,
+            44691.5746573264
+          ]
+        },
+        "unique_jls": 319,
+        "duplicate_jls_keys": 8206,
+        "formula_count": 0,
+        "excel_errors": []
+      }
+    ],
+    "2023": [
+      {
+        "sheet": "Prilog 1. KO 2023.",
+        "rows": 556,
+        "headers": {
+          "A": "Županija sakupljanja otpada",
+          "B": "JLS sakupljanja otpada",
+          "C": "Ukupno sakupljeni KO u sklopu javne usluge po JLS (tona)",
+          "D": "MKO sakupljen u sklopu javne usluge (tona)",
+          "E": "Broj stanovnika obuhvaćenih organiziranim sakupljanjem KO",
+          "F": "Kg/stanovnik",
+          "G": "Stopa odvojenog sakupljanja (%)"
+        },
+        "missing": {
+          "A": 0,
+          "B": 0,
+          "C": 0,
+          "D": 0,
+          "E": 0,
+          "F": 0,
+          "G": 0
+        },
+        "zeros": {
+          "A": 0,
+          "B": 0,
+          "C": 0,
+          "D": 0,
+          "E": 0,
+          "F": 0,
+          "G": 25
+        },
+        "non_numeric": {
+          "A": 556,
+          "B": 556,
+          "C": 0,
+          "D": 0,
+          "E": 0,
+          "F": 0,
+          "G": 0
+        },
+        "ranges": {
+          "C": [
+            31.97,
+            239293.5
+          ],
+          "D": [
+            27.34,
+            139774.5
+          ],
+          "E": [
+            171.0,
+            769944.0
+          ],
+          "F": [
+            47.0,
+            2252.0
+          ],
+          "G": [
+            0.0,
+            73.7
+          ]
+        },
+        "unique_jls": 556,
+        "duplicate_jls_keys": 0,
+        "formula_count": 0,
+        "excel_errors": [],
+        "bjelovar": {
+          "row": 163,
+          "A": "7. Bjelovarsko-bilogorska",
+          "B": "Bjelovar",
+          "C": 9187.54,
+          "D": 7500.45,
+          "E": 35813.0,
+          "F": 257.0,
+          "G": 18.36
+        },
+        "issues": [],
+        "rate_normalization_multiplier": 1,
+        "rate_inconsistent": [],
+        "kg_inconsistent": [],
+        "rate_delta_max": [
+          [
+            0.007594019030349841,
+            145,
+            "Kalnik",
+            31.32759401903035,
+            31.32
+          ],
+          [
+            0.0065657741559981275,
+            140,
+            "Ferdinandovac",
+            20.046565774155997,
+            20.04
+          ],
+          [
+            0.006553880358517006,
+            133,
+            "Veliki Bukovec",
+            47.196553880358515,
+            47.19
+          ],
+          [
+            0.005711055575389423,
+            26,
+            "Rakovec",
+            25.32428894442461,
+            25.33
+          ],
+          [
+            0.005583292657414418,
+            178,
+            "Šandrovac",
+            11.735583292657415,
+            11.73
+          ],
+          [
+            0.005525130826335101,
+            92,
+            "Generalski Stol",
+            18.805525130826336,
+            18.8
+          ],
+          [
+            0.005479088293867562,
+            353,
+            "Satnica Đakovačka",
+            11.465479088293868,
+            11.46
+          ],
+          [
+            0.005477749393563158,
+            12,
+            "Jakovlje",
+            36.98452225060644,
+            36.99
+          ],
+          [
+            0.00545655028867742,
+            290,
+            "Galovac",
+            16.475456550288676,
+            16.47
+          ],
+          [
+            0.0053530529451073505,
+            339,
+            "Jagodnjak",
+            16.87464694705489,
+            16.88
+          ]
+        ],
+        "kg_delta_max": [
+          [
+            0.4988226059654721,
+            195,
+            "Jelenje",
+            311.5011773940345,
+            312.0
+          ],
+          [
+            0.49820071971214475,
+            189,
+            "Crikvenica",
+            744.4982007197121,
+            744.0
+          ],
+          [
+            0.49818621523579054,
+            94,
+            "Kamanje",
+            155.5018137847642,
+            156.0
+          ],
+          [
+            0.49663526244953005,
+            262,
+            "Cernik",
+            207.50336473755047,
+            208.0
+          ],
+          [
+            0.4954834392773364,
+            548,
+            "Pribislavec",
+            238.50451656072266,
+            239.0
+          ],
+          [
+            0.494949494949509,
+            429,
+            "Lećevica",
+            138.5050505050505,
+            139.0
+          ],
+          [
+            0.49388325760224916,
+            79,
+            "Martinska Ves",
+            167.49388325760225,
+            167.0
+          ],
+          [
+            0.4930025445292472,
+            422,
+            "Hrvace",
+            349.50699745547075,
+            350.0
+          ],
+          [
+            0.4917738558181384,
+            93,
+            "Josipdol",
+            172.49177385581814,
+            172.0
+          ],
+          [
+            0.4915378955114136,
+            335,
+            "Erdut",
+            216.5084621044886,
+            217.0
+          ]
+        ],
+        "sums": {
+          "C": 1297200.4400000006,
+          "D": 912261.5200000003,
+          "E": 3903048.0
+        },
+        "rate_delta_over_005": 0,
+        "kg_delta_over_05": 0
+      },
+      {
+        "sheet": "Prilog 2. KO 2023.",
+        "rows": 556,
+        "headers": {
+          "A": "Županija sakupljanja otpada",
+          "B": "JLS sakupljanja otpada",
+          "C": "Papir (kg/stan.)",
+          "D": "Plastika (kg/stan.)",
+          "E": "Staklo (kg/stan.)",
+          "F": "Metal (kg/stan.)",
+          "G": "Glomazni otpad (kg/stan.)",
+          "H": "Tekstil (kg/stan.)",
+          "I": "Biootpad (kg/stan.)"
+        },
+        "missing": {
+          "A": 0,
+          "B": 0,
+          "C": 0,
+          "D": 0,
+          "E": 0,
+          "F": 0,
+          "G": 0,
+          "H": 0,
+          "I": 0
+        },
+        "zeros": {
+          "A": 0,
+          "B": 0,
+          "C": 52,
+          "D": 78,
+          "E": 149,
+          "F": 213,
+          "G": 71,
+          "H": 267,
+          "I": 311
+        },
+        "non_numeric": {
+          "A": 556,
+          "B": 556,
+          "C": 0,
+          "D": 0,
+          "E": 0,
+          "F": 0,
+          "G": 0,
+          "H": 0,
+          "I": 0
+        },
+        "ranges": {
+          "C": [
+            0.0,
+            181.11177525403465
+          ],
+          "D": [
+            0.0,
+            85.21560574948666
+          ],
+          "E": [
+            0.0,
+            88.54209445585215
+          ],
+          "F": [
+            0.0,
+            21.794710327455917
+          ],
+          "G": [
+            0.0,
+            746.2658959537573
+          ],
+          "H": [
+            0.0,
+            10.3739837398374
+          ],
+          "I": [
+            0.0,
+            335.32576210400475
+          ]
+        },
+        "unique_jls": 556,
+        "duplicate_jls_keys": 0,
+        "formula_count": 0,
+        "excel_errors": [],
+        "keys_vs_main": {
+          "only_material": [],
+          "only_main": []
+        }
+      },
+      {
+        "sheet": "Prilog 3. ELOO 2023.",
+        "rows": 14116,
+        "headers": {
+          "A": "Županija",
+          "B": "Općina/Grad JLS-a",
+          "C": "Naselje",
+          "D": "Datum prijave lokacije otpada",
+          "E": "Datum zadnjeg ažuriranja otpada",
+          "F": "Status administrativnog postupanja",
+          "G": "Datum potvrde lokacije otpada",
+          "H": "Status lokacije otpada",
+          "I": "Status prijave",
+          "J": "X koordinata (HTRS96/TM)",
+          "K": "Y koordinata (HTRS96/TM)",
+          "L": "Izvor prijave"
+        },
+        "missing": {
+          "A": 0,
+          "B": 0,
+          "C": 0,
+          "D": 0,
+          "E": 0,
+          "F": 0,
+          "G": 10344,
+          "H": 0,
+          "I": 0,
+          "J": 0,
+          "K": 0,
+          "L": 0
+        },
+        "zeros": {
+          "A": 0,
+          "B": 0,
+          "C": 0,
+          "D": 0,
+          "E": 0,
+          "F": 0,
+          "G": 0,
+          "H": 0,
+          "I": 0,
+          "J": 0,
+          "K": 0,
+          "L": 0
+        },
+        "non_numeric": {
+          "A": 14116,
+          "B": 14116,
+          "C": 14116,
+          "D": 0,
+          "E": 0,
+          "F": 14116,
+          "G": 0,
+          "H": 14116,
+          "I": 14116,
+          "J": 14116,
+          "K": 14116,
+          "L": 14116
+        },
+        "ranges": {
+          "D": [
+            43760.3681824421,
+            45245.6977676273
+          ],
+          "E": [
+            43762.3615308681,
+            45246.1678460648
+          ],
+          "G": [
+            43482.4216527431,
+            45245.6251124653
+          ]
+        },
+        "unique_jls": 381,
+        "duplicate_jls_keys": 13735,
+        "formula_count": 0,
+        "excel_errors": []
+      }
+    ],
+    "2024": [
+      {
+        "sheet": "Prilog 1._KO_2024.",
+        "rows": 556,
+        "headers": {
+          "A": "Županija sakupljanja otpada",
+          "B": "JLS sakupljanja otpada",
+          "C": "Ukupno sakupljeni komunalni otpad u okviru javne usluge po JLS (tona)",
+          "D": "Miješani komunalni otpad sakupljen u okviru javne usluge (tona)",
+          "E": "Broj stanovnika obuhvaćenih organiziranim sakupljanjem komunalnog otpada",
+          "F": "Kg/stanovnik",
+          "G": "Stopa odvojenog sakupljanja u okviru javne usluge"
+        },
+        "missing": {
+          "A": 0,
+          "B": 0,
+          "C": 0,
+          "D": 0,
+          "E": 0,
+          "F": 0,
+          "G": 0
+        },
+        "zeros": {
+          "A": 0,
+          "B": 0,
+          "C": 0,
+          "D": 0,
+          "E": 0,
+          "F": 0,
+          "G": 20
+        },
+        "non_numeric": {
+          "A": 556,
+          "B": 556,
+          "C": 0,
+          "D": 0,
+          "E": 0,
+          "F": 0,
+          "G": 0
+        },
+        "ranges": {
+          "C": [
+            40.18,
+            252771.59
+          ],
+          "D": [
+            29.22,
+            139674.4
+          ],
+          "E": [
+            157.0,
+            772122.0
+          ],
+          "F": [
+            42.99,
+            2129.71
+          ],
+          "G": [
+            0.0,
+            74.01
+          ]
+        },
+        "unique_jls": 556,
+        "duplicate_jls_keys": 0,
+        "formula_count": 0,
+        "excel_errors": [],
+        "bjelovar": {
+          "row": 3,
+          "A": "Bjelovarsko-bilogorska",
+          "B": "Bjelovar",
+          "C": 9773.87,
+          "D": 6620.19,
+          "E": 35758.0,
+          "F": 273.33,
+          "G": 32.27
+        },
+        "issues": [],
+        "rate_normalization_multiplier": 1,
+        "rate_inconsistent": [],
+        "kg_inconsistent": [
+          {
+            "row": 246,
+            "jls": "Đurđenovac",
+            "county": "Osječko-baranjska",
+            "total_t": 886.34,
+            "mixed_t": 791.68,
+            "population": 10200.0,
+            "published": 173.79,
+            "derived": 86.89607843137254
+          },
+          {
+            "row": 249,
+            "jls": "Feričanci",
+            "county": "Osječko-baranjska",
+            "total_t": 295.32,
+            "mixed_t": 244.03,
+            "population": 3292.0,
+            "published": 179.42,
+            "derived": 89.70838396111786
+          },
+          {
+            "row": 375,
+            "jls": "Seget",
+            "county": "Splitsko-dalmatinska",
+            "total_t": 1698.02,
+            "mixed_t": 1693.88,
+            "population": 9330.0,
+            "published": 363.99,
+            "derived": 181.9957127545552
+          },
+          {
+            "row": 396,
+            "jls": "Biskupija",
+            "county": "Šibensko-kninska",
+            "total_t": 169.14,
+            "mixed_t": 145.35,
+            "population": 2318.0,
+            "published": 145.94,
+            "derived": 72.96807592752373
+          },
+          {
+            "row": 469,
+            "jls": "Ivankovo",
+            "county": "Vukovarsko-srijemska",
+            "total_t": 1083.13,
+            "mixed_t": 617.35,
+            "population": 12906.0,
+            "published": 167.85,
+            "derived": 83.92453122578645
+          },
+          {
+            "row": 471,
+            "jls": "Lovas",
+            "county": "Vukovarsko-srijemska",
+            "total_t": 252.82,
+            "mixed_t": 224.82,
+            "population": 2904.0,
+            "published": 258.77,
+            "derived": 87.05922865013774
+          },
+          {
+            "row": 528,
+            "jls": "Dubrava",
+            "county": "Zagrebačka",
+            "total_t": 698.34,
+            "mixed_t": 558.5,
+            "population": 8872.0,
+            "published": 157.43,
+            "derived": 78.71280432822363
+          },
+          {
+            "row": 531,
+            "jls": "Farkaševac",
+            "county": "Zagrebačka",
+            "total_t": 203.76,
+            "mixed_t": 143.94,
+            "population": 3046.0,
+            "published": 133.79,
+            "derived": 66.89428759028233
+          },
+          {
+            "row": 548,
+            "jls": "Rakovec",
+            "county": "Zagrebačka",
+            "total_t": 173.57,
+            "mixed_t": 133.22,
+            "population": 2220.0,
+            "published": 156.37,
+            "derived": 78.18468468468468
+          }
+        ],
+        "rate_delta_max": [
+          [
+            0.008652482269511097,
+            16,
+            "Severin",
+            22.41134751773049,
+            22.42
+          ],
+          [
+            0.008435867183550272,
+            24,
+            "Zrinski Topolovac",
+            20.15843586718355,
+            20.15
+          ],
+          [
+            0.0071049144437402845,
+            548,
+            "Rakovec",
+            23.24710491444374,
+            23.24
+          ],
+          [
+            0.006295014599331239,
+            473,
+            "Negoslavci",
+            6.4237049854006685,
+            6.43
+          ],
+          [
+            0.005766691122534695,
+            12,
+            "Kapela",
+            18.785766691122536,
+            18.78
+          ],
+          [
+            0.005684980872651124,
+            162,
+            "Sveti Petar Orehovec",
+            28.58568498087265,
+            28.58
+          ],
+          [
+            0.005599837332249891,
+            536,
+            "Klinča Sela",
+            14.97559983733225,
+            14.97
+          ],
+          [
+            0.005434246003112264,
+            143,
+            "Gola",
+            29.305434246003113,
+            29.3
+          ],
+          [
+            0.0053919804189783704,
+            25,
+            "Bebrina",
+            3.8946080195810215,
+            3.9
+          ],
+          [
+            0.005357142857148389,
+            47,
+            "Slavonski Šamac",
+            5.044642857142851,
+            5.05
+          ]
+        ],
+        "kg_delta_max": [
+          [
+            181.9942872454448,
+            375,
+            "Seget",
+            181.9957127545552,
+            363.99
+          ],
+          [
+            171.71077134986223,
+            471,
+            "Lovas",
+            87.05922865013774,
+            258.77
+          ],
+          [
+            89.71161603888213,
+            249,
+            "Feričanci",
+            89.70838396111786,
+            179.42
+          ],
+          [
+            86.89392156862745,
+            246,
+            "Đurđenovac",
+            86.89607843137254,
+            173.79
+          ],
+          [
+            83.92546877421354,
+            469,
+            "Ivankovo",
+            83.92453122578645,
+            167.85
+          ],
+          [
+            78.71719567177638,
+            528,
+            "Dubrava",
+            78.71280432822363,
+            157.43
+          ],
+          [
+            78.18531531531532,
+            548,
+            "Rakovec",
+            78.18468468468468,
+            156.37
+          ],
+          [
+            72.97192407247627,
+            396,
+            "Biskupija",
+            72.96807592752373,
+            145.94
+          ],
+          [
+            66.89571240971766,
+            531,
+            "Farkaševac",
+            66.89428759028233,
+            133.79
+          ],
+          [
+            0.012446043165482479,
+            392,
+            "Zadvarje",
+            353.0575539568345,
+            353.07
+          ]
+        ],
+        "sums": {
+          "C": 1352204.0600000005,
+          "D": 914640.6200000003,
+          "E": 3906153.0
+        },
+        "rate_delta_over_005": 0,
+        "kg_delta_over_05": 9
+      },
+      {
+        "sheet": "Prilog 2._KO_2024.",
+        "rows": 556,
+        "headers": {
+          "A": "Županija sakupljanja otpada",
+          "B": "JLS sakupljanja otpada",
+          "C": "Papir (kg/stan.)",
+          "D": "Plastika (kg/stan.)",
+          "E": "Staklo (kg/stan.)",
+          "F": "Metal (kg/stan.)",
+          "G": "Glomazni otpad (kg/stan.)",
+          "H": "Tekstil (kg/stan.)",
+          "I": "Biootpad (kg/stan.)"
+        },
+        "missing": {
+          "A": 0,
+          "B": 0,
+          "C": 0,
+          "D": 0,
+          "E": 0,
+          "F": 0,
+          "G": 0,
+          "H": 0,
+          "I": 0
+        },
+        "zeros": {
+          "A": 0,
+          "B": 0,
+          "C": 45,
+          "D": 73,
+          "E": 133,
+          "F": 198,
+          "G": 78,
+          "H": 262,
+          "I": 286
+        },
+        "non_numeric": {
+          "A": 556,
+          "B": 556,
+          "C": 0,
+          "D": 0,
+          "E": 0,
+          "F": 0,
+          "G": 0,
+          "H": 0,
+          "I": 0
+        },
+        "ranges": {
+          "C": [
+            0.0,
+            177.77777777777777
+          ],
+          "D": [
+            0.0,
+            129.23976608187135
+          ],
+          "E": [
+            0.0,
+            71.7228805834093
+          ],
+          "F": [
+            0.0,
+            46.81983071342201
+          ],
+          "G": [
+            0.0,
+            684.2929292929293
+          ],
+          "H": [
+            0.0,
+            9.756613756613756
+          ],
+          "I": [
+            0.0,
+            465.58287073750995
+          ]
+        },
+        "unique_jls": 556,
+        "duplicate_jls_keys": 0,
+        "formula_count": 0,
+        "excel_errors": [],
+        "keys_vs_main": {
+          "only_material": [],
+          "only_main": []
+        }
+      },
+      {
+        "sheet": "Prilog 3. ELOO 2024.",
+        "rows": 18509,
+        "headers": {
+          "A": "Županija",
+          "B": "Općina/Grad JLS-a",
+          "C": "Naselje",
+          "D": "Datum prijave lokacije otpada",
+          "E": "Datum zadnjeg ažuriranja otpada",
+          "F": "Status administrativnog postupanja",
+          "G": "Datum potvrde lokacije otpada",
+          "H": "Status lokacije otpada",
+          "I": "Status prijave",
+          "J": "X koordinata (HTRS96/TM)",
+          "K": "Y koordinata (HTRS96/TM)",
+          "L": "Izvor prijave"
+        },
+        "missing": {
+          "A": 0,
+          "B": 0,
+          "C": 0,
+          "D": 0,
+          "E": 0,
+          "F": 0,
+          "G": 14243,
+          "H": 0,
+          "I": 0,
+          "J": 0,
+          "K": 0,
+          "L": 0
+        },
+        "zeros": {
+          "A": 0,
+          "B": 0,
+          "C": 0,
+          "D": 0,
+          "E": 0,
+          "F": 0,
+          "G": 0,
+          "H": 0,
+          "I": 0,
+          "J": 0,
+          "K": 0,
+          "L": 0
+        },
+        "non_numeric": {
+          "A": 18509,
+          "B": 18509,
+          "C": 18509,
+          "D": 0,
+          "E": 0,
+          "F": 18509,
+          "G": 0,
+          "H": 18509,
+          "I": 18509,
+          "J": 18509,
+          "K": 18509,
+          "L": 18509
+        },
+        "ranges": {
+          "D": [
+            43760.3681824421,
+            45657.5779684375
+          ],
+          "E": [
+            43762.3615308681,
+            45667.5594398148
+          ],
+          "G": [
+            43482.4216527431,
+            45666.3134660532
+          ]
+        },
+        "unique_jls": 404,
+        "duplicate_jls_keys": 18105,
+        "formula_count": 0,
+        "excel_errors": []
+      }
+    ]
+  },
+  "comparability": {
+    "2021-2022": {
+      "only_previous": [],
+      "only_next": [],
+      "population_changed": 291,
+      "population_change_examples": [
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "kapela"
+          ],
+          2374.0,
+          2367.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "nova rača"
+          ],
+          2788.0,
+          2756.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "rovišće"
+          ],
+          4179.0,
+          4144.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "severin"
+          ],
+          713.0,
+          702.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "veliki grđevac"
+          ],
+          2311.0,
+          2316.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "štefanje"
+          ],
+          1697.0,
+          1688.0
+        ],
+        [
+          [
+            "dubrovačko-neretvanska",
+            "janjina"
+          ],
+          540.0,
+          520.0
+        ],
+        [
+          [
+            "dubrovačko-neretvanska",
+            "lastovo"
+          ],
+          792.0,
+          748.0
+        ],
+        [
+          [
+            "dubrovačko-neretvanska",
+            "lumbarda"
+          ],
+          1217.0,
+          1209.0
+        ],
+        [
+          [
+            "dubrovačko-neretvanska",
+            "metković"
+          ],
+          16788.0,
+          15349.0
+        ],
+        [
+          [
+            "dubrovačko-neretvanska",
+            "mljet"
+          ],
+          1077.0,
+          1062.0
+        ],
+        [
+          [
+            "dubrovačko-neretvanska",
+            "opuzen"
+          ],
+          6105.0,
+          2851.0
+        ],
+        [
+          [
+            "dubrovačko-neretvanska",
+            "pojezerje"
+          ],
+          955.0,
+          943.0
+        ],
+        [
+          [
+            "dubrovačko-neretvanska",
+            "trpanj"
+          ],
+          721.0,
+          683.0
+        ],
+        [
+          [
+            "dubrovačko-neretvanska",
+            "vela luka"
+          ],
+          3789.0,
+          3772.0
+        ]
+      ]
+    },
+    "2022-2023": {
+      "only_previous": [],
+      "only_next": [],
+      "population_changed": 301,
+      "population_change_examples": [
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "berek"
+          ],
+          1112.0,
+          1043.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "bjelovar"
+          ],
+          36433.0,
+          35813.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "daruvar"
+          ],
+          10159.0,
+          9899.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "dežanovac"
+          ],
+          1976.0,
+          1953.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "garešnica"
+          ],
+          8672.0,
+          8447.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "grubišno polje"
+          ],
+          5389.0,
+          5233.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "hercegovac"
+          ],
+          1916.0,
+          1856.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "ivanska"
+          ],
+          2311.0,
+          2195.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "kapela"
+          ],
+          2367.0,
+          2264.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "končanica"
+          ],
+          1804.0,
+          1754.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "nova rača"
+          ],
+          2756.0,
+          2663.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "rovišće"
+          ],
+          4144.0,
+          4054.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "severin"
+          ],
+          702.0,
+          679.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "sirač"
+          ],
+          1800.0,
+          1776.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "velika pisanica"
+          ],
+          1323.0,
+          1236.0
+        ]
+      ]
+    },
+    "2023-2024": {
+      "only_previous": [
+        [
+          "grad zagreb",
+          "zagreb"
+        ]
+      ],
+      "only_next": [
+        [
+          "grad zagreb",
+          "grad zagreb"
+        ]
+      ],
+      "population_changed": 546,
+      "population_change_examples": [
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "berek"
+          ],
+          1043.0,
+          1033.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "bjelovar"
+          ],
+          35813.0,
+          35758.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "daruvar"
+          ],
+          9899.0,
+          9788.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "dežanovac"
+          ],
+          1953.0,
+          1922.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "garešnica"
+          ],
+          8447.0,
+          8379.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "grubišno polje"
+          ],
+          5233.0,
+          5145.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "hercegovac"
+          ],
+          1856.0,
+          1864.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "ivanska"
+          ],
+          2195.0,
+          2136.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "kapela"
+          ],
+          2264.0,
+          2257.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "končanica"
+          ],
+          1754.0,
+          1721.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "nova rača"
+          ],
+          2663.0,
+          2600.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "rovišće"
+          ],
+          4054.0,
+          3991.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "sirač"
+          ],
+          1776.0,
+          1763.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "velika pisanica"
+          ],
+          1236.0,
+          1215.0
+        ],
+        [
+          [
+            "bjelovarsko-bilogorska",
+            "velika trnovitica"
+          ],
+          1040.0,
+          1030.0
+        ]
+      ]
+    }
+  }
+}

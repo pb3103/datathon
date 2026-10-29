@@ -1,0 +1,57 @@
+services:
+  db:
+    image: postgres:16.9-bookworm
+    environment:
+      POSTGRES_USER: wastewise
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-wastewise_local}
+      POSTGRES_DB: wastewise
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U wastewise -d wastewise"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      DATABASE_URL: postgresql+psycopg://wastewise:${POSTGRES_PASSWORD:-wastewise_local}@db:5432/wastewise
+      CORS_ORIGINS: '["http://localhost:5173"]'
+      DATA_DIR: /workspace/podaci
+    volumes:
+      - ./podaci:/workspace/podaci:ro
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+  frontend:
+    build:
+      context: ./frontend
+    environment:
+      API_PROXY_TARGET: http://api:8000
+    ports:
+      - "127.0.0.1:5173:5173"
+    volumes:
+      - ./frontend:/app
+      - frontend_node_modules:/app/node_modules
+    depends_on:
+      - api
+  frontend-e2e:
+    profiles: ["test"]
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.e2e
+    environment:
+      E2E_BASE_URL: http://frontend:5173
+    volumes:
+      - ./frontend/test-results:/app/test-results
+    depends_on:
+      - frontend
+volumes:
+  postgres_data:
+  frontend_node_modules:

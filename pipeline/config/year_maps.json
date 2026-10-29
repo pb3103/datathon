@@ -1,0 +1,78 @@
+{
+  "2021": {
+    "sheet": "Prilog 1. KO-2021.",
+    "headers": {
+      "A": "Županija",
+      "B": "JLS",
+      "C": "Ukupno sakupljeni komunalni otpad u sklopu javne usluge (tona)",
+      "D": "Miješani komunalni otpad sakupljen u sklopu javne usluge (tona)",
+      "E": "Broj stanovnika obuhvaćenih organiziranim sakupljanjem komunalnog otpada",
+      "F": "Kg/stanovnik",
+      "G": "Stopa odvojenog sakupljanja (%)"
+    },
+    "rate_multiplier": 1,
+    "mass_half": "0.5",
+    "kg_half": "0.5",
+    "rate_half": "0.05",
+    "scope": "public_service",
+    "methodology_group": "public_service_provisional_v1",
+    "methodology_verified": false
+  },
+  "2022": {
+    "sheet": "Prilog 1. KO 2022.",
+    "headers": {
+      "A": "Županija sakupljanja otpada",
+      "B": "JLS sakupljanja otpada",
+      "C": "Ukupno sakupljeni komunalni otpad u okviru javne usluge po JLS (t)",
+      "D": "Miješani komunalni otpad sakupljen u okviru javne usluge (obrazac SO-1) (t)",
+      "E": "Broj stanovnika obuhvaćenih organiziranim sakupljanjem komunalnog otpada",
+      "F": "Kg/stanovnik",
+      "G": "Stopa odvojenog sakupljanja u okviru javne usluge"
+    },
+    "rate_multiplier": 100,
+    "mass_half": "0.5",
+    "kg_half": "0.5",
+    "rate_half": "0.5",
+    "scope": "public_service",
+    "methodology_group": "public_service_provisional_v1",
+    "methodology_verified": false
+  },
+  "2023": {
+    "sheet": "Prilog 1. KO 2023.",
+    "headers": {
+      "A": "Županija sakupljanja otpada",
+      "B": "JLS sakupljanja otpada",
+      "C": "Ukupno sakupljeni KO u sklopu javne usluge po JLS (tona)",
+      "D": "MKO sakupljen u sklopu javne usluge (tona)",
+      "E": "Broj stanovnika obuhvaćenih organiziranim sakupljanjem KO",
+      "F": "Kg/stanovnik",
+      "G": "Stopa odvojenog sakupljanja (%)"
+    },
+    "rate_multiplier": 1,
+    "mass_half": "0.005",
+    "kg_half": "0.5",
+    "rate_half": "0.005",
+    "scope": "public_service",
+    "methodology_group": "public_service_provisional_v1",
+    "methodology_verified": false
+  },
+  "2024": {
+    "sheet": "Prilog 1._KO_2024.",
+    "headers": {
+      "A": "Županija sakupljanja otpada",
+      "B": "JLS sakupljanja otpada",
+      "C": "Ukupno sakupljeni komunalni otpad u okviru javne usluge po JLS (tona)",
+      "D": "Miješani komunalni otpad sakupljen u okviru javne usluge (tona)",
+      "E": "Broj stanovnika obuhvaćenih organiziranim sakupljanjem komunalnog otpada",
+      "F": "Kg/stanovnik",
+      "G": "Stopa odvojenog sakupljanja u okviru javne usluge"
+    },
+    "rate_multiplier": 1,
+    "mass_half": "0.005",
+    "kg_half": "0.005",
+    "rate_half": "0.005",
+    "scope": "public_service",
+    "methodology_group": "public_service_provisional_v1",
+    "methodology_verified": false
+  }
+}

@@ -1,0 +1,117 @@
+import type { Observation } from '../api/client';
+import { Icon } from './Icon';
+
+function safeLink(value?: string | null): string | null {
+  if (!value) return null;
+  try {
+    const url = new URL(value);
+    return ['http:', 'https:'].includes(url.protocol) ? url.href : null;
+  } catch {
+    return null;
+  }
+}
+
+export function Sources({
+  observations,
+  selectedYear,
+}: {
+  observations: Observation[];
+  selectedYear: number | null;
+}) {
+  return (
+    <section className="panel sources-panel" id="sources" aria-labelledby="sources-heading">
+      <div className="sources-heading">
+        <div>
+          <div className="section-kicker">03 / Podrijetlo podataka</div>
+          <h2 id="sources-heading">Izvori kojima možete pratiti trag</h2>
+        </div>
+        <Icon name="database" />
+      </div>
+      <p className="small-muted">
+        Prikazane vrijednosti dolaze iz godišnjih XLSX priloga. Svaki je zapis povezan s izvornom
+        datotekom, listom i retkom.
+      </p>
+      <div className="source-list">
+        {[...observations]
+          .sort((a, b) => b.year - a.year)
+          .map((observation) => {
+            const source = observation.source;
+            const link = safeLink(source.resource_url) ?? safeLink(source.catalog_url);
+            return (
+              <details
+                id={`source-${observation.year}`}
+                className={`source-entry ${selectedYear === observation.year ? 'selected-source' : ''}`}
+                key={observation.year}
+              >
+                <summary>
+                  <span className="source-year">{observation.year}.</span>
+                  <span className="source-summary">
+                    <strong>{source.title}</strong>
+                    <small>
+                      {source.sheet} · redak {observation.source_row} · XLSX
+                      {(source.issues ?? []).length > 0 ? ' · Napomena izvora' : ''}
+                    </small>
+                  </span>
+                  <span className="source-expand" aria-hidden="true">
+                    +
+                  </span>
+                </summary>
+                <div className="source-details">
+                  <dl>
+                    <dt>Datoteka</dt>
+                    <dd>{source.path}</dd>
+                    <dt>List i redak</dt>
+                    <dd>
+                      {source.sheet}, redak {observation.source_row}
+                    </dd>
+                    <dt>Obuhvat</dt>
+                    <dd>
+                      {observation.scope === 'public_service'
+                        ? 'Komunalni otpad u okviru javne usluge'
+                        : observation.scope}
+                    </dd>
+                    <dt>Izdavač</dt>
+                    <dd>{source.publisher ?? 'Nije potvrđen u metapodacima izvora'}</dd>
+                    <dt>Licenca</dt>
+                    <dd>{source.license ?? 'Nije potvrđena'}</dd>
+                    <dt>Preuzeto</dt>
+                    <dd>
+                      {source.downloaded_at
+                        ? new Intl.DateTimeFormat('hr-HR', { timeZone: 'Europe/Zagreb' }).format(
+                            new Date(source.downloaded_at),
+                          )
+                        : 'Datum nije zabilježen'}
+                    </dd>
+                    <dt>Verzija metodologije</dt>
+                    <dd>
+                      {source.methodology_group} ·{' '}
+                      {source.methodology_verified ? 'potvrđena' : 'još nije potvrđena'}
+                    </dd>
+                    <dt>SHA-256 datoteke</dt>
+                    <dd className="checksum">{source.sha256}</dd>
+                  </dl>
+                  {link ? (
+                    <a className="source-external" href={link} target="_blank" rel="noreferrer">
+                      Otvori službeni izvor
+                      <Icon name="external" />
+                    </a>
+                  ) : (
+                    <p className="small-muted">
+                      Poveznica službenog izvora još nije potvrđena. Datoteka je evidentirana
+                      lokalno.
+                    </p>
+                  )}
+                  {(source.issues ?? []).map((issue, i) => (
+                    <p className="source-warning" key={`${issue.code}-${i}`}>
+                      <Icon name="alert" />
+                      {issue.description}
+                    </p>
+                  ))}
+                </div>
+              </details>
+            );
+          })}
+      </div>
+    </section>
+  );
+}

@@ -1,0 +1,15 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.env
+node_modules/
+dist/
+# Ignore new raw files; already tracked originals remain unchanged.
+podaci/
+data/staging/
+
+# Frontend browser QA output
+frontend/test-results/
+frontend/playwright-report/

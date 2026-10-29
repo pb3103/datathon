@@ -1,0 +1,4 @@
+# Local QA of the already built frontend/dist with the same FastAPI proxy.
+services:
+  frontend:
+    command: ["npm", "run", "preview"]
