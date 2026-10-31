@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { WorkspaceLayout } from './components/Layout';
 import { Search } from './components/Search';
+import RecyclingMap from './components/RecyclingMap';
 import { Icon } from './components/Icon';
 
 const steps = [
@@ -27,6 +29,7 @@ const steps = [
 ];
 
 export default function Home() {
+  const [mapSearch, setMapSearch] = useState<{ query: string; attempt: number } | null>(null);
   const hero = (
     <section className="home-hero" aria-labelledby="page-title">
       <div className="home-hero-copy">
@@ -38,29 +41,13 @@ export default function Home() {
         </p>
         <p className="home-eyebrow">KOMUNALNI OTPAD · HRVATSKA</p>
         <h1 id="page-title" tabIndex={-1}>
-          Od podataka do <span>održivijih odluka.</span>
+          Od podataka do <span>pametnih odluka.</span>
         </h1>
         <p className="home-lead">
           Istražite podatke o komunalnom otpadu u hrvatskim gradovima i općinama, usporedite
           rezultate i istražite moguće scenarije promjena.
         </p>
         <p className="home-audience">Za građane i jedinice lokalne samouprave.</p>
-      </div>
-      <div className="home-start">
-        <div className="home-start-heading">
-          <span className="home-start-icon" aria-hidden="true">
-            <Icon name="pin" />
-          </span>
-          <div>
-            <p>Započnite ovdje</p>
-            <h2>Pronađite svoj grad ili općinu</h2>
-          </div>
-        </div>
-        <Search
-          onSelect={(m) => {
-            window.location.href = `/explorer?${new URLSearchParams({ jls: m.id })}`;
-          }}
-        />
       </div>
     </section>
   );
@@ -102,6 +89,31 @@ export default function Home() {
           ))}
         </ol>
       </section>
+      <section
+        className="home-discovery"
+        aria-label="Istražite svoju zajednicu i reciklažna dvorišta"
+      >
+        <div className="home-start">
+          <div className="home-start-heading">
+            <span className="home-start-icon" aria-hidden="true">
+              <Icon name="pin" />
+            </span>
+            <div>
+              <p>Započnite ovdje</p>
+              <h2>Pronađite svoj grad ili općinu</h2>
+            </div>
+          </div>
+          <Search
+            onSearch={(query) =>
+              setMapSearch((old) => ({ query, attempt: (old?.attempt ?? 0) + 1 }))
+            }
+            onSelect={(m) => {
+              window.location.href = `/explorer?${new URLSearchParams({ jls: m.id })}`;
+            }}
+          />
+        </div>
+        <RecyclingMap searchRequest={mapSearch} />
+      </section>
       <section className="home-data-note" aria-labelledby="home-data-title">
         <div className="home-data-icon" aria-hidden="true">
           <Icon name="database" />
@@ -112,6 +124,18 @@ export default function Home() {
             WasteWise se temelji na javno dostupnim izvješćima o komunalnom otpadu i pripadajućim
             XLSX podacima po gradovima i općinama za <strong>2017.–2024.</strong> Izvori i
             metodološka ograničenja dostupni su uz pokazatelje u modulima.
+          </p>
+          <p>
+            Podaci o reciklažnim dvorištima i zelenim otocima preuzeti su iz dostavljenih skupova s{' '}
+            <a
+              href="https://data.gov.hr/ckan/hr/dataset/reciklazna-dvorista-grada-zagreba1/resource/36ca7d0d-4e86-42a1-88e3-826acf4ce8a7?inner_span=True"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Portala otvorenih podataka Republike Hrvatske — data.gov.hr
+            </a>{' '}
+            (poveznica na zagrebački skup). Karta obuhvaća Zagreb i dodatne gradove i općine prema
+            dostupnim izvorima; popis nije potpun.
           </p>
           <p className="home-data-caveat">
             Rezultati Simulatora hipotetski su matematički scenariji, a ne prognoze ili preporuke.

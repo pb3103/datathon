@@ -61,7 +61,7 @@ test('product: home search, concise workflow, mobile accessibility and legacy pr
 }) => {
   await page.goto('/');
   await expect(
-    page.getByRole('heading', { name: 'Od podataka do održivijih odluka.', exact: true }),
+    page.getByRole('heading', { name: 'Od podataka do pametnih odluka.', exact: true }),
   ).toBeVisible();
   await expect(page.getByText('Za građane i jedinice lokalne samouprave.')).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Kako funkcionira?' })).toBeVisible();
@@ -78,7 +78,7 @@ test('product: home search, concise workflow, mobile accessibility and legacy pr
   await expect(page).toHaveURL(/\/explorer\?/);
   await page.getByRole('link', { name: 'WasteWise početna' }).click();
   await expect(
-    page.getByRole('heading', { name: 'Od podataka do održivijih odluka.', exact: true }),
+    page.getByRole('heading', { name: 'Od podataka do pametnih odluka.', exact: true }),
   ).toBeVisible();
   await page.setViewportSize({ width: 390, height: 844 });
   const { default: AxeBuilder } = await import('@axe-core/playwright');
@@ -167,12 +167,10 @@ test('home: no automatic data requests, keyboard search, cards and responsive la
   });
   await page.goto('/');
   await expect(
-    page.getByRole('heading', { name: 'Od podataka do održivijih odluka.', exact: true }),
+    page.getByRole('heading', { name: 'Od podataka do pametnih odluka.', exact: true }),
   ).toBeVisible();
   expect(requests).toEqual([]);
-  await page
-    .getByRole('heading', { name: 'Od podataka do održivijih odluka.', exact: true })
-    .focus();
+  await page.getByRole('heading', { name: 'Od podataka do pametnih odluka.', exact: true }).focus();
   await page.keyboard.press('Tab');
   await expect(page.getByRole('searchbox', { name: 'Grad ili općina' })).toBeFocused();
   await page.keyboard.type('Bjelovar');

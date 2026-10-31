@@ -3759,6 +3759,339 @@ fieldset.simulator-workbench:disabled .simulator-controls {
   text-underline-offset: 4px;
 }
 
+
+/* A compact introduction, followed by actions and a shared search/map panel. */
+.module-home .home-hero {
+  display: block;
+  padding: 28px 0 30px;
+}
+.module-home .home-hero::before,
+.module-home .home-hero::after {
+  display: none;
+}
+.module-home .home-hero-copy {
+  max-width: none;
+}
+.module-home .home-product {
+  margin-bottom: 20px;
+}
+.module-home .home-hero h1 {
+  max-width: none;
+  font-size: clamp(36px, 4vw, 64px);
+  margin: 12px 0 18px;
+}
+.module-home .home-hero h1 span {
+  display: inline;
+}
+.module-home .home-lead {
+  max-width: 950px;
+  margin: 0;
+  font-size: 18px;
+}
+.module-home .home-audience {
+  margin: 12px 0 0;
+}
+.module-home .home-workflow {
+  padding-top: 24px;
+}
+.module-home .home-step-card {
+  padding: 24px;
+  gap: 16px;
+}
+.module-home .home-step-top {
+  margin-bottom: 12px;
+}
+.module-home .home-step-card h3 {
+  font-size: 25px;
+}
+.module-home .home-step-icon {
+  width: 48px;
+  height: 48px;
+}
+.module-home .home-discovery {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.7fr) minmax(0, 1.3fr);
+  margin: 36px 0;
+  border: 1px solid #b5cba8;
+  border-radius: 22px;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: 0 12px 36px #183e2d08;
+}
+.module-home .home-discovery .home-start {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 30px;
+  background: #f4f7f0;
+  align-self: stretch;
+  min-width: 0;
+}
+.module-home .home-discovery .home-start-heading h2 {
+  font-size: 29px;
+}
+.module-home .home-discovery .home-start .search-panel form {
+  grid-template-columns: 1fr;
+}
+.recycling-explorer {
+  padding: 26px;
+  min-width: 0;
+}
+.recycling-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.recycling-heading h2 {
+  font-size: 25px;
+  margin: 6px 0 16px;
+}
+.recycling-heading .home-eyebrow {
+  font-size: 11px;
+  margin: 0;
+}
+.recycling-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 14px;
+  font-size: 13px;
+}
+.recycling-toolbar select {
+  padding: 8px;
+  border: 1px solid #b5cba8;
+  border-radius: 8px;
+  background: white;
+  color: #183e2d;
+}
+.yard-legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-left: auto;
+}
+.yard-legend i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #1d6046;
+}
+.yard-legend i.mobile {
+  background: #a25c18;
+}
+.recycling-map {
+  height: 420px;
+  width: 100%;
+  border-radius: 12px;
+  z-index: 0;
+  background: #e7ede1;
+}
+.yard-marker {
+  display: block;
+  width: 28px;
+  height: 28px;
+  background: #1d6046;
+  border: 2px solid white;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  box-shadow: 0 2px 6px #0005;
+}
+.yard-marker.mobile {
+  background: #a25c18;
+}
+.yard-marker span {
+  display: block;
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+  margin: 8px;
+}
+.recycling-source {
+  font-size: 12px;
+  color: #52634e;
+  line-height: 1.6;
+  margin: 14px 0;
+}
+.recycling-list summary {
+  cursor: pointer;
+  color: #1d6046;
+  font-weight: 600;
+}
+.recycling-list ul {
+  list-style: none;
+  padding: 0;
+  max-height: 270px;
+  overflow: auto;
+}
+.recycling-list li {
+  display: grid;
+  gap: 5px;
+  padding: 12px 0;
+  border-bottom: 1px solid #e2e8dd;
+  font-size: 13px;
+}
+.recycling-list button {
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  color: #1d6046;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+}
+@media (max-width: 1000px) {
+  .module-home .home-discovery {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 600px) {
+  .module-home .home-discovery .home-start,
+  .recycling-explorer {
+    padding: 20px;
+  }
+  .recycling-heading {
+    align-items: flex-start;
+  }
+  .recycling-heading h2 {
+    font-size: 22px;
+  }
+  .recycling-map {
+    height: 340px;
+  }
+  .yard-legend {
+    margin-left: 0;
+  }
+}
+
+/* Keep the introduction and workflow short enough to reveal the map on arrival. */
+.module-home .home-hero {
+  padding: 16px 0 24px;
+}
+.module-home .home-product {
+  font-size: 20px;
+  margin: 0 0 16px;
+}
+.module-home .home-product-mark {
+  width: 30px;
+  height: 30px;
+}
+.module-home .home-hero .home-eyebrow {
+  margin: 0 0 12px;
+  font-size: 10px;
+}
+.module-home .home-hero h1 {
+  font-size: clamp(28px, 2.7vw, 40px);
+  letter-spacing: -1.3px;
+  margin: 0 0 16px;
+  line-height: 1.15;
+}
+.module-home .home-lead {
+  max-width: 900px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.module-home .home-audience {
+  font-size: 12px;
+  margin: 12px 0 0;
+}
+.module-home .home-workflow {
+  padding: 22px 0 0;
+}
+.module-home .home-section-heading {
+  margin-bottom: 20px;
+}
+.module-home .home-section-heading .home-eyebrow {
+  margin: 0 0 6px;
+  font-size: 10px;
+}
+.module-home .home-section-heading h2 {
+  font-size: 25px;
+}
+.module-home .home-step-card {
+  padding: 22px;
+  gap: 0;
+}
+.module-home .home-step-top {
+  margin-bottom: 14px;
+}
+.module-home .home-step-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+}
+.module-home .home-step-icon .icon {
+  width: 18px;
+  height: 18px;
+}
+.module-home .home-step-card h3 {
+  font-size: 21px;
+  margin: 0 0 12px;
+}
+.module-home .home-step-card > p {
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 18px;
+}
+.module-home .home-step-link {
+  padding-top: 12px;
+  min-height: 34px;
+}
+.module-home .home-discovery {
+  margin-top: 30px;
+}
+@media (min-width: 1001px) {
+  .module-home main {
+    padding-top: 12px;
+  }
+}
+
+/* More breathing room between the main home-page sections. */
+.module-home .home-hero {
+  padding-top: 6px;
+  padding-bottom: 36px;
+}
+.module-home .home-workflow {
+  padding-top: 0;
+}
+.module-home .home-section-heading {
+  margin-bottom: 38px;
+}
+.module-home .home-steps {
+  gap: 38px;
+}
+.module-home .home-discovery {
+  margin-top: 76px;
+  margin-bottom: 76px;
+}
+@media (max-width: 600px) {
+  .module-home .home-hero {
+    padding-bottom: 28px;
+  }
+  .module-home .home-discovery {
+    margin-top: 48px;
+    margin-bottom: 48px;
+  }
+  .module-home .home-steps {
+    gap: 28px;
+  }
+}
+.yard-marker.island,
+.yard-legend i.island {
+  background: #27689a;
+}
+.yard-marker.collection,
+.yard-legend i.collection {
+  background: #696579;
+}
+.recycling-toolbar .yard-legend {
+  flex-wrap: wrap;
+  font-size: 12px;
+=======
 .rate-method-note {
   margin-top: 14px;
   padding: 10px 14px;
@@ -3857,4 +4190,5 @@ fieldset.simulator-workbench:disabled .simulator-controls {
   .data-notes-card {
     padding: 10px 12px;
   }
+
 }
