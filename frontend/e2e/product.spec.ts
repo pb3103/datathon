@@ -171,6 +171,10 @@ test('home: no automatic data requests, keyboard search, cards and responsive la
   ).toBeVisible();
   expect(requests).toEqual([]);
   await page.getByRole('heading', { name: 'Od podataka do pametnih odluka.', exact: true }).focus();
+  for (const module of ['Waste Explorer', 'Waste Compare', 'Waste Simulator']) {
+    await page.keyboard.press('Tab');
+    await expect(page.getByRole('link', { name: `Otvori ${module}`, exact: true })).toBeFocused();
+  }
   await page.keyboard.press('Tab');
   await expect(page.getByRole('searchbox', { name: 'Grad ili općina' })).toBeFocused();
   await page.keyboard.type('Bjelovar');

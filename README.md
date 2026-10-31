@@ -324,7 +324,7 @@ Za reproducibilnu pripremu iz izvornih CSV/GeoJSON/PDF datoteka koristite Python
 instaliranim `pypdf` te `python -m pipeline.prepare_recycling`. Pripremljeni JSON
 čuva izvornu datoteku i njezin SHA-256. Raniji `recycling-zagreb.json` više se ne
 koristi za prikaz karte.
-=======
+
 ## Povijesni udio otpada izvan miješanog toka
 
 Explorer i Compare zasebno prikazuju **izračunati široki udio** `100×(T−M)/T` za 2017.–2020. (po 556 JLS). Završna provjera Rev2 za 2019. potvrdila je široki obuhvat organizacije JLS; to nije uža stopa prema Uredbi. To nije zamjena za službene stope 2021.–2024. niti potvrđen povezani trend. Izvedeni API ključ je `calculated_nonmixed_share_pct`; objavljene stope ostaju u `separate_collection_pct`.

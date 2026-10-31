@@ -3759,7 +3759,6 @@ fieldset.simulator-workbench:disabled .simulator-controls {
   text-underline-offset: 4px;
 }
 
-
 /* A compact introduction, followed by actions and a shared search/map panel. */
 .module-home .home-hero {
   display: block;
@@ -4091,7 +4090,8 @@ fieldset.simulator-workbench:disabled .simulator-controls {
 .recycling-toolbar .yard-legend {
   flex-wrap: wrap;
   font-size: 12px;
-=======
+}
+
 .rate-method-note {
   margin-top: 14px;
   padding: 10px 14px;
@@ -4190,5 +4190,4 @@ fieldset.simulator-workbench:disabled .simulator-controls {
   .data-notes-card {
     padding: 10px 12px;
   }
-
 }
