@@ -1,3 +1,3 @@
 target-version = "py312"
 line-length = 100
-include = ["backend/**/*.py", "pipeline/extract.py", "pipeline/materials.py", "pipeline/verify_materials.py", "pipeline/import_data.py", "pipeline/smoke_api.py", "pipeline/audit_simulator.py", "pipeline/historical.py", "pipeline/audit_history.py", "pipeline/verify_history_api.py", "pipeline/verify_historical.py", "pipeline/__init__.py", "tests/**/*.py"]
+include = ["backend/**/*.py", "pipeline/extract.py", "pipeline/materials.py", "pipeline/verify_materials.py", "pipeline/import_data.py", "pipeline/smoke_api.py", "pipeline/audit_simulator.py", "pipeline/historical.py", "pipeline/audit_history.py", "pipeline/audit_collection_rates.py", "pipeline/verify_history_api.py", "pipeline/verify_historical.py", "pipeline/__init__.py", "tests/**/*.py"]

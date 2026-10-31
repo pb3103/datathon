@@ -272,3 +272,14 @@ Obnovljeni dokaz prvo pregledajte; naredbe ga ne aktiviraju u projektu. Parser g
 Korisnički prikaz koristi naziv `Prikaz odabranih podataka_JLS za GODINA.csv` za 2017.–2020. i `.xlsx` za 2021.–2024. To su prikazni nazivi: datoteke nisu fizički preimenovane, a izvorne putanje, CSV/PDF trag, hashovi i ETL reference ostaju nepromijenjeni i dostupni u detaljima izvora. Time se ne mijenja identitet izvora ni idempotentnost uvoza.
 
 Aktualno sučelje zamjenjuje četiri povijesna bloka jednom metodološkom napomenom s proširivim objašnjenjem i poveznicama na godišnje izvore. Opće napomene `source_aggregate_mismatch` za 2023./2024. ne prikazuju se u sučelju ni ispisu; API, validacije, manifesti i prethodni auditni izvještaji ih zadržavaju. Ovo nadopunjuje ranije opise vidljivosti tih upozorenja. Nema izmjene JLS vrijednosti ili usklađivanja s nacionalnim agregatima. Lokalni problemi, sporni nazivnici, nedostupni pokazatelji i konkretna metodološka ograničenja ostaju vidljivi.
+
+
+## Provjera rekonstrukcije stopa
+
+Read-only kontrola `100×(T−M)/T` za sve novije retke:
+
+```sh
+docker compose run --rm api python -m pipeline.audit_collection_rates > docs/collection_rate_validation.json
+```
+
+Nakon dodavanja audita prvo obnovite API image (`docker compose build api`). Svih 2.224 objavljenih stopa 2021.–2024. odgovara intervalima preciznosti mase i stope. To ne potvrđuje istovjetnost povijesnih definicija: izvješće 2019. opisuje užu metodu s isključenim tokovima, dok 2020. podupire široki udio nemiješanog otpada u organizaciji JLS. Postojeći povijesni kontrolni omjer ostaje odvojen od objavljenog pokazatelja; nema novih službenih stopa, promjene masa niti proširenja Simulatora. Berek 124,20 / 100,36 t primjer je iz 2024. Detaljna odluka, preciznosti, statistika i preporuka: [metodološki izvještaj](docs/collection_rate_methodology.md), [rezultati po retku](docs/collection_rate_validation.json).
