@@ -102,3 +102,88 @@ class YearOut(BaseModel):
 class YearsOut(BaseModel):
     municipality: MunicipalityOut
     years: list[YearOut]
+
+
+class MaterialOut(BaseModel):
+    material: str
+    label: str
+    published: Metric
+    comparable: Metric
+    source: SourceOut
+    source_row: int
+    denominator_status: str
+    cross_year_verified: bool = False
+    evidence: dict
+
+
+class PeerOut(BaseModel):
+    municipality: MunicipalityOut
+    covered_population: int
+    population_ratio: Decimal
+    log_distance: Decimal
+    within_preferred_range: bool
+    quality_notes: list[str]
+
+
+class PeersOut(BaseModel):
+    baseline: MunicipalityOut
+    year: int
+    algorithm_version: str
+    county_scope: str
+    status: str
+    reason: str | None = None
+    preferred_min: Decimal = Decimal("0.5")
+    preferred_max: Decimal = Decimal("2")
+    expanded: bool
+    eligible_candidates: int
+    exclusions: dict[str, int]
+    items: list[PeerOut]
+    warnings: list[str]
+
+
+class CompareMetric(BaseModel):
+    key: str
+    label: str
+    unit: str
+    difference_unit: str
+    family: str
+
+
+class CompareMember(BaseModel):
+    municipality: MunicipalityOut
+    observation: ObservationOut | None
+    history: list[ObservationOut]
+    metrics: dict[str, Metric]
+    differences: dict[str, Metric]
+    materials: list[MaterialOut]
+    material_history: dict[int, list[MaterialOut]]
+    history_metrics: dict[int, dict[str, Metric]]
+    warnings: list[str]
+    simulation_url: str | None
+    population_ratio: Decimal | None
+
+
+class DifferenceInsight(BaseModel):
+    metric: str
+    label: str
+    year: int
+    unit: str
+    difference_unit: str
+    low_municipality: MunicipalityOut
+    high_municipality: MunicipalityOut
+    low_value: Decimal
+    high_value: Decimal
+    difference: Decimal
+    relative_range: Decimal
+    available_count: int
+
+
+class ComparisonOut(BaseModel):
+    baseline_id: uuid.UUID
+    year: int
+    metrics: list[CompareMetric]
+    members: list[CompareMember]
+    insights: list[DifferenceInsight]
+    insight_method: str
+    insight_exclusions: list[str]
+    warnings: list[str]

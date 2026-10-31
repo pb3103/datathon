@@ -1,0 +1,31 @@
+{
+  "model_version": "public-service-mass-balance-v1",
+  "scope": "public_service",
+  "verified_years": [
+    2023,
+    2024
+  ],
+  "evidence": {
+    "report": "Izvješće o komunalnom otpadu za 2024. godinu",
+    "pages": [
+      20,
+      37
+    ],
+    "table": 11,
+    "review": "Potvrda korisnika nakon pregleda izvješća 2023./2024. i XLSX 2024.; provjerena definicija i tablica u lokalnom PDF-u.",
+    "pdf_sha256": "380f94d1c986ac74bc97d049c709608336be36bfe73e131336feec937d36b746"
+  },
+  "xlsx_sha256_by_year": {
+    "2023": "df0950bb499be23f75183b96e545ca583b691b230dda78c8722e5701a42d3761",
+    "2024": "11c98568f49d18f4a6592e3a1f1efdfdc81fabb31e2d3fdc8ad9ab8d07ed4f72"
+  },
+  "formulas": {
+    "separate_t": "T-M",
+    "rate_pct": "100*(T-M)/T"
+  },
+  "limitations": [
+    "Potvrda vrijedi samo za isti obuhvat javne usluge, ne za međugodišnju usporedivost.",
+    "Promjena metodologije recikliranja nije potvrda recikliranih količina ovog modela.",
+    "Provjera zaokruživanja po retku ostaje obvezna; nova revizija izvora zahtijeva novu provjeru."
+  ]
+}

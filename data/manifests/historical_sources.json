@@ -1,0 +1,101 @@
+[
+  {
+    "path": "podaci/2017/wastewise_2017_ZUPANIJE_DOPUNJENE.csv",
+    "year": 2017,
+    "sha256": "aacbd700709b37c2ab6941ef484d8287f4584a20a2ce8a94b07b7dbcafc57af4",
+    "bytes": 112521,
+    "publisher": null,
+    "catalog_url": null,
+    "resource_url": null,
+    "license": null,
+    "downloaded_at": null
+  },
+  {
+    "path": "podaci/2017/OTP_Izvješće o komunalnom otpadu_2017_0.pdf",
+    "year": 2017,
+    "sha256": "528ff9d42abdc30cded93e47f999b8dc3c17dca35d065d202af44f07deb7153d",
+    "bytes": 5890944,
+    "publisher": null,
+    "catalog_url": null,
+    "resource_url": null,
+    "license": null,
+    "downloaded_at": null
+  },
+  {
+    "path": "podaci/2018/wastewise_2018_ZUPANIJE_DOPUNJENE.csv",
+    "year": 2018,
+    "sha256": "0e636d4222760c2b578bad80d07a6112487a1eeac993b67eeb00db5deca0393c",
+    "bytes": 112264,
+    "publisher": null,
+    "catalog_url": null,
+    "resource_url": null,
+    "license": null,
+    "downloaded_at": null
+  },
+  {
+    "path": "podaci/2018/OTP_Izvješće o komunalnom otpadu_2018 FV_0_0.pdf",
+    "year": 2018,
+    "sha256": "8c97c535119d578532629e6777d381d9acf611f8fde70c0809b499965df43f02",
+    "bytes": 5929460,
+    "publisher": null,
+    "catalog_url": null,
+    "resource_url": null,
+    "license": null,
+    "downloaded_at": null
+  },
+  {
+    "path": "podaci/2018/ispravak_0.docx",
+    "year": 2018,
+    "sha256": "dde4df47f801243958d204666f16b53825a96a6e2c9b54c8e78a29f2db815e3d",
+    "bytes": 16809,
+    "publisher": null,
+    "catalog_url": null,
+    "resource_url": null,
+    "license": null,
+    "downloaded_at": null
+  },
+  {
+    "path": "podaci/2019/wastewise_2019_ZUPANIJE_DOPUNJENE.csv",
+    "year": 2019,
+    "sha256": "1c346b1a47e7815684ac8095012f03db60e4404c4d1c40435f562b52a0cecf49",
+    "bytes": 93024,
+    "publisher": null,
+    "catalog_url": null,
+    "resource_url": null,
+    "license": null,
+    "downloaded_at": null
+  },
+  {
+    "path": "podaci/2019/OTP_Izvješće o komunalnom otpadu za 2019_rev2_0.pdf",
+    "year": 2019,
+    "sha256": "628c767823870d70603bd1efe6d9c5ce50c31f21de2c58b9219f8ed113ab3ebe",
+    "bytes": 3291734,
+    "publisher": null,
+    "catalog_url": null,
+    "resource_url": null,
+    "license": null,
+    "downloaded_at": null
+  },
+  {
+    "path": "podaci/2020/wastewise_2020_jls_iz_pdfa.csv",
+    "year": 2020,
+    "sha256": "6ce0b3562c90d718422c8f21e3ffedfd6d8536256546f333de5aa3ae06c145e9",
+    "bytes": 79417,
+    "publisher": null,
+    "catalog_url": null,
+    "resource_url": null,
+    "license": null,
+    "downloaded_at": null
+  },
+  {
+    "path": "podaci/2020/pytest.ini.pdf",
+    "year": 2020,
+    "sha256": "7dca4dd600299bf26def921c9245db7557a6039e419399fa6e86fcc157ab3979",
+    "bytes": 2337251,
+    "publisher": null,
+    "catalog_url": null,
+    "resource_url": null,
+    "license": null,
+    "downloaded_at": null
+  }
+]

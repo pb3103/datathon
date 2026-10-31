@@ -1,0 +1,234 @@
+[
+  {
+    "year": 2017,
+    "county": "Grad Zagreb",
+    "source_name": "GRAD ZAGREB",
+    "canonical_name": "Zagreb",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  },
+  {
+    "year": 2017,
+    "county": "Istarska",
+    "source_name": "BALE",
+    "canonical_name": "Bale - Valle",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  },
+  {
+    "year": 2017,
+    "county": "Istarska",
+    "source_name": "BRTONIGLA",
+    "canonical_name": "Brtonigla - Verteneglio",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  },
+  {
+    "year": 2017,
+    "county": "Istarska",
+    "source_name": "BUJE",
+    "canonical_name": "Buje - Buie",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  },
+  {
+    "year": 2017,
+    "county": "Istarska",
+    "source_name": "FAŽANA",
+    "canonical_name": "Fažana - Fasana",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  },
+  {
+    "year": 2017,
+    "county": "Istarska",
+    "source_name": "FUNTANA",
+    "canonical_name": "Funtana - Fontane",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  },
+  {
+    "year": 2017,
+    "county": "Istarska",
+    "source_name": "GROŽNJAN",
+    "canonical_name": "Grožnjan - Grisignana",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  },
+  {
+    "year": 2017,
+    "county": "Istarska",
+    "source_name": "KAŠTELIR-LABINCI",
+    "canonical_name": "Kaštelir - Labinci - Castelliere-S. Domenica",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  },
+  {
+    "year": 2017,
+    "county": "Istarska",
+    "source_name": "LIŽNJAN",
+    "canonical_name": "Ližnjan - Lisignano",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  },
+  {
+    "year": 2017,
+    "county": "Istarska",
+    "source_name": "MOTOVUN",
+    "canonical_name": "Motovun - Montona",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  },
+  {
+    "year": 2017,
+    "county": "Istarska",
+    "source_name": "NOVIGRAD",
+    "canonical_name": "Novigrad - Cittanova",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  },
+  {
+    "year": 2017,
+    "county": "Istarska",
+    "source_name": "OPRTALJ",
+    "canonical_name": "Oprtalj - Portole",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  },
+  {
+    "year": 2017,
+    "county": "Istarska",
+    "source_name": "POREČ",
+    "canonical_name": "Poreč - Parenzo",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  },
+  {
+    "year": 2017,
+    "county": "Istarska",
+    "source_name": "PULA",
+    "canonical_name": "Pula - Pola",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  },
+  {
+    "year": 2017,
+    "county": "Istarska",
+    "source_name": "ROVINJ",
+    "canonical_name": "Rovinj - Rovigno",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  },
+  {
+    "year": 2017,
+    "county": "Istarska",
+    "source_name": "TAR-VABRIGA",
+    "canonical_name": "Tar-Vabriga - Torre-Abrega",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  },
+  {
+    "year": 2017,
+    "county": "Istarska",
+    "source_name": "UMAG",
+    "canonical_name": "Umag - Umago",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  },
+  {
+    "year": 2017,
+    "county": "Istarska",
+    "source_name": "VIŠNJAN",
+    "canonical_name": "Višnjan - Visignano",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  },
+  {
+    "year": 2017,
+    "county": "Istarska",
+    "source_name": "VIŽINADA",
+    "canonical_name": "Vižinada - Visinada",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  },
+  {
+    "year": 2017,
+    "county": "Istarska",
+    "source_name": "VODNJAN",
+    "canonical_name": "Vodnjan - Dignano",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  },
+  {
+    "year": 2017,
+    "county": "Istarska",
+    "source_name": "VRSAR",
+    "canonical_name": "Vrsar - Orsera",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  },
+  {
+    "year": 2017,
+    "county": "Karlovačka",
+    "source_name": "BARILOVIĆI",
+    "canonical_name": "Barilović",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  },
+  {
+    "year": 2017,
+    "county": "Zadarska",
+    "source_name": "ŠKABRNJE",
+    "canonical_name": "Škabrnja",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  },
+  {
+    "year": 2017,
+    "county": "Istarska",
+    "source_name": "SVETA NEDJELJA",
+    "canonical_name": "Sveta Nedelja",
+    "reason": "CSV county attribution incorrect: PDF page 101 Zagrebačka section; name SVETA NEDJELJA is not Istrian SVETA NEDELJA on page 94.",
+    "canonical_county": "Zagrebačka"
+  },
+  {
+    "year": 2018,
+    "county": "Istarska",
+    "source_name": "Castelliere-S. Domenica",
+    "canonical_name": "Kaštelir - Labinci - Castelliere-S. Domenica",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  },
+  {
+    "year": 2018,
+    "county": "Istarska",
+    "source_name": "Motovun - Mont",
+    "canonical_name": "Motovun - Montona",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  },
+  {
+    "year": 2019,
+    "county": "Istarska",
+    "source_name": "Brtonigla",
+    "canonical_name": "Brtonigla - Verteneglio",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  },
+  {
+    "year": 2019,
+    "county": "Istarska",
+    "source_name": "Grožnjan",
+    "canonical_name": "Grožnjan - Grisignana",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  },
+  {
+    "year": 2019,
+    "county": "Istarska",
+    "source_name": "Kaštelir - Labinci",
+    "canonical_name": "Kaštelir - Labinci - Castelliere-S. Domenica",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  },
+  {
+    "year": 2019,
+    "county": "Istarska",
+    "source_name": "Tar-Vabriga",
+    "canonical_name": "Tar-Vabriga - Torre-Abrega",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  },
+  {
+    "year": 2020,
+    "county": "Istarska",
+    "source_name": "Brtonigla",
+    "canonical_name": "Brtonigla - Verteneglio",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  },
+  {
+    "year": 2020,
+    "county": "Istarska",
+    "source_name": "Kaštelir - Labinci",
+    "canonical_name": "Kaštelir - Labinci - Castelliere-S. Domenica",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  },
+  {
+    "year": 2020,
+    "county": "Istarska",
+    "source_name": "Tar-Vabriga",
+    "canonical_name": "Tar-Vabriga - Torre-Abrega",
+    "reason": "Reviewed exact county and PDF name variant/bilingual label against 2021 identity; no runtime fuzzy matching."
+  }
+]

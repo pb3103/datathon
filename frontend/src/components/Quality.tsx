@@ -1,5 +1,5 @@
 import type { Observation } from '../api/client';
-import { explainIssue, explainReason, isVerified } from '../domain';
+import { explainIssue, explainReason, isVerified, visibleSourceIssues } from '../domain';
 import { Icon } from './Icon';
 
 export function Quality({
@@ -10,14 +10,60 @@ export function Quality({
   observations: Observation[];
 }) {
   const warnings = observations.flatMap((observation) =>
-    (observation.source.issues ?? []).map((issue) => ({ year: observation.year, issue })),
+    visibleSourceIssues(observation.source.issues)
+      .filter((issue) => issue.code !== 'historical_scope_unverified')
+      .map((issue) => ({ year: observation.year, issue })),
   );
+  const historicalYears = [
+    ...new Set(observations.filter((o) => o.year >= 2017 && o.year <= 2020).map((o) => o.year)),
+  ].sort();
   return (
     <section className="quality-section" aria-labelledby="quality-heading">
       <div className="section-title">
         <h2 id="quality-heading">Prije tumačenja podataka</h2>
         <span className="small-muted">Transparentnost na prvom mjestu</span>
       </div>
+      {selected && selected.issues.some((i) => i.severity !== 'info') && (
+        <div className="notice warning">
+          <Icon name="alert" />
+          <div>
+            <strong>{selected.year}. · Potrebna provjera lokalnog zapisa</strong>
+            <ul>
+              {selected.issues
+                .filter((i) => i.severity !== 'info')
+                .map((issue, i) => (
+                  <li key={`${issue.code}-${i}`}>{explainIssue(issue)}</li>
+                ))}
+            </ul>
+          </div>
+        </div>
+      )}
+      {historicalYears.length > 0 && (
+        <div className="historical-method-note">
+          <Icon name="info" />
+          <div>
+            <strong>Usporedivost povijesnih podataka (2017.–2020.)</strong>
+            <p>
+              Podaci dolaze iz službenih godišnjih izvješća. Usporedbe s novijim godinama tumačite s
+              oprezom.
+            </p>
+            <details>
+              <summary>Saznaj više</summary>
+              <p>
+                Metodologija starijih i novijih godina nije nužno potpuno usporediva. Izračunati
+                kontrolni omjer (T−M)/T nije službeno objavljena stopa odvojenog sakupljanja.
+              </p>
+              <div className="historical-source-links">
+                {historicalYears.map((year) => (
+                  <a key={year} href={`#source-${year}`}>
+                    Izvor za {year}.
+                  </a>
+                ))}
+              </div>
+            </details>
+          </div>
+        </div>
+      )}
       {warnings.length > 0 && (
         <div className="source-warnings" aria-label="Upozorenja izvora po godinama">
           {warnings.map(({ year, issue }, index) => (
@@ -43,19 +89,6 @@ export function Quality({
           ))}
         </div>
       )}
-      {selected && selected.issues.length > 0 && (
-        <div className="notice warning">
-          <Icon name="alert" />
-          <div>
-            <strong>{selected.year}. · Potrebna provjera lokalnog zapisa</strong>
-            <ul>
-              {selected.issues.map((issue, i) => (
-                <li key={`${issue.code}-${i}`}>{explainIssue(issue)}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      )}
       <details className="quality-details">
         <summary>
           <Icon name="info" />
@@ -79,6 +112,9 @@ export function Quality({
               prikazuje samo kada je vraća API.
             </dd>
           </dl>
+          {selected?.issues
+            .filter((i) => i.severity === 'info')
+            .map((issue, i) => <p key={i}>{explainIssue(issue)}</p>)}
           {selected && (
             <>
               <h3>Napomene za {selected.year}.</h3>

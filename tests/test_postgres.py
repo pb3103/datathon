@@ -122,7 +122,7 @@ def test_profile_and_quality_contract(client):
     assert obs[1]["raw_values"]["G"]["value"] == "0.16"
     assert obs[2]["source"]["sha256"]
     assert obs[2]["source"]["issues"][0]["code"] == "source_aggregate_mismatch"
-    assert all(not r["target_rate_available"] for r in obs)
+    assert all(r["target_rate_available"] == (r["year"] in (2023, 2024)) for r in obs)
     seget = client.get("/api/v1/municipalities", params={"q": "Seget"}).json()["items"][0]["id"]
     suspect = client.get(
         f"/api/v1/municipalities/{seget}/observations", params={"from_year": 2024}

@@ -1,0 +1,69 @@
+[
+  {
+    "year": 2017,
+    "status": "skipped",
+    "reason": "checksum_already_imported",
+    "import_run_id": "9721734b-8791-4006-97f4-50460c389a26",
+    "issues": {
+      "pdf_verified_correction": 27,
+      "historical_rate_not_published": 556
+    },
+    "sha256": "aacbd700709b37c2ab6941ef484d8287f4584a20a2ce8a94b07b7dbcafc57af4",
+    "mixed_t": "1180805.61",
+    "total_t": "1357273.65",
+    "source_rows": 556,
+    "accepted_rows": 556,
+    "rejected_rows": 0,
+    "parser_version": "historical-csv-1.0"
+  },
+  {
+    "year": 2018,
+    "status": "skipped",
+    "reason": "checksum_already_imported",
+    "import_run_id": "c0a03604-8d3f-4738-984f-bc17c5597f06",
+    "issues": {
+      "pdf_verified_correction": 21,
+      "historical_rate_not_published": 556
+    },
+    "sha256": "0e636d4222760c2b578bad80d07a6112487a1eeac993b67eeb00db5deca0393c",
+    "mixed_t": "1156540.95",
+    "total_t": "1354682.75",
+    "source_rows": 556,
+    "accepted_rows": 556,
+    "rejected_rows": 0,
+    "parser_version": "historical-csv-1.0"
+  },
+  {
+    "year": 2019,
+    "status": "skipped",
+    "reason": "checksum_already_imported",
+    "import_run_id": "3f274ffb-93ff-49c7-8ac1-9f6457ac533d",
+    "issues": {
+      "pdf_verified_correction": 25,
+      "historical_rate_not_published": 556
+    },
+    "sha256": "1c346b1a47e7815684ac8095012f03db60e4404c4d1c40435f562b52a0cecf49",
+    "mixed_t": "1086393.41",
+    "total_t": "1372385.76",
+    "source_rows": 556,
+    "accepted_rows": 556,
+    "rejected_rows": 0,
+    "parser_version": "historical-csv-1.0"
+  },
+  {
+    "year": 2020,
+    "status": "skipped",
+    "reason": "checksum_already_imported",
+    "import_run_id": "e30dad27-ef8b-415c-925e-9928eb2e6e75",
+    "issues": {
+      "historical_rate_not_published": 556
+    },
+    "sha256": "6ce0b3562c90d718422c8f21e3ffedfd6d8536256546f333de5aa3ae06c145e9",
+    "mixed_t": "972901",
+    "total_t": "1290796",
+    "source_rows": 556,
+    "accepted_rows": 556,
+    "rejected_rows": 0,
+    "parser_version": "historical-csv-1.0"
+  }
+]

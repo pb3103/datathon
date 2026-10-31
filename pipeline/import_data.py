@@ -43,11 +43,11 @@ AGGREGATE_FINDINGS = {
 }
 
 
-def summary(entry, rows):
+def summary(entry, rows, parser_version=PARSER_VERSION):
     return {
         "year": entry["year"],
         "sha256": entry["sha256"],
-        "parser_version": PARSER_VERSION,
+        "parser_version": parser_version,
         "source_rows": len(rows),
         "accepted_rows": sum(not r.rejected for r in rows),
         "rejected_rows": sum(r.rejected for r in rows),
@@ -61,9 +61,11 @@ def summary(entry, rows):
     }
 
 
-def import_source(engine, entry, rows, *, activate_revision=False):
-    config = MAPS[str(entry["year"])]
-    report = summary(entry, rows)
+def import_source(
+    engine, entry, rows, *, activate_revision=False, config=None, parser_version=PARSER_VERSION
+):
+    config = config or MAPS[str(entry["year"])]
+    report = summary(entry, rows, parser_version)
     with Session(engine) as session, session.begin():
         # Serialize dataset activation and ID/alias creation across concurrent imports.
         session.execute(text("SELECT pg_advisory_xact_lock(8703292026)"))
@@ -79,7 +81,7 @@ def import_source(engine, entry, rows, *, activate_revision=False):
                 )
             )
             if complete is not None:
-                if complete.parser_version != PARSER_VERSION:
+                if complete.parser_version != parser_version:
                     raise ValueError(
                         "Isti izvor već je uvezen drugim parserom; potrebna izričita migracija podataka."
                     )
@@ -110,7 +112,7 @@ def import_source(engine, entry, rows, *, activate_revision=False):
             session.flush()
         run = ImportRun(
             source_id=source.id,
-            parser_version=PARSER_VERSION,
+            parser_version=parser_version,
             started_at=datetime.now(timezone.utc),
             status="running",
             report=report,
@@ -161,6 +163,8 @@ def import_source(engine, entry, rows, *, activate_revision=False):
                         )
                         .values(active=False)
                     )
+                for note in config.get("source_issues", []):
+                    session.add(QualityIssue(import_run_id=run.id, **note))
                 year = str(entry["year"])
                 if entry["sha256"] == AUDITED_CHECKSUMS.get(year):
                     session.add(

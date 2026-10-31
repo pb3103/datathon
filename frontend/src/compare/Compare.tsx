@@ -1,0 +1,684 @@
+import { changedSelection } from '../navigation';
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
+import {
+  api,
+  compareApi,
+  type Comparison,
+  type Municipality,
+  type Peers,
+  type Profile,
+} from '../api/client';
+import { WorkspaceLayout } from '../components/Layout';
+import { Search } from '../components/Search';
+import { Icon } from '../components/Icon';
+import { ErrorState, Loading } from '../components/State';
+import { Quality } from '../components/Quality';
+import { explainIssue, formatMetric, formatNumber, numeric } from '../domain';
+import { compareReason, unitLabel } from './helpers';
+import { CompareSources } from './CompareSources';
+const CompareCharts = lazy(() => import('./CompareCharts'));
+
+type Remote<T> =
+  | { status: 'idle' | 'loading' }
+  | { status: 'error'; message: string }
+  | { status: 'success'; value: T };
+function readCompare() {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    ids: [params.get('jls'), ...(params.get('usporedi')?.split(',') ?? [])].filter(
+      (id): id is string => Boolean(id),
+    ),
+    year: params.get('godina') ?? '2024',
+    county: params.get('zupanija') === 'same_county' ? 'same_county' : 'all',
+    metric: params.get('metrika') ?? 'total_kg_per_covered_person',
+    view: params.get('prikaz') === 'table' ? ('table' as const) : ('chart' as const),
+    mode: params.get('razdoblje') === 'history' ? ('history' as const) : ('snapshot' as const),
+  };
+}
+
+export default function Compare() {
+  const [selection, setSelection] = useState(readCompare);
+  const [names, setNames] = useState<Record<string, Municipality>>({});
+  const [baseline, setBaseline] = useState<Remote<Profile>>({ status: 'idle' });
+  const [data, setData] = useState<Remote<Comparison>>({ status: 'idle' });
+  const [peers, setPeers] = useState<Remote<Peers>>({ status: 'idle' });
+  const [peerAttempt, setPeerAttempt] = useState(0);
+  const [attempt, setAttempt] = useState(0);
+  const [notice, setNotice] = useState('');
+  const idsKey = selection.ids.join(',');
+  const baseId = selection.ids[0];
+  const update = useCallback(
+    (change: Partial<ReturnType<typeof readCompare>>) => {
+      const next = { ...selection, ...change };
+      const url = new URL(window.location.href);
+      url.search = '';
+      for (const key of ['jls', 'usporedi', 'godina', 'zupanija', 'metrika', 'prikaz', 'razdoblje'])
+        url.searchParams.delete(key);
+      if (next.ids[0]) url.searchParams.set('jls', next.ids[0]);
+      if (next.ids.length > 1) url.searchParams.set('usporedi', next.ids.slice(1).join(','));
+      url.searchParams.set('godina', next.year);
+      url.searchParams.set('zupanija', next.county);
+      url.searchParams.set('metrika', next.metric);
+      url.searchParams.set('prikaz', next.view);
+      url.searchParams.set('razdoblje', next.mode);
+      window.history.pushState(null, '', url.pathname + url.search);
+      setSelection(next);
+    },
+    [selection],
+  );
+  useEffect(() => {
+    const pop = () => setSelection(readCompare());
+    window.addEventListener('popstate', pop);
+    document.title = 'Waste Compare · WasteWise';
+    return () => window.removeEventListener('popstate', pop);
+  }, []);
+  useEffect(() => {
+    if (!baseId) {
+      setBaseline({ status: 'idle' });
+      return;
+    }
+    const controller = new AbortController();
+    setBaseline({ status: 'loading' });
+    api
+      .profile(baseId, controller.signal)
+      .then((value) => {
+        if (!controller.signal.aborted) setBaseline({ status: 'success', value });
+      })
+      .catch((error: Error) => {
+        if (!controller.signal.aborted) setBaseline({ status: 'error', message: error.message });
+      });
+    return () => controller.abort();
+  }, [baseId, attempt]);
+  useEffect(() => {
+    if (selection.ids.length < 2) {
+      setData({ status: 'idle' });
+      return;
+    }
+    const controller = new AbortController();
+    setData({ status: 'loading' });
+    compareApi
+      .comparison(selection.ids, Number(selection.year), controller.signal)
+      .then((value) => {
+        if (!controller.signal.aborted) setData({ status: 'success', value });
+      })
+      .catch((error: Error) => {
+        if (!controller.signal.aborted) setData({ status: 'error', message: error.message });
+      });
+    return () => controller.abort();
+    // Selection order determines the reference and is intentionally preserved.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idsKey, selection.year, attempt]);
+  useEffect(() => {
+    if (!baseId || !peerAttempt) {
+      setPeers({ status: 'idle' });
+      return;
+    }
+    const controller = new AbortController();
+    setPeers({ status: 'loading' });
+    compareApi
+      .peers(baseId, Number(selection.year), selection.county, controller.signal)
+      .then((value) => {
+        if (!controller.signal.aborted) setPeers({ status: 'success', value });
+      })
+      .catch((error: Error) => {
+        if (!controller.signal.aborted) setPeers({ status: 'error', message: error.message });
+      });
+    return () => controller.abort();
+  }, [baseId, selection.year, selection.county, peerAttempt]);
+  const baseProfile = baseline.status === 'success' ? baseline.value : null;
+  const comparison = data.status === 'success' ? data.value : null;
+  const resolveName = (id: string) =>
+    comparison?.members.find((m) => m.municipality.id === id)?.municipality.name ??
+    (baseProfile?.municipality.id === id ? baseProfile.municipality.name : names[id]?.name) ??
+    'Učitavanje naziva…';
+  const choose = (municipality: Municipality) => {
+    if (selection.ids.includes(municipality.id)) {
+      setNotice('Ta je JLS već u odabranoj skupini.');
+      return;
+    }
+    if (selection.ids.length >= 5) {
+      setNotice('Moguće je odabrati najviše pet JLS-ova. Uklonite jednu pa dodajte drugu.');
+      return;
+    }
+    setNames((old) => ({ ...old, [municipality.id]: municipality }));
+    setNotice('');
+    update({ ids: [...selection.ids, municipality.id] });
+  };
+  const years = baseProfile?.observations.map((o) => o.year).sort((a, b) => b - a) ?? [];
+  const baselineObservation = baseProfile?.observations.find(
+    (o) => String(o.year) === selection.year,
+  );
+  const allObservations = comparison?.members.flatMap((member) => member.history) ?? [];
+  const uniqueSources = [...new Map(allObservations.map((o) => [o.source.id, o])).values()];
+  return (
+    <WorkspaceLayout module="compare">
+      <Search onSelect={choose} />
+      <section className="panel compare-selection" aria-labelledby="selection-title">
+        <div className="section-title">
+          <h2 id="selection-title">Vaša skupina za usporedbu</h2>
+          <span className="badge neutral">{selection.ids.length} / 5 JLS</span>
+        </div>
+        <p className="small-muted">
+          Prva odabrana zajednica je početna JLS. Dodajte ukupno 2–5 gradova ili općina, ručno ili
+          iz prijedloga.
+        </p>
+        <div className="selected-municipalities">
+          {selection.ids.map((id, index) => (
+            <div
+              className={`selected-municipality ${index === 0 ? 'baseline-chip' : ''}`}
+              key={`${id}-${index}`}
+            >
+              <span className="member-number">{String(index + 1).padStart(2, '0')}</span>
+              <div>
+                <strong>{resolveName(id)}</strong>
+                <small>{index === 0 ? 'Početna JLS' : 'U usporedbi'}</small>
+              </div>
+              {index > 0 && (
+                <button
+                  className="text-button"
+                  onClick={() => update({ ids: [id, ...selection.ids.filter((v) => v !== id)] })}
+                  aria-label={`Postavi ${resolveName(id)} kao početnu JLS`}
+                >
+                  Početna
+                </button>
+              )}
+              <button
+                className="remove-member"
+                onClick={() => update({ ids: selection.ids.filter((v) => v !== id) })}
+                aria-label={`Ukloni ${resolveName(id)}`}
+              >
+                ×
+              </button>
+            </div>
+          ))}
+        </div>
+        <p className="sr-only" role="status">
+          {`Odabrano JLS-ova: ${selection.ids.length}.`}
+        </p>
+        {notice && (
+          <p className="notice warning" role="status">
+            {notice}
+          </p>
+        )}
+        {baseId && (
+          <div className="compare-filters">
+            <div className="year-select">
+              <label htmlFor="compare-year">Godina usporedbe</label>
+              <select
+                id="compare-year"
+                value={years.includes(Number(selection.year)) ? selection.year : ''}
+                onChange={(e) => update({ year: e.target.value })}
+              >
+                <option value="" disabled>
+                  Odaberite godinu
+                </option>
+                {years.map((year) => (
+                  <option key={year} value={year}>
+                    {year}.
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="year-select county-select">
+              <label htmlFor="peer-county">Filtar prijedloga</label>
+              <select
+                id="peer-county"
+                value={selection.county}
+                onChange={(e) => update({ county: e.target.value })}
+              >
+                <option value="all">Cijela Hrvatska</option>
+                <option value="same_county">Ista županija</option>
+              </select>
+            </div>
+            <button className="button primary" onClick={() => setPeerAttempt((a) => a + 1)}>
+              <Icon name="compare" />
+              Predloži slične JLS
+            </button>
+          </div>
+        )}
+        {baseline.status === 'error' && (
+          <ErrorState message={baseline.message} onRetry={() => setAttempt((a) => a + 1)} />
+        )}
+      </section>
+      {peers.status === 'loading' && <Loading message="Traženje potencijalnih vršnjaka…" />}
+      {peers.status === 'error' && (
+        <ErrorState message={peers.message} onRetry={() => setPeerAttempt((a) => a + 1)} />
+      )}
+      {peers.status === 'success' && (
+        <section className="peer-section" aria-labelledby="peers-title">
+          <div className="section-title">
+            <div>
+              <div className="section-kicker">02 / Slična veličina, drugi rezultati</div>
+              <h2 id="peers-title">Potencijalni vršnjaci</h2>
+            </div>
+            <span className="badge neutral">{peers.value.items.length} prijedloga</span>
+          </div>
+          <p className="small-muted">
+            Prednost imaju JLS-ovi s 0,5–2 puta obuhvaćene populacije. Redoslijed određuje sličnost
+            obuhvaćene populacije; količine otpada i stopa odvajanja ne utječu na odabir.
+          </p>
+          {peers.value.status === 'unavailable' && (
+            <p className="notice warning">
+              <Icon name="alert" />
+              {compareReason(peers.value.reason)}
+            </p>
+          )}
+          {peers.value.expanded && (
+            <p className="notice warning">
+              <Icon name="alert" />
+              {compareReason('population_range_expanded')}
+            </p>
+          )}
+          {peers.value.status === 'empty' && (
+            <p className="notice warning">Nema prihvatljivih kandidata za ovaj filtar i godinu.</p>
+          )}
+          <details className="peer-disclosure" open>
+            <summary>Prikaži prijedloge zajednica ({peers.value.items.length})</summary>
+            <div
+              className="peer-grid"
+              role="region"
+              aria-label="Kartice predloženih JLS-ova"
+              tabIndex={0}
+            >
+              {peers.value.items.map((peer) => (
+                <article
+                  className="peer-card"
+                  key={peer.municipality.id}
+                  aria-label={`Prijedlog ${peer.municipality.name}`}
+                >
+                  <div className="peer-card-top">
+                    <span
+                      className={`badge ${peer.within_preferred_range ? 'neutral' : 'warning'}`}
+                    >
+                      {peer.within_preferred_range ? 'U rasponu 0,5–2' : 'Prošireni raspon'}
+                    </span>
+                    <Icon name="pin" />
+                  </div>
+                  <h3>{peer.municipality.name}</h3>
+                  <p>{peer.municipality.county}</p>
+                  <div className="peer-population">
+                    <strong>{formatNumber(peer.covered_population, 0)}</strong>
+                    <span>obuhvaćenih stanovnika · {peers.value.year}.</span>
+                  </div>
+                  <dl>
+                    <dt>Omjer prema početnoj JLS</dt>
+                    <dd>{formatNumber(Number(peer.population_ratio))}×</dd>
+                  </dl>
+                  <button
+                    className="button secondary"
+                    disabled={
+                      selection.ids.includes(peer.municipality.id) || selection.ids.length >= 5
+                    }
+                    onClick={() => choose(peer.municipality)}
+                  >
+                    {selection.ids.includes(peer.municipality.id) ? 'Dodano' : 'Dodaj u usporedbu'}
+                  </button>
+                </article>
+              ))}
+            </div>
+          </details>
+          <details className="quality-details">
+            <summary>
+              <Icon name="info" />
+              Kako su odabrani prijedlozi?
+            </summary>
+            <div>
+              <p>
+                Udaljenost je |ln(P kandidata) − ln(P početne JLS)|. Manja znači sličniju obuhvaćenu
+                populaciju. Prvo se popunjava raspon 0,5–2, zatim najbliži izvan njega. Županija je
+                samo opcijski filtar, bez bodovne težine. Izjednačenja razrješava stabilni interni
+                identifikator.
+              </p>
+              <p>
+                {peers.value.eligible_candidates} kandidata nakon provjera kvalitete. Broj
+                stanovnika odnosi se na obuhvat usluge; sličnost ne potvrđuje isti turizam, gustoću,
+                uslugu ili mogućnost postizanja istog rezultata.
+              </p>
+              <p>{compareReason('comparability_provisional')}</p>
+              {peers.value.items.length < 5 && <p>{compareReason('fewer_candidates_available')}</p>}
+            </div>
+          </details>
+        </section>
+      )}
+      {selection.ids.length === 0 && (
+        <section className="welcome-state">
+          <div className="welcome-icon">
+            <Icon name="compare" />
+          </div>
+          <h2>Usporedite zajednice koje imaju smisla.</h2>
+          <p>
+            Pronađite početni grad ili općinu, a zatim dodajte druge JLS-ove
+            <br className="desktop-break" /> ili istražite prijedloge prema obuhvaćenoj populaciji.
+          </p>
+        </section>
+      )}
+      {selection.ids.length === 1 && (
+        <div className="compare-start notice">
+          <Icon name="info" />
+          <span>
+            Početna JLS: <strong>{resolveName(baseId)}</strong>. Pretragom dodajte još jednu ili
+            odaberite prijedlog za početak usporedbe.
+          </span>
+        </div>
+      )}
+      {data.status === 'loading' && <Loading message="Učitavanje usporedbe, razlika i izvora…" />}
+      {data.status === 'error' && (
+        <ErrorState message={data.message} onRetry={() => setAttempt((a) => a + 1)} />
+      )}
+      {comparison && (
+        <>
+          <section className="compare-core" aria-labelledby="core-title">
+            <div className="section-title">
+              <h2 id="core-title">Ključni pokazatelji · {comparison.year}.</h2>
+              <a href="#reference-results">Odaberi referentni cilj ↓</a>
+            </div>
+            <div className="core-grid">
+              {comparison.members.map((m) => (
+                <article className="panel core-card" key={m.municipality.id}>
+                  <h3>{m.municipality.name}</h3>
+                  <dl>
+                    {[
+                      ['separate_collection_pct', 'Odvojeno sakupljanje', '%'],
+                      [
+                        'total_kg_per_covered_person',
+                        'Ukupno po obuhvaćenom stanovniku',
+                        'kg/stan.',
+                      ],
+                      ['total_t', 'Ukupno', 't'],
+                      ['mixed_t', 'Miješano', 't'],
+                    ].map(([key, label, unit]) => (
+                      <div key={key}>
+                        <dt>{label}</dt>
+                        <dd>
+                          {formatMetric(m.metrics[key])}
+                          {numeric(m.metrics[key]) !== null && ` ${unit}`}
+                          {m.metrics[key]?.quality_status === 'review_required' && (
+                            <span className="badge warning">Potrebna provjera</span>
+                          )}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                  {m.simulation_url && m.observation?.target_rate_available && (
+                    <a
+                      className="button secondary"
+                      href={m.simulation_url}
+                      aria-label={`Simuliraj cilj zajednice ${m.municipality.name}`}
+                    >
+                      Simuliraj cilj {formatMetric(m.metrics.separate_collection_pct)} % →
+                    </a>
+                  )}
+                  {m.observation && !m.observation.population_usable && (
+                    <p className="source-warning">
+                      Obuhvaćena populacija zahtijeva provjeru; izračunati kg po stanovniku nisu
+                      dostupni.
+                    </p>
+                  )}
+                  <p className="small-muted">
+                    Objavljena stopa; izračunati kg po pouzdanom obuhvaćenom stanovniku. Nedostupna
+                    metrika nije nula.
+                  </p>
+                </article>
+              ))}
+            </div>
+          </section>
+          <section className="insights-section" aria-labelledby="insights-title">
+            <div className="section-title">
+              <div>
+                <div className="section-kicker">Najizraženiji rasponi dostupnih vrijednosti</div>
+                <h2 id="insights-title">Gdje su najveće razlike?</h2>
+              </div>
+              <span className="badge neutral">{comparison.year}.</span>
+            </div>
+            <p className="small-muted">
+              Opis odabrane skupine, bez zaključaka o uzrocima ili preporuke mjera. Viša ili niža
+              vrijednost sama po sebi ne znači bolju uslugu.
+            </p>
+            <div className="insight-grid">
+              {[...comparison.insights]
+                .sort(
+                  (a, b) =>
+                    Number(a.metric.startsWith('material_')) -
+                    Number(b.metric.startsWith('material_')),
+                )
+                .map((insight) => (
+                  <article className="insight-card" key={insight.metric}>
+                    <span className="section-kicker">
+                      {insight.year}. · {unitLabel(insight.unit)}
+                    </span>
+                    <h3>{insight.label}</h3>
+                    <p className="insight-value">
+                      {formatNumber(Number(insight.difference))}
+                      <small>{unitLabel(insight.difference_unit)} raspona</small>
+                    </p>
+                    <div className="insight-pair">
+                      <span>
+                        {insight.low_municipality.name}
+                        <strong>
+                          {formatNumber(Number(insight.low_value))} {unitLabel(insight.unit)}
+                        </strong>
+                      </span>
+                      <Icon name="arrow" />
+                      <span>
+                        {insight.high_municipality.name}
+                        <strong>
+                          {formatNumber(Number(insight.high_value))} {unitLabel(insight.unit)}
+                        </strong>
+                      </span>
+                    </div>
+                    <p className="field-hint">
+                      Dostupno {insight.available_count} od {comparison.members.length} odabranih
+                      JLS-ova.
+                    </p>
+                    <button
+                      className="text-button"
+                      onClick={() => update({ metric: insight.metric })}
+                    >
+                      Prikaži pokazatelj
+                    </button>
+                  </article>
+                ))}
+            </div>
+            {!comparison.insights.length && (
+              <p className="notice">
+                Nema različitih, dovoljno potpunih vrijednosti za izdvajanje uvida.
+              </p>
+            )}
+            <details className="quality-details">
+              <summary>Kako izdvajamo razlike?</summary>
+              <div>
+                <p>
+                  Za svaku metriku računa se raspon (najveća − najmanja vrijednost), podijeljen
+                  najvećom apsolutnom vrijednošću. Prikazuju se do tri najveća relativna raspona,
+                  najviše jedan iz svake skupine metrika. Objavljeni ukupni kg/stanovnik
+                  izostavljeni su iz uvida kako se isti pokazatelj ne bi brojio dvaput.
+                </p>
+                <p>
+                  Koriste se samo dostupne vrijednosti koje ne zahtijevaju provjeru. To nije
+                  statistička značajnost, vjerojatnost ni ocjena sustava. Izostale metrike:{' '}
+                  {comparison.insight_exclusions
+                    .map((key) => comparison.metrics.find((m) => m.key === key)?.label ?? key)
+                    .join(', ') || 'nema'}
+                  .
+                </p>
+              </div>
+            </details>
+          </section>
+          <Quality
+            selected={
+              comparison.members.find((m) => m.municipality.id === comparison.baseline_id)
+                ?.observation ?? undefined
+            }
+            observations={uniqueSources}
+          />
+          <Suspense fallback={<Loading message="Učitavanje usporednog prikaza…" />}>
+            <CompareCharts
+              data={comparison}
+              mode={selection.mode}
+              view={selection.view}
+              onMode={(mode) => update({ mode })}
+              onView={(view) => update({ view })}
+              selectedMetric={selection.metric}
+              onMetric={(metric) => update({ metric })}
+            />
+          </Suspense>
+          <section
+            id="reference-results"
+            className="comparison-reference-grid"
+            aria-label="Referentni rezultati i izvori"
+          >
+            {comparison.members.map((member) => (
+              <article
+                className="panel comparison-reference"
+                key={member.municipality.id}
+                aria-label={`Referentni rezultat ${member.municipality.name}`}
+              >
+                <div className="peer-card-top">
+                  <h3>{member.municipality.name}</h3>
+                  <span className="badge neutral">
+                    {member.municipality.id === comparison.baseline_id
+                      ? 'Početna JLS'
+                      : `${comparison.year}.`}
+                  </span>
+                </div>
+                <p className="small-muted">{member.municipality.county}</p>
+                <p className="field-hint">
+                  Obuhvaćeni stanovnici:{' '}
+                  {formatMetric(member.observation?.metrics.covered_population, 0)}
+                  {member.population_ratio !== null &&
+                    ` · ${formatNumber(Number(member.population_ratio))}× prema početnoj JLS`}
+                </p>
+                {member.warnings.includes('population_outside_preferred_range') && (
+                  <p className="source-warning">
+                    <Icon name="alert" />
+                    Omjer obuhvaćene populacije izvan je raspona 0,5–2. Pri tumačenju uzmite u obzir
+                    razliku u veličini.
+                  </p>
+                )}
+                {member.observation?.metrics.calculated_nonmixed_share_pct && (
+                  <p className="source-warning">
+                    Kontrolni omjer (T−M)/T:{' '}
+                    {formatMetric(member.observation.metrics.calculated_nonmixed_share_pct)} %.
+                    Izračun iz masa, nije službena stopa; nije korišten u razlikama stopa ili
+                    automatskim uvidima.
+                  </p>
+                )}
+                <p className="reference-rate">
+                  {formatMetric(member.metrics.separate_collection_pct)}
+                  {numeric(member.metrics.separate_collection_pct) !== null && ' %'}
+                  <small>objavljena stopa odvojenog sakupljanja</small>
+                </p>
+                {member.simulation_url && member.observation?.target_rate_available && (
+                  <>
+                    <a className="button secondary" href={member.simulation_url}>
+                      Simuliraj ovaj cilj
+                      <Icon name="arrow" />
+                    </a>
+                    <p className="field-hint">
+                      Hipotetski cilj prema objavljenom rezultatu ove zajednice, bez procjene
+                      ostvarivosti.
+                    </p>
+                  </>
+                )}
+                {member.simulation_url && !member.observation?.target_rate_available && (
+                  <div className="notice warning">
+                    <p>
+                      Automatska simulacija nije dostupna za ovaj zapis. Model je potvrđen za javnu
+                      uslugu 2023. i 2024., uz provjere kvalitete.
+                    </p>
+                    <button className="button secondary" onClick={() => update({ year: '2024' })}>
+                      Odaberi 2024. za provjeru dostupnosti
+                    </button>
+                  </div>
+                )}
+                {!member.observation && (
+                  <p className="notice warning">{compareReason('missing_year')}</p>
+                )}
+                {member.observation?.issues.map((issue, i) => (
+                  <p className="source-warning" key={i}>
+                    <Icon name="alert" />
+                    {explainIssue(issue)}
+                  </p>
+                ))}
+                <a
+                  className="text-button profile-link"
+                  href={`/explorer?${changedSelection(member.municipality.id, String(comparison.year))}`}
+                >
+                  Otvori profil u Exploreru ↗
+                </a>
+                <details className="quality-details">
+                  <summary>Izvori i materijalne kategorije</summary>
+                  <div>
+                    {member.observation && (
+                      <>
+                        <p>
+                          <strong>{member.observation.source.title}</strong>
+                          <br />
+                          {member.observation.source.sheet} · redak {member.observation.source_row}
+                        </p>
+                        <p className="checksum">SHA-256: {member.observation.source.sha256}</p>
+                      </>
+                    )}
+                    <p>{compareReason('material_cross_year_unverified')}</p>
+                    {member.materials.length ? (
+                      <>
+                        <p>
+                          <strong>{member.materials[0].source.title}</strong>
+                          <br />
+                          {member.materials[0].source.sheet} · redak{' '}
+                          {member.materials[0].source_row}
+                        </p>
+                        <p className="checksum">SHA-256: {member.materials[0].source.sha256}</p>
+                        <ul>
+                          {member.materials.map((material) => (
+                            <li key={material.material}>
+                              <strong>{material.label}:</strong> {formatMetric(material.published)}{' '}
+                              kg/stan. · objavljeno
+                              {material.comparable.value === null && (
+                                <small className="warning-text">
+                                  {compareReason(material.comparable.reason)}
+                                </small>
+                              )}
+                              <small>
+                                Kontrolna PDF stranica:{' '}
+                                {String(material.evidence.pdf_page ?? 'nije potvrđena')}.{' '}
+                                {material.denominator_status === 'verified_against_pdf'
+                                  ? 'Nazivnik aritmetički usklađen s PDF masom.'
+                                  : 'Nazivnik nije potvrđen.'}
+                              </small>
+                            </li>
+                          ))}
+                        </ul>
+                      </>
+                    ) : (
+                      <p>Materijalni podaci nisu dostupni.</p>
+                    )}
+                    <p>
+                      Obuhvat materijala:{' '}
+                      {member.materials[0]?.source.scope ===
+                      'materials_public_service_and_public_containers'
+                        ? 'javna usluga i spremnici na javnim površinama'
+                        : member.materials.length
+                          ? 'javna usluga'
+                          : 'nije potvrđen'}
+                      . Ne zbrajamo kategorije niti iz njih izvodimo tone.
+                    </p>
+                  </div>
+                </details>
+              </article>
+            ))}
+          </section>
+          <CompareSources data={comparison} />
+        </>
+      )}
+      {baselineObservation &&
+        !baselineObservation.population_usable &&
+        selection.ids.length < 2 && (
+          <p className="notice warning">
+            Obuhvaćena populacija početne JLS zahtijeva provjeru. Automatski prijedlozi nisu
+            dostupni; ručno možete usporediti dostupne mase i stopu.
+          </p>
+        )}
+    </WorkspaceLayout>
+  );
+}

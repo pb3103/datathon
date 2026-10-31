@@ -24,14 +24,14 @@ def main():
     municipality = search["items"][0]
     mid = municipality["id"]
     years = get(f"/municipalities/{mid}/years")["years"]
-    assert [r["year"] for r in years] == [2021, 2022, 2023, 2024]
-    observations = get(f"/municipalities/{mid}/observations")["observations"]
+    assert [r["year"] for r in years] == list(range(2017,2025))
+    observations = get(f"/municipalities/{mid}/observations?from_year=2021")["observations"]
     assert len(observations) == 4
     assert Decimal(observations[1]["metrics"]["separate_collection_pct"]["value"]) == 16
     assert observations[1]["raw_values"]["G"]["value"] == "0.16"
-    assert all(not r["target_rate_available"] for r in observations)
-    sources = get("/sources")
-    assert sources["total"] == 4
+    assert all(r["target_rate_available"] == (r["year"] in (2023, 2024)) for r in observations)
+    sources = get("/sources?page_size=100")
+    assert sum(s["scope"] == "public_service" for s in sources["items"]) == 4
     print(
         json.dumps(
             {

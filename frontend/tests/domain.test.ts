@@ -83,15 +83,25 @@ test('unverified, nonconsecutive and changed-scope years cannot form a continuou
   );
 });
 
-test('URL preserves municipality, requested year and unrelated parameters', () => {
+test('URL preserves selection and drops parameters outside module context', () => {
   assert.deepEqual(readSelection('?jls=sample&godina=2023'), { id: 'sample', year: '2023' });
   assert.deepEqual(readSelection('?jls=sample&godina=2030'), { id: 'sample', year: '2030' });
   assert.equal(
     selectionUrl('sample', '2022', 'http://localhost:5173/?keep=yes'),
-    '/?keep=yes&jls=sample&godina=2022',
+    '/?jls=sample&godina=2022',
   );
   assert.equal(
     selectionUrl(null, null, 'http://localhost:5173/?jls=sample&godina=2022&keep=yes'),
-    '/?keep=yes',
+    '/?',
   );
+});
+
+test('cross-module URLs remove stale references and preserve comparison membership', async () => {
+  const { moduleUrl, changedSelection } = await import('../src/navigation.ts');
+  const query =
+    '?jls=a&godina=2024&usporedi=b,c&referenca=b&cilj=50&pocetni_zapis=old&scenariji=old';
+  assert.equal(moduleUrl('simulator', query), '/simulator?jls=a&godina=2024&usporedi=b%2Cc');
+  assert.equal(moduleUrl('explorer', query), '/explorer?jls=a&godina=2024&usporedi=b%2Cc');
+  assert.equal(changedSelection('b', '2023', query).get('usporedi'), 'a,c');
+  assert.equal(changedSelection('a', '2023', query).has('referenca'), false);
 });

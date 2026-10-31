@@ -169,18 +169,7 @@ def check_row(row: Row, config: dict):
                 )
 
 
-def extract(path: Path, year: int) -> list[Row]:
-    config = MAPS[str(year)]
-    # openpyxl supplies sheet/number format validation; original XML supplies
-    # exact numeric lexemes so JSON staging never passes through binary float.
-    book = load_workbook(path, read_only=True, data_only=False)
-    try:
-        if config["sheet"] not in book.sheetnames:
-            raise ValueError(f"Nedostaje očekivani list {config['sheet']}")
-        if year == 2022 and "%" not in book[config["sheet"]]["G2"].number_format:
-            raise ValueError("2022. G mora imati očekivani postotni Excel format.")
-    finally:
-        book.close()
+def read_cells(path: Path, sheet_name: str):
     with zipfile.ZipFile(path) as z:
         strings = (
             [
@@ -191,7 +180,7 @@ def extract(path: Path, year: int) -> list[Row]:
             else []
         )
         sheets = ET.fromstring(z.read("xl/workbook.xml")).findall("m:sheets/m:sheet", NS)
-        sheet = next(s for s in sheets if s.get("name") == config["sheet"])
+        sheet = next(s for s in sheets if s.get("name") == sheet_name)
         rels = {
             r.get("Id"): r.get("Target")
             for r in ET.fromstring(z.read("xl/_rels/workbook.xml.rels"))
@@ -202,8 +191,6 @@ def extract(path: Path, year: int) -> list[Row]:
         root = ET.fromstring(
             z.read(target.lstrip("/") if target.startswith("/") else "xl/" + target)
         )
-    rows = []
-    headers = None
     for xmlrow in root.findall("m:sheetData/m:row", NS):
         raw = {}
         for cell in xmlrow.findall("m:c", NS):
@@ -219,6 +206,24 @@ def extract(path: Path, year: int) -> list[Row]:
         if not any(v["value"] not in ("", None) or v["formula"] for v in raw.values()):
             continue
         rn = int(xmlrow.get("r"))
+        yield rn, raw
+
+
+def extract(path: Path, year: int) -> list[Row]:
+    config = MAPS[str(year)]
+    # openpyxl supplies sheet/number format validation; original XML supplies
+    # exact numeric lexemes so JSON staging never passes through binary float.
+    book = load_workbook(path, read_only=True, data_only=False)
+    try:
+        if config["sheet"] not in book.sheetnames:
+            raise ValueError(f"Nedostaje očekivani list {config['sheet']}")
+        if year == 2022 and "%" not in book[config["sheet"]]["G2"].number_format:
+            raise ValueError("2022. G mora imati očekivani postotni Excel format.")
+    finally:
+        book.close()
+    rows = []
+    headers = None
+    for rn, raw in read_cells(path, config["sheet"]):
         if headers is None:
             headers = {c: v["value"] for c, v in raw.items() if v["value"] not in ("", None)}
             if rn != 1 or headers != config["headers"]:

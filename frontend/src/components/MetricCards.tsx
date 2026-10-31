@@ -16,7 +16,9 @@ export function MetricCards({ observation }: { observation: Observation }) {
       key: 'total_t',
       label: 'Ukupno sakupljeno',
       unit: 't',
-      hint: 'Komunalni otpad u javnoj usluzi',
+      hint: observation.scope.startsWith('historical_')
+        ? 'Komunalni otpad prema povijesnom obuhvatu izvora'
+        : 'Komunalni otpad u javnoj usluzi',
       index: '01',
       className: '',
     },
@@ -70,7 +72,11 @@ export function MetricCards({ observation }: { observation: Observation }) {
               <p className="metric-hint">{card.hint}</p>
               {card.key === 'total_kg_per_covered_person' && (
                 <div className={`published-value ${mismatch ? 'mismatch' : ''}`}>
-                  <span>Objavljeno u izvoru</span>
+                  <span>
+                    {observation.scope.startsWith('historical_')
+                      ? 'Objavljeno u PDF-u'
+                      : 'Objavljeno u izvoru'}
+                  </span>
                   <strong>
                     <Value metric={published} decimals={observation.year === 2024 ? 2 : 0} />
                     {numeric(published) !== null && ' kg/stan.'}
@@ -95,6 +101,16 @@ export function MetricCards({ observation }: { observation: Observation }) {
           );
         })}
       </div>
+      {m.calculated_nonmixed_share_pct && (
+        <p className="notice warning">
+          <span>
+            Kontrolni omjer razlike tokova (T−M)/T:{' '}
+            <strong>{formatMetric(m.calculated_nonmixed_share_pct)} %</strong>. Izračun iz masa,
+            nije službena stopa odvojenog sakupljanja. Obuhvat zahtijeva metodološku provjeru; ne
+            koristi se za zaključak o poboljšanju ni u Simulatoru.
+          </span>
+        </p>
+      )}
       <div className="coverage-strip">
         <span>
           <Icon name="pin" />

@@ -106,6 +106,74 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/municipalities/{municipality_id}/peers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Peers */
+        get: operations["peers_api_v1_municipalities__municipality_id__peers_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/comparisons": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Compare */
+        get: operations["compare_api_v1_comparisons_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/municipalities/{mid}/simulation-context": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Context */
+        get: operations["get_context_api_v1_municipalities__mid__simulation_context_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/simulations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Calculate */
+        post: operations["calculate_api_v1_simulations_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -126,6 +194,99 @@ export interface components {
             /** Reasons */
             reasons: string[];
         };
+        /** CompareMember */
+        CompareMember: {
+            municipality: components["schemas"]["MunicipalityOut"];
+            observation: components["schemas"]["ObservationOut"] | null;
+            /** History */
+            history: components["schemas"]["ObservationOut"][];
+            /** Metrics */
+            metrics: {
+                [key: string]: components["schemas"]["Metric"];
+            };
+            /** Differences */
+            differences: {
+                [key: string]: components["schemas"]["Metric"];
+            };
+            /** Materials */
+            materials: components["schemas"]["MaterialOut"][];
+            /** Material History */
+            material_history: {
+                [key: string]: components["schemas"]["MaterialOut"][];
+            };
+            /** History Metrics */
+            history_metrics: {
+                [key: string]: {
+                    [key: string]: components["schemas"]["Metric"];
+                };
+            };
+            /** Warnings */
+            warnings: string[];
+            /** Simulation Url */
+            simulation_url: string | null;
+            /** Population Ratio */
+            population_ratio: string | null;
+        };
+        /** CompareMetric */
+        CompareMetric: {
+            /** Key */
+            key: string;
+            /** Label */
+            label: string;
+            /** Unit */
+            unit: string;
+            /** Difference Unit */
+            difference_unit: string;
+            /** Family */
+            family: string;
+        };
+        /** ComparisonOut */
+        ComparisonOut: {
+            /**
+             * Baseline Id
+             * Format: uuid
+             */
+            baseline_id: string;
+            /** Year */
+            year: number;
+            /** Metrics */
+            metrics: components["schemas"]["CompareMetric"][];
+            /** Members */
+            members: components["schemas"]["CompareMember"][];
+            /** Insights */
+            insights: components["schemas"]["DifferenceInsight"][];
+            /** Insight Method */
+            insight_method: string;
+            /** Insight Exclusions */
+            insight_exclusions: string[];
+            /** Warnings */
+            warnings: string[];
+        };
+        /** DifferenceInsight */
+        DifferenceInsight: {
+            /** Metric */
+            metric: string;
+            /** Label */
+            label: string;
+            /** Year */
+            year: number;
+            /** Unit */
+            unit: string;
+            /** Difference Unit */
+            difference_unit: string;
+            low_municipality: components["schemas"]["MunicipalityOut"];
+            high_municipality: components["schemas"]["MunicipalityOut"];
+            /** Low Value */
+            low_value: string;
+            /** High Value */
+            high_value: string;
+            /** Difference */
+            difference: string;
+            /** Relative Range */
+            relative_range: string;
+            /** Available Count */
+            available_count: number;
+        };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
@@ -141,6 +302,29 @@ export interface components {
             description: string;
             /** Details */
             details: {
+                [key: string]: unknown;
+            };
+        };
+        /** MaterialOut */
+        MaterialOut: {
+            /** Material */
+            material: string;
+            /** Label */
+            label: string;
+            published: components["schemas"]["Metric"];
+            comparable: components["schemas"]["Metric"];
+            source: components["schemas"]["SourceOut"];
+            /** Source Row */
+            source_row: number;
+            /** Denominator Status */
+            denominator_status: string;
+            /**
+             * Cross Year Verified
+             * @default false
+             */
+            cross_year_verified: boolean;
+            /** Evidence */
+            evidence: {
                 [key: string]: unknown;
             };
         };
@@ -221,11 +405,233 @@ export interface components {
             /** Target Rate Unavailable Reason */
             target_rate_unavailable_reason: string | null;
         };
+        /** PeerOut */
+        PeerOut: {
+            municipality: components["schemas"]["MunicipalityOut"];
+            /** Covered Population */
+            covered_population: number;
+            /** Population Ratio */
+            population_ratio: string;
+            /** Log Distance */
+            log_distance: string;
+            /** Within Preferred Range */
+            within_preferred_range: boolean;
+            /** Quality Notes */
+            quality_notes: string[];
+        };
+        /** PeersOut */
+        PeersOut: {
+            baseline: components["schemas"]["MunicipalityOut"];
+            /** Year */
+            year: number;
+            /** Algorithm Version */
+            algorithm_version: string;
+            /** County Scope */
+            county_scope: string;
+            /** Status */
+            status: string;
+            /** Reason */
+            reason?: string | null;
+            /**
+             * Preferred Min
+             * @default 0.5
+             */
+            preferred_min: string;
+            /**
+             * Preferred Max
+             * @default 2
+             */
+            preferred_max: string;
+            /** Expanded */
+            expanded: boolean;
+            /** Eligible Candidates */
+            eligible_candidates: number;
+            /** Exclusions */
+            exclusions: {
+                [key: string]: number;
+            };
+            /** Items */
+            items: components["schemas"]["PeerOut"][];
+            /** Warnings */
+            warnings: string[];
+        };
         /** ProfileOut */
         ProfileOut: {
             municipality: components["schemas"]["MunicipalityOut"];
             /** Observations */
             observations: components["schemas"]["ObservationOut"][];
+        };
+        /** ReferenceInput */
+        "ReferenceInput-Input": {
+            /**
+             * Municipality Id
+             * Format: uuid
+             */
+            municipality_id: string;
+            /**
+             * Observation Id
+             * Format: uuid
+             */
+            observation_id: string;
+            /**
+             * Source Id
+             * Format: uuid
+             */
+            source_id: string;
+            /** Sha256 */
+            sha256: string;
+            /**
+             * Metric
+             * @default separate_collection_pct
+             * @constant
+             */
+            metric: "separate_collection_pct";
+            /** Target */
+            target: number | string;
+        };
+        /** ReferenceInput */
+        "ReferenceInput-Output": {
+            /**
+             * Municipality Id
+             * Format: uuid
+             */
+            municipality_id: string;
+            /**
+             * Observation Id
+             * Format: uuid
+             */
+            observation_id: string;
+            /**
+             * Source Id
+             * Format: uuid
+             */
+            source_id: string;
+            /** Sha256 */
+            sha256: string;
+            /**
+             * Metric
+             * @default separate_collection_pct
+             * @constant
+             */
+            metric: "separate_collection_pct";
+            /** Target */
+            target: string;
+        };
+        /** ScenarioInput */
+        "ScenarioInput-Input": {
+            reference?: components["schemas"]["ReferenceInput-Input"] | null;
+            /** Name */
+            name: string;
+            /**
+             * Model
+             * @enum {string}
+             */
+            model: "diversion" | "prevention";
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "fraction" | "tonnes" | "target";
+            /** Value */
+            value: number | string;
+        };
+        /** ScenarioInput */
+        "ScenarioInput-Output": {
+            reference?: components["schemas"]["ReferenceInput-Output"] | null;
+            /** Name */
+            name: string;
+            /**
+             * Model
+             * @enum {string}
+             */
+            model: "diversion" | "prevention";
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "fraction" | "tonnes" | "target";
+            /** Value */
+            value: string;
+        };
+        /** ScenarioResult */
+        ScenarioResult: {
+            input: components["schemas"]["ScenarioInput-Output"];
+            reference?: components["schemas"]["SimulationContext"] | null;
+            initial: components["schemas"]["ScenarioState"];
+            result: components["schemas"]["ScenarioState"];
+            /** Difference */
+            difference: {
+                [key: string]: string | null;
+            };
+            /** Change T */
+            change_t: string;
+            /** Already Reached */
+            already_reached: boolean;
+            /** Mixed Reduction Pct */
+            mixed_reduction_pct: string;
+        };
+        /** ScenarioState */
+        ScenarioState: {
+            /** Total T */
+            total_t: string;
+            /** Mixed T */
+            mixed_t: string;
+            /** Separate T */
+            separate_t: string;
+            /** Rate Pct */
+            rate_pct: string | null;
+            /** Total Kg Per Person */
+            total_kg_per_person: string | null;
+            /** Mixed Kg Per Person */
+            mixed_kg_per_person: string | null;
+            /** Separate Kg Per Person */
+            separate_kg_per_person: string | null;
+        };
+        /** SimulationContext */
+        SimulationContext: {
+            municipality: components["schemas"]["MunicipalityOut"];
+            observation: components["schemas"]["ObservationOut"];
+            /** Available */
+            available: boolean;
+            /** Reasons */
+            reasons: string[];
+            /** Model Version */
+            model_version: string;
+            /** Evidence */
+            evidence: string;
+        };
+        /** SimulationInput */
+        SimulationInput: {
+            /**
+             * Municipality Id
+             * Format: uuid
+             */
+            municipality_id: string;
+            /** Year */
+            year: number;
+            /**
+             * Observation Id
+             * Format: uuid
+             */
+            observation_id: string;
+            /** Sha256 */
+            sha256: string;
+            /**
+             * Model Version
+             * @default public-service-mass-balance-v1
+             * @constant
+             */
+            model_version: "public-service-mass-balance-v1";
+            /** Scenarios */
+            scenarios: components["schemas"]["ScenarioInput-Input"][];
+        };
+        /** SimulationOutput */
+        SimulationOutput: {
+            context: components["schemas"]["SimulationContext"];
+            /** Scenarios */
+            scenarios: components["schemas"]["ScenarioResult"][];
+            /** Assumptions */
+            assumptions: string[];
         };
         /** SourceOut */
         SourceOut: {
@@ -466,6 +872,140 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["SourcesPage"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    peers_api_v1_municipalities__municipality_id__peers_get: {
+        parameters: {
+            query: {
+                year: number;
+                limit?: number;
+                county_scope?: "all" | "same_county";
+            };
+            header?: never;
+            path: {
+                municipality_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PeersOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    compare_api_v1_comparisons_get: {
+        parameters: {
+            query: {
+                ids: string[];
+                year: number;
+                baseline_id?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ComparisonOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_context_api_v1_municipalities__mid__simulation_context_get: {
+        parameters: {
+            query: {
+                year: number;
+            };
+            header?: never;
+            path: {
+                mid: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SimulationContext"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    calculate_api_v1_simulations_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SimulationInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SimulationOutput"];
                 };
             };
             /** @description Validation Error */

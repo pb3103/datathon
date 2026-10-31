@@ -13,6 +13,7 @@ Predložena arhitektura: Python 3.12, pandas/openpyxl za ETL; FastAPI + Pydantic
 | `source_dataset` | izdavač, naslov, katalog URL, resurs URL, licenca, datum preuzimanja, SHA-256, godina, list, verzija metodologije |
 | `import_run` | izvor, verzija parsera, početak/kraj, broj prihvaćenih i odbijenih redaka, status, izvještaj |
 | `waste_observation` | JLS, godina, izvorni redak, ukupno t, miješano t, obuhvaćeni stanovnici, objavljeni kg/stan., objavljena stopa odvajanja, metodološka skupina, status kvalitete |
+| `material_observation` | JLS, godina, materijal, objavljeno kg/stan., izvor/list/redak, status provjere nazivnika, dokaz PDF kontrole i aktivna revizija; bez pretvorbe u tone |
 | `population_observation` | JLS, referentna godina/datum, broj stanovnika, popis/procjena, izvor |
 | `quality_issue` | zapis/import, kod problema, ozbiljnost, opis; bez tihog brisanja spornih redaka |
 
@@ -49,15 +50,18 @@ Odabir vršnjaka i usporedba njihova učinka odvojeni su koraci. Stopa odvajanja
 
 Kandidati: druga JLS, ista godina i usporediv obuhvat/metodologija, valjani usporedbeni podaci. Ako usporedivih nema, sustav to kaže. Ne prelazi na drugu godinu bez vidljive oznake i izričitog korisničkog odabira.
 
-Osnovni algoritam v1, dostupan uz sedam početnih stupaca:
-- veličina: logaritamska udaljenost obuhvaćene populacije; nije ukupno stanovništvo;
-- županija: kategorijsko obilježje s manjom težinom, koje ne znači dokaz prostorne sličnosti.
+Aktualni algoritam `covered-population-v2` (dorada 30. listopada 2026.):
+- obuhvaćena populacija je jedini kriterij udaljenosti; nije ukupno stanovništvo;
+- županija je opcijski filtar „ista županija” / „cijela Hrvatska”, bez težine u bodovanju;
+- prednost imaju kandidati s omjerom P_kandidat/P_početna u uključivom rasponu 0,5–2;
+- ako ih nema dovoljno, dodaju se najbliži izvan raspona uz isto filtriranje županije i jasno upozorenje; vraća se manje od pet ako nema prihvatljivih kandidata;
+- D = abs(ln(P_kandidat) − ln(P_početna)), Decimal račun s preciznošću 32 i udaljenošću na 24 decimale. Izjednačenja se razrješavaju stabilnim internim UUID-om dok službene šifre nedostaju;
+- isključuju se sama početna JLS, druga godina, neusklađen obuhvat/metodološka skupina, nevaljana ili sporna populacija i zapisi bez pokazatelja za usporedbu. Prijedlozi su potencijalni vršnjaci, ne potvrda usporedivosti, vjerojatnost ili preporuka;
+- sustav predlaže do pet kandidata; odabrana usporedna skupina ima 2–5 JLS ukupno, uključujući početnu.
 
-Za populacijsku varijablu definirati s = IQR(log(P)) unutar kandidata i odabrane JLS. Ako je s = 0, koristiti raspon; ako je i on nula, udaljenost te varijable je 0. dP = min(1, abs(log(P_i) − log(P_j))/s). dŽ = 0 za istu županiju, inače 1. D = 0,85dP + 0,15dŽ. Vratiti pet najmanjih D, a pri izjednačenju sortirati po stabilnoj šifri. Prikazati komponente udaljenosti, omjer populacija i korištene težine. D je heuristika, nije vjerojatnost ni potvrđena mjera usporedivosti. Jako različite populacije vidljivo označiti.
+Mogući budući algoritam nakon dodatne provjere uključuje službeni tip JLS i ukupno stanovništvo tek kad su pribavljeni: težine i obilježja treba zasebno potvrditi; nisu dio aktualnog algoritma. Ne miješati verzije ili nedostajuća obilježja među kandidatima: cijeli izračun koristi zajedničku dostupnu konfiguraciju, uz objavu verzije. Turistička noćenja i gustoća mogu biti kasnija obilježja nakon provjere izvora i godina.
 
-Prošireni v1.1 uključuje službeni tip JLS i ukupno stanovništvo tek kad su pribavljeni: 0,70 populacija + 0,20 tip + 0,10 županija. Ne miješati verzije ili nedostajuća obilježja među kandidatima: cijeli izračun koristi zajedničku dostupnu konfiguraciju, uz objavu verzije. Turistička noćenja i gustoća mogu biti kasnija obilježja nakon provjere izvora i godina.
-
-Rezultat usporedbe: poredak sličnosti, zasebni poredak po odabranoj dostupnoj metrici unutar prikazane skupine, godišnji trendovi gdje su dopušteni i razlika od odabrane JLS. Medijan stope vršnjaka opisuje tu skupinu, nije nacionalna stopa. Viša stopa odvajanja ne znači automatski bolju ukupnu uslugu. Razlike po materijalima prikazujemo tek ako izvorne datoteke stvarno imaju usporedive kategorije; inače samo ukupno/miješano i provjereni pokazatelji.
+Rezultat usporedbe: poredak sličnosti, zasebni poredak po odabranoj dostupnoj metrici unutar prikazane skupine, godišnji trendovi gdje su dopušteni i razlika od odabrane JLS. Medijan stope vršnjaka opisuje tu skupinu, nije nacionalna stopa. Viša stopa odvajanja ne znači automatski bolju ukupnu uslugu. Materijalni ETL obuhvaća sedam objavljenih kategorija u kg/stan. Jedinice i nazivnici kontroliraju se po retku prema PDF masama. Usporedbe koriste samo provjerljive nazivnike i valjanu populaciju iste godine i obuhvata; potpuno nulti retci ne potvrđuju nazivnik. Kontinuitet obuhvata među godinama nije potvrđen, pa nema povezivanja ili godišnjih materijalnih promjena. Kategorije se ne zbrajaju niti pretvaraju u tone.
 
 ## 7. Waste Simulator — matematički ugovor
 
@@ -65,7 +69,7 @@ Simulator je deterministički what-if izračun, bez tvrdnji o uzročnosti, vreme
 
 ### A. Preusmjeravanje dijela miješanog toka
 
-Za 0 ≤ r ≤ 1: Δ = rM, M' = M−Δ, T' = T. Pretpostavka: sva preusmjerena masa ostaje u istom obuhvatu i prelazi u nemiješani tok, bez gubitaka i promjene nastajanja otpada. Ako je dokazano da S = T−M jest odvojeno sakupljeno, tada S' = S+Δ i G' = 100S'/T. Bez te metodološke potvrde prikazati novu masu miješanog i razliku tokova, bez tvrdnje o novoj službenoj stopi odvajanja.
+Za 0 ≤ r ≤ 1: Δ = rM, M' = M−Δ, T' = T. Pretpostavka: sva preusmjerena masa ostaje u istom obuhvatu i prelazi u nemiješani tok, bez gubitaka i promjene nastajanja otpada. Ako je dokazano da S = T−M jest odvojeno sakupljeno, tada S' = S+Δ i G' = 100S'/T. Potvrda bilance postoji za pregledane izvore javne usluge 2023./2024.; ne proširuje se na 2021./2022. niti na usporedivost godina. Scenarijska stopa nije novi službeni podatak.
 
 Automatski alternativni scenariji: preusmjeravanje 5 %, 10 % i 20 % početnog miješanog toka. To su ilustrativni parametri, a ne procjene učinka mjera.
 
@@ -73,11 +77,11 @@ Automatski alternativni scenariji: preusmjeravanje 5 %, 10 % i 20 % početnog mi
 
 Dostupno samo kada su potvrđeni isti nazivnik i zatvorenost dvaju tokova: T = M+S i G = 100S/T unutar dokumentirane preciznosti. Za cilj g* u [0,1]: S* = g*T, Δ = S*−S, M* = M−Δ. Za scenarij poboljšanja dopušteni su g* ≥ S/T i Δ ≤ M. Niži cilj označiti kao već dosegnut, bez automatskog smanjivanja odvajanja. Cilj od 100 % dopušta M* = 0; negativne mase nisu dopuštene. Bez potvrđene metodologije ovaj način ostaje nedostupan uz objašnjenje.
 
-Cilj može biti ručni ili medijan dostupnih vršnjaka iste godine, uz istaknuto podrijetlo. Medijan se ne predstavlja kao pravna obveza. Ne koristiti EU ciljeve recikliranja kao lokalne ciljeve odvojenog sakupljanja.
+Implementirani cilj može biti ručni ili objavljeni rezultat konkretne referentne JLS iz Comparea iste godine, uz ponovno provjeren izvor i podrijetlo. Medijan nije implementiran. Medijan se ne predstavlja kao pravna obveza. Ne koristiti EU ciljeve recikliranja kao lokalne ciljeve odvojenog sakupljanja.
 
 ### C. Prevencija nastajanja miješanog otpada
 
-Za 0 ≤ r ≤ 1: Δ = rM, M' = M−Δ, T' = T−Δ, a S ostaje isto ako je definiran. Nova stopa je 100S/T' samo uz potvrđenu metodologiju i T' > 0. Razlikovati od preusmjeravanja: ovdje se ukupna masa smanjuje. Kada je T' = 0, stopa nije definirana.
+Za 0 ≤ r ≤ 1: Δ = rM, M' = M−Δ, T' = T−Δ, a S ostaje isto ako je definiran. Nova stopa je 100S/T' samo uz potvrđenu metodologiju i T' > 0. Razlikovati od preusmjeravanja: ovdje se ukupna masa smanjuje. Kada je T' = 0, stopa nije definirana. Za cilj g u postocima iznad početne stope vrijedi Δ = T − 100S/g, uz S > 0. Ako je S = 0, prevencija sama ne može ostvariti pozitivnu stopu.
 
 Provjerljivi sintetski primjer, ne podatak stvarne JLS: T=1000 t, M=700 t, S=300 t. Preusmjeravanje 10 % miješanog daje Δ=70 t, M'=630 t, S'=370 t i 37 %. Cilj 50 % zahtijeva preusmjeriti 200 t, pa M*=500 t. Prevencija 10 % miješanog daje T'=930 t, M'=630 t, S'=300 t i približno 32,26 %.
 
@@ -92,8 +96,10 @@ Svi endpointi pod `/api/v1`; rezultati uključuju izvore, metodološku skupinu i
 | `GET /municipalities?q=&county=&page=` | Pretraga i filtriranje |
 | `GET /municipalities/{id}/years` | Stvarno dostupne godine i status usporedivosti |
 | `GET /municipalities/{id}/observations?from_year=&to_year=` | Sirove/izvedene metrike s jedinicama i statusom |
-| `GET /municipalities/{id}/peers?year=&limit=5` | Konfiguracija algoritma, udaljenosti i usporedni pokazatelji |
+| `GET /municipalities/{id}/peers?year=&limit=5&county_scope=all` | Konfiguracija algoritma, udaljenosti i usporedni pokazatelji |
+| `GET /municipalities/{id}/simulation-context?year=` | Početno stanje, verzija modela, metodološki dokaz i razlozi dostupnosti |
 | `POST /simulations` | JLS, godina, način, r ili cilj; odgovor polazno/scenarij/razlika i pretpostavke |
+| `GET /comparisons?ids=&ids=&year=&baseline_id=` | Ručni odabir 2–5 JLS, vrijednosti, razlike, backend provjerene povijesne metrike, materijali i opisni uvidi |
 | `GET /sources` | Izvori, licence i verzije |
 | `GET /health/live` | Proces radi |
 | `GET /health/ready` | Baza i potrebne migracije dostupne; status podataka prikazan zasebno |
@@ -126,3 +132,27 @@ Buduće startup upute moraju koristiti postojeći checkout u izoliranom cloud za
 | 31. listopada – 2. studenoga | ETL, baza, migracije, API i provjeren prvi profil JLS |
 | 3.–4. studenoga | Explorer i Compare s obrazloženjem vršnjaka |
 | 5.–6. studenoga | Simulator i povezan korisnički tok |
+
+## 12. Implementirani Simulator — potvrda bilance i revizije
+
+Model `public-service-mass-balance-v1` koristi S=T−M i stopu 100S/T samo za isti obuhvat javne usluge 2023./2024. Potvrda: izvješće 2024., str. 20 i 37, Tablica 11, te korisnikov pregled izvješća za 2023./2024.; manifest `data/manifests/simulator_methodology.json` ograničava dopuštene revizije. Ne mijenja se opća oznaka međugodišnje usporedivosti. Promjena prijavljivanja recikliranih količina nije dio ovog modela.
+
+API ponovno provjerava objavljenu stopu intervalom zaokruživanja masa i stope iz ETL konfiguracije; neusklađeni zapisi isključeni su iz automatskog izračuna. Za 2023./2024. mase imaju interval ±0,005 t, a objavljena stopa ±0,005 postotnih bodova. To je eksplicitna pretpostavka kontrole preciznosti, bez tvrdnje da je neovisno potvrđeno izdavačevo pravilo zaokruživanja. Objavljena i modelska početna stopa ostaju odvojene.
+
+POST prihvaća 1–4 neovisna scenarija s modelom `diversion`/`prevention`, unosom `fraction`/`tonnes`/`target`, ID-jem početnog zapisa i checksumom. Referenca je vezana uz pojedini scenarij. Promijenjene revizije vraćaju 409; metodološki i matematički nevaljani scenariji 422. Nema zapisivanja rezultata u bazu. Lokalno spremanje, URL i JSON čuvaju parametre i verzije; učitavanje ponovno provjerava podatke i računa rezultate.
+
+
+## 13. Povezani korisnički proizvod
+
+Početna stranica `/` objašnjava vrijednost WasteWisea i vodi pretragom u `/explorer`; ostali moduli su `/compare` i `/simulator`. Stare profilne poveznice s korijenske rute ostaju podržane. Promjene su ograničene na prezentaciju, navigaciju i lokalno korisničko stanje: formule, ETL, izvori, metodološki manifesti i backend pravila kvalitete ostaju nepromijenjeni.
+
+Zajednički kontekst je JLS, godina i usporedna skupina do pet JLS-ova. Referentni scenarijski URL vrijedi samo unutar provjerenog Simulatora; promjena početnog odabira čisti stare reference. Valjani radni nacrt vezan uz zapis, checksum i model može se obnoviti u istoj kartici preglednika, uz obvezan ponovni izračun na API-ju. Nespremljene izmjene jasno su označene. Za nepodržani model kontrole su onemogućene uz objašnjenje i mogućnost odabira druge dostupne godine.
+
+Početni primjer Bjelovar–Samobor 2024. razlikuje objavljene vrijednosti od hipotetskih scenarija iz postojećeg API-ja. PDF/ispis sadrži sažetu brojčanu tablicu, parametre, pretpostavke i trag izvora; ne ispisuje kontrole aplikacije. Upozorenja koja utječu na rezultat i upozorenje o 2023. ostaju dostupna i vidljiva.
+
+
+## Proširenje povijesnog obuhvata 2017.–2024.
+
+Explorer i Compare koriste osam godina i isti kanonski registar 556 JLS. Povijesni CSV/PDF uvoz je zaseban adapter postojećeg transakcijskog ETL-a; model baze nije proširen migracijom. Izvorni CSV, PDF stranica, SHA-256, pregledani aliasi i korekcije iz PDF-a ostaju dostupni u tragu izvora. Povijesni obuhvat nije automatski proglašen javnom uslugom novijih godina.
+
+Službena stopa 2017.–2020. ostaje nedostupna. Kontrolni omjer masa zasebna je metrika s metodološkim upozorenjem i ne sudjeluje u razlikama službenih stopa, uvidima ni Simulatoru. Sedam materijala ostaje ograničeno na uvezene izvore 2021.–2024., a modeli Simulatora isključivo na provjerene 2023./2024. Bez potvrđenog kontinuiteta godine se ne povezuju linijom niti tumače kao dokaz poboljšanja. Potpuna evidencija: `docs/historical_integration_verification.md` i pripadajući JSON auditi.

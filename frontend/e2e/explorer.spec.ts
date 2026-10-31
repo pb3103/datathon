@@ -11,7 +11,7 @@ async function selectMunicipality(page: Page, name: string) {
 test('real API: search → Bjelovar → year change → table → URL reload/back', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
-  await page.goto('/');
+  await page.goto('/explorer');
   await expect(page.getByRole('heading', { name: 'Waste Explorer.' })).toBeVisible();
   const observationsResponse = page.waitForResponse(
     (response) => response.url().includes('/observations?') && response.status() === 200,
@@ -20,14 +20,18 @@ test('real API: search → Bjelovar → year change → table → URL reload/bac
   const response = await observationsResponse;
   const profile = await response.json();
   expect(profile.municipality.name).toBe('Bjelovar');
-  expect(profile.observations).toHaveLength(4);
+  expect(profile.observations.map((item: { year: number }) => item.year)).toEqual([
+    2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024,
+  ]);
   await expect(page.getByRole('article', { name: 'Ukupno sakupljeno' })).toContainText('9.773,87');
   await expect(page.getByRole('article', { name: 'Odvojeno sakupljanje' })).toContainText('32,27');
-  await expect(page.getByText('2023. · Razlika između XLSX-a i PDF-a')).toBeVisible();
+  await expect(page.getByText('2023. · Razlika između XLSX-a i PDF-a')).toHaveCount(0);
   const graph = page.getByRole('application');
   await graph.focus();
   await graph.press('ArrowRight');
-  await expect(page.locator('.recharts-tooltip-wrapper')).toContainText(/202[1-4]\. godina/);
+  await expect(page.locator('.recharts-tooltip-wrapper')).toContainText(
+    /20(1[7-9]|2[0-4])\. godina/,
+  );
   await page.getByLabel('Godina podataka').selectOption('2023');
   await expect(page.getByRole('article', { name: 'Ukupno sakupljeno' })).toContainText('9.187,54');
   await expect(page).toHaveURL(/godina=2023/);
@@ -43,8 +47,14 @@ test('real API: search → Bjelovar → year change → table → URL reload/bac
   await expect(page.getByRole('article', { name: 'Ukupno sakupljeno' })).toContainText('11.054,00');
   await page.goBack();
   await expect(page.getByLabel('Godina podataka')).toHaveValue('2022');
-  await expect(page.getByRole('button', { name: /Waste Compare/ })).toBeDisabled();
-  await expect(page.getByRole('button', { name: /Waste Simulator/ })).toBeDisabled();
+  await expect(page.getByRole('link', { name: /Waste Compare/ })).toHaveAttribute(
+    'href',
+    /compare/,
+  );
+  await expect(page.getByRole('link', { name: 'Waste Simulator', exact: true })).toHaveAttribute(
+    'href',
+    /simulator/,
+  );
   expect(errors).toEqual([]);
   await page.evaluate(() => {
     window.scrollTo(0, 0);
@@ -56,7 +66,7 @@ test('real API: search → Bjelovar → year change → table → URL reload/bac
 test('real API: Seget discrepancy keeps published value and withholds derived kg', async ({
   page,
 }) => {
-  await page.goto('/');
+  await page.goto('/explorer');
   await selectMunicipality(page, 'Seget');
   const card = page.getByRole('article', { name: 'Po obuhvaćenom stanovniku' });
   await expect(card).toContainText('Nema podatka');
@@ -77,7 +87,7 @@ test('real API: Seget discrepancy keeps published value and withholds derived kg
 
 test('real API: keyboard search and mobile single-column layout', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
+  await page.goto('/explorer');
   const search = page.getByRole('searchbox', { name: 'Grad ili općina' });
   await search.fill('Bjelovar');
   await search.press('Enter');
@@ -104,7 +114,7 @@ test('real API: keyboard search and mobile single-column layout', async ({ page 
 });
 
 test('real API: empty search results and missing requested year', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/explorer');
   await page.getByRole('searchbox', { name: 'Grad ili općina' }).fill('NepostojecaJLS123');
   await page.getByRole('button', { name: 'Pretraži', exact: true }).click();
   await expect(page.getByText('Nema rezultata', { exact: true })).toBeVisible();
@@ -122,7 +132,7 @@ test('real API: empty search results and missing requested year', async ({ page 
 test('controlled network failure: no stale cards and retry recovers from real API', async ({
   page,
 }) => {
-  await page.goto('/');
+  await page.goto('/explorer');
   await selectMunicipality(page, 'Bjelovar');
   await page.route('**/api/v1/municipalities/*/observations?*', (route) => route.abort('failed'));
   await page.reload();
@@ -136,7 +146,7 @@ test('controlled network failure: no stale cards and retry recovers from real AP
 test('controlled loading: year/profile request shows a separate loading state', async ({
   page,
 }) => {
-  await page.goto('/');
+  await page.goto('/explorer');
   let release!: () => void;
   const hold = new Promise<void>((resolve) => {
     release = resolve;
@@ -158,7 +168,7 @@ test('controlled loading: year/profile request shows a separate loading state', 
 test('real API: an explicit zero rate stays zero and trends remain unconnected', async ({
   page,
 }) => {
-  await page.goto('/');
+  await page.goto('/explorer');
   await selectMunicipality(page, 'Imotski');
   const rate = page.getByRole('article', { name: 'Odvojeno sakupljanje' });
   await expect(rate).toContainText('0,00');
@@ -169,7 +179,7 @@ test('real API: an explicit zero rate stays zero and trends remain unconnected',
 
 test('real API: accessibility of desktop chart and mobile table', async ({ page }) => {
   const { default: AxeBuilder } = await import('@axe-core/playwright');
-  await page.goto('/');
+  await page.goto('/explorer');
   await selectMunicipality(page, 'Bjelovar');
   await expect(page.getByLabel('Pokazatelj', { exact: true })).toBeVisible();
   const desktop = await new AxeBuilder({ page })

@@ -20,7 +20,7 @@ export class ApiError extends Error {
 
 const base = (import.meta.env.VITE_API_BASE_URL || '/api/v1').replace(/\/$/, '');
 
-async function get<T>(path: string, signal: AbortSignal): Promise<T> {
+export async function get<T>(path: string, signal: AbortSignal): Promise<T> {
   const controller = new AbortController();
   const cancel = () => controller.abort();
   signal.addEventListener('abort', cancel, { once: true });
@@ -72,9 +72,73 @@ export const api = {
     ),
   profile: (id: string, signal: AbortSignal) =>
     get<Profile>(
-      `/municipalities/${encodeURIComponent(id)}/observations?from_year=2021&to_year=2024`,
+      `/municipalities/${encodeURIComponent(id)}/observations?from_year=2017&to_year=2024`,
       signal,
     ),
   years: (id: string, signal: AbortSignal) =>
     get<Years>(`/municipalities/${encodeURIComponent(id)}/years`, signal),
+};
+
+export type Comparison = components['schemas']['ComparisonOut'];
+export type Peers = components['schemas']['PeersOut'];
+export type CompareMember = components['schemas']['CompareMember'];
+export type Material = components['schemas']['MaterialOut'];
+export const compareApi = {
+  peers: (id: string, year: number, county: string, signal: AbortSignal) =>
+    get<Peers>(
+      `/municipalities/${encodeURIComponent(id)}/peers?${new URLSearchParams({ year: String(year), county_scope: county, limit: '5' })}`,
+      signal,
+    ),
+  comparison: (ids: string[], year: number, signal: AbortSignal) => {
+    const query = new URLSearchParams({ year: String(year), baseline_id: ids[0] });
+    ids.forEach((id) => query.append('ids', id));
+    return get<Comparison>(`/comparisons?${query}`, signal);
+  },
+};
+
+export type SimulationContext = components['schemas']['SimulationContext'];
+export type ScenarioInput = components['schemas']['ScenarioInput-Input'];
+export type SimulationInput = components['schemas']['SimulationInput'];
+export type SimulationOutput = components['schemas']['SimulationOutput'];
+export const simulationApi = {
+  context: (id: string, year: string, signal: AbortSignal) =>
+    get<SimulationContext>(
+      `/municipalities/${encodeURIComponent(id)}/simulation-context?year=${encodeURIComponent(year)}`,
+      signal,
+    ),
+  calculate: async (input: SimulationInput, signal: AbortSignal): Promise<SimulationOutput> => {
+    const controller = new AbortController();
+    const cancel = () => controller.abort();
+    signal.addEventListener('abort', cancel, { once: true });
+    if (signal.aborted) controller.abort();
+    const timeout = setTimeout(() => controller.abort(), 15_000);
+    try {
+      const response = await fetch(`${base}/simulations`, {
+        method: 'POST',
+        signal: controller.signal,
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(input),
+      });
+      if (!response.ok) {
+        const body = await response.json().catch(() => null);
+        throw new ApiError(
+          typeof body?.detail?.message === 'string'
+            ? body.detail.message
+            : 'Scenarij nije valjan ili usluga nije dostupna.',
+          response.status,
+        );
+      }
+      return await response.json();
+    } catch (error) {
+      if (signal.aborted || error instanceof ApiError) throw error;
+      throw new ApiError(
+        controller.signal.aborted
+          ? 'Izračun traje predugo. Pokušajte ponovno.'
+          : 'Nije moguće povezati se s podatkovnom uslugom. Pokušajte ponovno.',
+      );
+    } finally {
+      clearTimeout(timeout);
+      signal.removeEventListener('abort', cancel);
+    }
+  },
 };

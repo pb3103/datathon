@@ -1,0 +1,58 @@
+{
+  "2021": {
+    "sheet": "Prilog 2. KO-2021.",
+    "headers": {
+      "A": "Županija sakupljanja otpada",
+      "B": "JLS (grad/općina) sakupljanja otpada",
+      "C": "Papir (kg/stan.)",
+      "D": "Plastika (kg/stan.)",
+      "E": "Staklo (kg/stan.)",
+      "F": "Metal (kg/stan.)",
+      "G": "Glomazni otpad (kg/stan.)",
+      "H": "Tekstil (kg/stan.)",
+      "I": "Biootpad (kg/stan.)"
+    }
+  },
+  "2022": {
+    "sheet": "Prilog 2. KO 2022.",
+    "headers": {
+      "A": "Županija sakupljanja otpada",
+      "B": "JLS sakupljanja otpada",
+      "C": "Papir (kg/stan.)",
+      "D": "Plastika(kg/stan.)",
+      "E": "Staklo (kg/stan.)",
+      "F": "Metal(kg/stan.)",
+      "G": "Glomazni otpad (kg/stan.)",
+      "H": "Tekstil (kg/stan.)",
+      "I": "Biootpad (kg/stan)"
+    }
+  },
+  "2023": {
+    "sheet": "Prilog 2. KO 2023.",
+    "headers": {
+      "A": "Županija sakupljanja otpada",
+      "B": "JLS sakupljanja otpada",
+      "C": "Papir (kg/stan.)",
+      "D": "Plastika (kg/stan.)",
+      "E": "Staklo (kg/stan.)",
+      "F": "Metal (kg/stan.)",
+      "G": "Glomazni otpad (kg/stan.)",
+      "H": "Tekstil (kg/stan.)",
+      "I": "Biootpad (kg/stan.)"
+    }
+  },
+  "2024": {
+    "sheet": "Prilog 2._KO_2024.",
+    "headers": {
+      "A": "Županija sakupljanja otpada",
+      "B": "JLS sakupljanja otpada",
+      "C": "Papir (kg/stan.)",
+      "D": "Plastika (kg/stan.)",
+      "E": "Staklo (kg/stan.)",
+      "F": "Metal (kg/stan.)",
+      "G": "Glomazni otpad (kg/stan.)",
+      "H": "Tekstil (kg/stan.)",
+      "I": "Biootpad (kg/stan.)"
+    }
+  }
+}

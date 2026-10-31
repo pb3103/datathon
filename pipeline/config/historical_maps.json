@@ -1,0 +1,90 @@
+{
+  "2017": {
+    "sheet": "Prilog 1 · PDF → CSV",
+    "scope": "historical_collection_2017",
+    "methodology_group": "historical_2017_unverified",
+    "mass_half": ".005",
+    "kg_half": ".5",
+    "rate_half": ".005",
+    "kg_control": "nearest",
+    "source_issues": [
+      {
+        "code": "historical_scope_unverified",
+        "severity": "warning",
+        "description": "Povijesni PDF/CSV obuhvat nije potvrđen kao istovjetan novijoj javnoj usluzi. Objavljena stopa odvojenog sakupljanja nije dostupna u ovoj tablici; (T−M)/T je samo kontrolni omjer. Godine nisu potvrđeni povezani trend.",
+        "details": {
+          "pdf_path": "podaci/2017/OTP_Izvješće o komunalnom otpadu_2017_0.pdf",
+          "pdf_sha256": "528ff9d42abdc30cded93e47f999b8dc3c17dca35d065d202af44f07deb7153d",
+          "kg_control": "nearest rounding interval",
+          "kg_control_note": "Aritmetički potkrijepljen interval preciznosti, ne potvrda izdavačeva algoritma zaokruživanja."
+        }
+      }
+    ]
+  },
+  "2018": {
+    "sheet": "Prilog 1 · PDF → CSV",
+    "scope": "historical_collection_2018",
+    "methodology_group": "historical_2018_unverified",
+    "mass_half": ".005",
+    "kg_half": ".5",
+    "rate_half": ".005",
+    "kg_control": "nearest",
+    "source_issues": [
+      {
+        "code": "historical_scope_unverified",
+        "severity": "warning",
+        "description": "Povijesni PDF/CSV obuhvat nije potvrđen kao istovjetan novijoj javnoj usluzi. Objavljena stopa odvojenog sakupljanja nije dostupna u ovoj tablici; (T−M)/T je samo kontrolni omjer. Godine nisu potvrđeni povezani trend.",
+        "details": {
+          "pdf_path": "podaci/2018/OTP_Izvješće o komunalnom otpadu_2018 FV_0_0.pdf",
+          "pdf_sha256": "8c97c535119d578532629e6777d381d9acf611f8fde70c0809b499965df43f02",
+          "kg_control": "nearest rounding interval",
+          "kg_control_note": "Aritmetički potkrijepljen interval preciznosti, ne potvrda izdavačeva algoritma zaokruživanja."
+        }
+      }
+    ]
+  },
+  "2019": {
+    "sheet": "Prilog 1 · PDF → CSV",
+    "scope": "historical_collection_2019",
+    "methodology_group": "historical_2019_unverified",
+    "mass_half": ".005",
+    "kg_half": ".5",
+    "rate_half": ".005",
+    "kg_control": "floor",
+    "source_issues": [
+      {
+        "code": "historical_scope_unverified",
+        "severity": "warning",
+        "description": "Povijesni PDF/CSV obuhvat nije potvrđen kao istovjetan novijoj javnoj usluzi. Objavljena stopa odvojenog sakupljanja nije dostupna u ovoj tablici; (T−M)/T je samo kontrolni omjer. Godine nisu potvrđeni povezani trend.",
+        "details": {
+          "pdf_path": "podaci/2019/OTP_Izvješće o komunalnom otpadu za 2019_rev2_0.pdf",
+          "pdf_sha256": "628c767823870d70603bd1efe6d9c5ce50c31f21de2c58b9219f8ed113ab3ebe",
+          "kg_control": "floor interval",
+          "kg_control_note": "Aritmetički potkrijepljen interval preciznosti, ne potvrda izdavačeva algoritma zaokruživanja."
+        }
+      }
+    ]
+  },
+  "2020": {
+    "sheet": "Prilog 1 · PDF → CSV",
+    "scope": "historical_collection_2020",
+    "methodology_group": "historical_2020_unverified",
+    "mass_half": ".5",
+    "kg_half": ".5",
+    "rate_half": ".005",
+    "kg_control": "floor",
+    "source_issues": [
+      {
+        "code": "historical_scope_unverified",
+        "severity": "warning",
+        "description": "Povijesni PDF/CSV obuhvat nije potvrđen kao istovjetan novijoj javnoj usluzi. Objavljena stopa odvojenog sakupljanja nije dostupna u ovoj tablici; (T−M)/T je samo kontrolni omjer. Godine nisu potvrđeni povezani trend.",
+        "details": {
+          "pdf_path": "podaci/2020/pytest.ini.pdf",
+          "pdf_sha256": "7dca4dd600299bf26def921c9245db7557a6039e419399fa6e86fcc157ab3979",
+          "kg_control": "floor interval",
+          "kg_control_note": "Aritmetički potkrijepljen interval preciznosti, ne potvrda izdavačeva algoritma zaokruživanja."
+        }
+      }
+    ]
+  }
+}

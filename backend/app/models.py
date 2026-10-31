@@ -151,3 +151,39 @@ class QualityIssue(Base):
     severity: Mapped[str] = mapped_column(String(20))
     description: Mapped[str] = mapped_column(Text)
     details: Mapped[dict] = mapped_column(JSONB, default=dict)
+
+
+class MaterialObservation(Base):
+    __tablename__ = "material_observation"
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    municipality_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("municipality.id"), index=True)
+    source_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("source_dataset.id"))
+    import_run_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("import_run.id"))
+    year: Mapped[int] = mapped_column(Integer)
+    source_row: Mapped[int] = mapped_column(Integer)
+    material: Mapped[str] = mapped_column(String(30))
+    published_kg_per_person: Mapped[Decimal | None] = mapped_column(Numeric(24, 12))
+    raw_values: Mapped[dict] = mapped_column(JSONB)
+    scope: Mapped[str] = mapped_column(String(100))
+    denominator_status: Mapped[str] = mapped_column(String(100))
+    evidence: Mapped[dict] = mapped_column(JSONB, default=dict)
+    active: Mapped[bool] = mapped_column(Boolean, default=True)
+    __table_args__ = (
+        UniqueConstraint("source_id", "source_row", "material"),
+        Index(
+            "one_active_material",
+            "municipality_id",
+            "year",
+            "material",
+            unique=True,
+            postgresql_where=text("active"),
+        ),
+        CheckConstraint(
+            "published_kg_per_person IS NULL OR published_kg_per_person >= 0",
+            name="nonnegative_material",
+        ),
+        CheckConstraint(
+            "material IN ('paper','plastic','glass','metal','bulky','textile','bio')",
+            name="valid_material",
+        ),
+    )

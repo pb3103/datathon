@@ -1,3 +1,4 @@
+import { sourceDisplayName, visibleSourceIssues } from '../domain';
 import type { Observation } from '../api/client';
 import { Icon } from './Icon';
 
@@ -28,14 +29,17 @@ export function Sources({
         <Icon name="database" />
       </div>
       <p className="small-muted">
-        Prikazane vrijednosti dolaze iz godišnjih XLSX priloga. Svaki je zapis povezan s izvornom
-        datotekom, listom i retkom.
+        Prikazane vrijednosti dolaze iz godišnjih XLSX priloga ili pregledanih CSV prijepisa PDF
+        tablica. Svaki je zapis povezan s izvornom datotekom, listom i retkom.
       </p>
       <div className="source-list">
         {[...observations]
           .sort((a, b) => b.year - a.year)
           .map((observation) => {
             const source = observation.source;
+            const historical = observation.raw_values.historical as
+              | { pdf_path?: string; pdf_page?: number; pdf_sha256?: string }
+              | undefined;
             const link = safeLink(source.resource_url) ?? safeLink(source.catalog_url);
             return (
               <details
@@ -46,10 +50,11 @@ export function Sources({
                 <summary>
                   <span className="source-year">{observation.year}.</span>
                   <span className="source-summary">
-                    <strong>{source.title}</strong>
+                    <strong>{sourceDisplayName(source)}</strong>
                     <small>
-                      {source.sheet} · redak {observation.source_row} · XLSX
-                      {(source.issues ?? []).length > 0 ? ' · Napomena izvora' : ''}
+                      {source.sheet} · redak {observation.source_row} ·{' '}
+                      {source.path.endsWith('.csv') ? 'CSV iz PDF-a' : 'XLSX'}
+                      {visibleSourceIssues(source.issues).length > 0 ? ' · Napomena izvora' : ''}
                     </small>
                   </span>
                   <span className="source-expand" aria-hidden="true">
@@ -101,7 +106,23 @@ export function Sources({
                       lokalno.
                     </p>
                   )}
-                  {(source.issues ?? []).map((issue, i) => (
+                  {historical && (
+                    <p className="small-muted">
+                      Izvorni PDF: {String(historical.pdf_path)} · stranica{' '}
+                      {String(historical.pdf_page)} · SHA-256 {String(historical.pdf_sha256)}. CSV
+                      korekcije potvrđene su prema PDF-u; kontrolni omjer nije objavljena stopa.
+                    </p>
+                  )}
+                  {historical && (
+                    <p className="small-muted">
+                      {observation.year === 2019
+                        ? '2019.: ukupno uključuje javnu uslugu i povezane usluge, dok je miješani otpad prijavljen u sklopu javne usluge (SO-1). Obuhvat nije jednak definiciji novijih godina.'
+                        : observation.year === 2020
+                          ? '2020.: oba stupca navode organizaciju JLS; mase su objavljene u cijelim tonama. U ovoj tablici nije objavljena službena stopa.'
+                          : 'Povijesna tablica sadrži ukupno sakupljeni otpad, miješani otpad (20 03 01), obuhvaćenu populaciju i objavljene kg/stan. Istovjetnost novijoj javnoj usluzi nije potvrđena.'}
+                    </p>
+                  )}
+                  {visibleSourceIssues(source.issues).map((issue, i) => (
                     <p className="source-warning" key={`${issue.code}-${i}`}>
                       <Icon name="alert" />
                       {issue.description}

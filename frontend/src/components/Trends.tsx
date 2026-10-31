@@ -1,3 +1,4 @@
+import { visibleSourceIssues } from '../domain';
 import { useId, useState } from 'react';
 import {
   Bar,
@@ -68,6 +69,9 @@ export function Trends({
   const patternId = `mixed-pattern-${useId().replaceAll(':', '')}`;
   const config = configurations[mode];
   const sorted = [...observations].sort((a, b) => a.year - b.year);
+  const scopeLabel = sorted.some((item) => item.scope.startsWith('historical_'))
+    ? 'obuhvat ovisi o godišnjem izvoru'
+    : 'javna usluga';
   const connected =
     sorted.length > 1 &&
     sorted.slice(1).every((observation, index) => mayConnect(sorted[index], observation));
@@ -86,7 +90,10 @@ export function Trends({
         <div>
           <div className="section-kicker">02 / Pregled kroz godine</div>
           <h2 id={titleId}>
-            Godišnji pregled <span>2021.–2024.</span>
+            Godišnji pregled{' '}
+            <span>
+              {sorted[0]?.year}.–{sorted.at(-1)?.year}.
+            </span>
           </h2>
         </div>
         <div className="view-switch" aria-label="Prikaz godišnjih podataka">
@@ -122,7 +129,7 @@ export function Trends({
         {connected
           ? 'Povezane su samo uzastopne godine s potvrđenom usporedivošću.'
           : 'Svaka godina prikazana je zasebno. Usporedivost nije potvrđena za cijelo razdoblje, pa nema povezujuće linije ni izračuna godišnjih promjena.'}{' '}
-        Obuhvat: javna usluga. Jedinica: {config.unit}.
+        Obuhvat: {scopeLabel}. Jedinica: {config.unit}.
       </p>
       {view === 'chart' ? (
         <figure className="chart-figure" aria-labelledby={titleId} aria-describedby={descId}>
@@ -212,7 +219,7 @@ export function Trends({
             {!connected &&
               config.series.some((series) => series.key.startsWith('mixed_')) &&
               'Miješani otpad označen je prugastim stupcima. '}
-            Izvori: godišnji XLSX prilozi 1, retci odabrane JLS.{' '}
+            Izvori: godišnji XLSX prilozi i pregledani CSV/PDF retci odabrane JLS.{' '}
             <a href="#sources">Pregled izvora i napomena ↗</a>
             <span className="chart-keyboard">
               Graf možete pregledavati strelicama nakon fokusa; iste su vrijednosti dostupne u
@@ -229,7 +236,7 @@ export function Trends({
         >
           <table>
             <caption>
-              {config.title} · javna usluga · {config.unit}. Godina je gumb za promjenu odabira.
+              {config.title} · {scopeLabel} · {config.unit}. Godina je gumb za promjenu odabira.
             </caption>
             <thead>
               <tr>
@@ -288,7 +295,7 @@ export function Trends({
                   )}
                   <td>
                     <span>{isVerified(observation) ? 'Usporedivo' : 'Uvjetno'}</span>
-                    {(observation.source.issues ?? []).length > 0 && (
+                    {visibleSourceIssues(observation.source.issues).length > 0 && (
                       <small className="warning-text">Napomena izvora za {observation.year}.</small>
                     )}
                     {observation.issues.length > 0 && (
