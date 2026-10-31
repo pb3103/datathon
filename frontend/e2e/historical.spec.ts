@@ -27,10 +27,12 @@ test('history Explorer: all eight years, real API metrics and unconnected table'
     await page.getByLabel('Godina podataka').selectOption(String(o.year));
     await expect(page.locator('.metric-card').first()).toContainText(fmt(o.metrics.total_t.value));
     if (o.year < 2021) {
-      await expect(page.locator('.metric-card').last()).toContainText('Nema podatka');
+      await expect(page.locator('.metric-card').last()).toContainText(
+        fmt(o.metrics.calculated_nonmixed_share_pct.value),
+      );
       await expect(
         page.getByText('Kontrolni omjer razlike tokova (T−M)/T:', { exact: false }),
-      ).toBeVisible();
+      ).toHaveCount(0);
     }
   }
   await page.getByRole('button', { name: 'Tablica', exact: true }).click();
@@ -60,7 +62,9 @@ test('history Compare: every year, peer algorithm, missing official rate and mat
       fmt(data.members[0].metrics.total_kg_per_covered_person.value),
     );
     if (y < 2021) {
-      await expect(page.locator('.reference-rate').first()).toContainText('Nema podatka');
+      await expect(page.locator('.reference-rate').first()).toContainText(
+        fmt(data.members[0].metrics.calculated_nonmixed_share_pct.value),
+      );
       await expect(page.getByRole('link', { name: 'Simuliraj ovaj cilj' })).toHaveCount(0);
     }
   }
@@ -118,7 +122,7 @@ test('source presentation: one compact note, keyboard details and original prove
 }) => {
   const b = await id(page, 'Bjelovar');
   await page.goto(`/explorer?jls=${b}&godina=2017`);
-  const note = page.locator('.historical-method-note');
+  const note = page.locator('.data-notes-card');
   await expect(note).toHaveCount(1);
   await expect(note).toContainText('službenih godišnjih izvješća');
   const more = note.getByText('Saznaj više', { exact: true });
@@ -126,7 +130,7 @@ test('source presentation: one compact note, keyboard details and original prove
   await page.keyboard.press('Enter');
   await expect(note.locator('details')).toHaveAttribute('open');
   await expect(note).toContainText('nije službeno objavljena stopa');
-  await expect(note.getByRole('link')).toHaveCount(4);
+  await expect(note.getByRole('link')).toHaveCount(8);
   await note.getByRole('link', { name: 'Izvor za 2017.' }).click();
   await expect(page).toHaveURL(/#source-2017$/);
   await page.locator('#source-2017 summary').click();
@@ -145,4 +149,156 @@ test('source presentation: one compact note, keyboard details and original prove
     (await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze())
       .violations,
   ).toEqual([]);
+});
+
+test('historical shares: separate origins, all historical years and same-year Compare values', async ({
+  page,
+}) => {
+  const b = await id(page, 'Bjelovar'),
+    s = await id(page, 'Samobor');
+  const profile = await (await page.request.get(`/api/v1/municipalities/${b}/observations`)).json();
+  await page.goto(`/explorer?jls=${b}&godina=2017`);
+  await page.getByLabel('Pokazatelj', { exact: true }).selectOption('rate');
+  await expect(
+    page
+      .locator('.rate-method-note')
+      .getByRole('link', { name: 'O udjelima, stopama i usporedivosti ↑' }),
+  ).toBeVisible();
+  await page.getByRole('button', { name: 'Tablica', exact: true }).click();
+  const table = page.getByRole('table');
+  await expect(table).toContainText('Službeno objavljeno');
+  await expect(table).toContainText('Izračunato');
+  for (const year of [2017, 2018, 2020]) {
+    const o = profile.observations.find((o: { year: number }) => o.year === year);
+    await expect(
+      table.locator('tbody tr').filter({
+        has: page.getByRole('button', { name: `Odaberi ${year}. godinu`, exact: true }),
+      }),
+    ).toContainText(fmt(o.metrics.calculated_nonmixed_share_pct.value));
+  }
+  expect(
+    profile.observations.find((o: { year: number }) => o.year === 2019).metrics
+      .calculated_nonmixed_share_pct.value,
+  ).not.toBeNull();
+  await page.locator('.rate-method-note summary').click();
+  await expect(page.locator('.rate-method-note')).toContainText('Bjelovar · 2017.');
+  await page.goto(
+    `/compare?jls=${b}&usporedi=${s}&godina=2017&metrika=separate_collection_pct&prikaz=table`,
+  );
+  await expect(page.getByLabel('Godina usporedbe')).toHaveValue('2017');
+  await page.getByLabel('Pokazatelj usporedbe').selectOption('separate_collection_pct');
+  await page.getByRole('button', { name: 'Tablica', exact: true }).click();
+  await expect(page.locator('.compare-chart table')).toContainText('17,64');
+  await expect(
+    page
+      .locator('.rate-method-note')
+      .getByRole('link', { name: 'O udjelima, stopama i usporedivosti ↑' }),
+  ).toBeVisible();
+  await page.getByLabel('Godina usporedbe').selectOption('2019');
+  await expect(page.locator('.compare-chart table')).toContainText(
+    fmt(
+      profile.observations.find((o: { year: number }) => o.year === 2019).metrics
+        .calculated_nonmixed_share_pct.value,
+    ),
+  );
+  await expect(page.locator('.data-notes-card > div > p')).toContainText('izračunat');
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.getByLabel('Godina usporedbe').selectOption('2017');
+  await page.locator('.compare-chart').scrollIntoViewIfNeeded();
+  await page.screenshot({ path: 'test-results/historical-shares-mobile.png' });
+  expect(
+    (await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze())
+      .violations,
+  ).toEqual([]);
+});
+
+test('refined UX: Zagreb and Split show the available indicator with one contextual note', async ({
+  page,
+}) => {
+  const z = await id(page, 'Zagreb'),
+    s = await id(page, 'Split');
+  await page.goto(`/explorer?jls=${z}&godina=2018`);
+  const card = page.getByRole('article', { name: 'Udio izvan miješanog toka', exact: true });
+  await expect(card).toContainText('13,38');
+  await expect(card.getByText('Izračunato', { exact: true })).toBeVisible();
+  await expect(page.getByText('Kontrolni omjer razlike tokova', { exact: false })).toBeHidden();
+  await expect(page.locator('.data-notes-card')).toHaveCount(1);
+  await page.getByLabel('Godina podataka').selectOption('2019');
+  await expect(card).toContainText('22,26');
+  await expect(card.getByText('Izračunato', { exact: true })).toBeVisible();
+  await page.getByLabel('Godina podataka').selectOption('2021');
+  await expect(
+    page.getByRole('article', { name: 'Odvojeno sakupljanje', exact: true }),
+  ).toContainText('31,40');
+  await expect(page.locator('.data-notes-card > div > p')).toContainText('službeno objavljene');
+  await page.goto(`/compare?jls=${z}&usporedi=${s}&godina=2018`);
+  await expect(
+    page.getByRole('article', { name: 'Referentni rezultat Zagreb' }).locator('.reference-rate'),
+  ).toContainText('13,38');
+  await expect(
+    page.getByRole('article', { name: 'Referentni rezultat Split' }).locator('.reference-rate'),
+  ).toContainText('5,45');
+  await expect(page.locator('.comparison-reference .reference-rate')).not.toContainText([
+    'Nema podatka',
+    'Nema podatka',
+  ]);
+  await expect(page.locator('.data-notes-card')).toHaveCount(1);
+  await expect(
+    page.getByText('Omjer obuhvaćene populacije izvan je raspona 0,5–2.', { exact: false }),
+  ).toBeVisible();
+  for (const width of [1440, 820, 390]) {
+    await page.setViewportSize({ width, height: 900 });
+    await expect
+      .poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth))
+      .toBe(true);
+  }
+  const summary = page.locator('.data-notes-card summary');
+  await summary.focus();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('.data-notes-card details')).toHaveAttribute('open');
+  expect(
+    (await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze())
+      .violations,
+  ).toEqual([]);
+  await page.getByLabel('Godina usporedbe').selectOption('2019');
+  await expect(page.locator('.comparison-reference .reference-rate').first()).toContainText(
+    '22,26',
+  );
+  await page.getByLabel('Godina usporedbe').selectOption('2024');
+  const current = await (
+    await page.request.get(`/api/v1/municipalities/${z}/observations?from_year=2024`)
+  ).json();
+  await expect(
+    page.getByRole('article', { name: 'Referentni rezultat Zagreb' }).locator('.reference-rate'),
+  ).toContainText(fmt(current.observations[0].metrics.separate_collection_pct.value));
+});
+
+test('2019 broad share: Zagreb/Split, percentage-point difference and history provenance', async ({
+  page,
+}) => {
+  const z = await id(page, 'Zagreb'),
+    s = await id(page, 'Split');
+  await page.goto(`/compare?jls=${z}&usporedi=${s}&godina=2019&metrika=separate_collection_pct`);
+  await expect(
+    page.getByRole('article', { name: 'Referentni rezultat Zagreb' }).locator('.reference-rate'),
+  ).toContainText('22,26');
+  await expect(
+    page.getByRole('article', { name: 'Referentni rezultat Split' }).locator('.reference-rate'),
+  ).toContainText('15,28');
+  await page.getByLabel('Pokazatelj usporedbe').selectOption('separate_collection_pct');
+  await page.getByRole('button', { name: 'Tablica', exact: true }).click();
+  await expect(page.locator('.compare-chart table')).toContainText('−6,98');
+  await expect(page.locator('.compare-chart table')).toContainText('pb');
+  await page.getByRole('button', { name: 'Kroz godine', exact: true }).click();
+  await expect(page.locator('.compare-chart table')).toContainText('2019.');
+  await expect(page.locator('.compare-chart table')).toContainText('22,26');
+  await page.locator('.rate-method-note summary').click();
+  await expect(page.locator('.rate-method-note')).toContainText('Zagreb · 2019.');
+  await expect(page.locator('.rate-method-note')).toContainText('Split · 2019.');
+  const profile = await (
+    await page.request.get(`/api/v1/municipalities/${z}/observations?from_year=2019&to_year=2019`)
+  ).json();
+  expect(profile.observations[0].metrics.separate_collection_pct.value).toBeNull();
+  expect(profile.observations[0].target_rate_available).toBe(false);
 });

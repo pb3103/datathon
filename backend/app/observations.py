@@ -141,13 +141,10 @@ def observation_out(session: Session, obs: WasteObservation, previous: WasteObse
             "zero_or_missing_total_or_missing_mixed",
         ),
     }
-    if historical:
-        values["calculated_nonmixed_share_pct"] = Metric(
-            value=100 * (t - m) / t if t is not None and t > 0 and m is not None else None,
-            unit="%",
-            quality_status="review_required",
-            reason="historical_ratio_not_official_rate",
-        )
+    from backend.app.historical_share import historical_share
+
+    share, share_reason = historical_share(obs.year, obs.scope, source.sha256, t, m)
+    values["calculated_nonmixed_share_pct"] = metric(share, "%", share_reason)
     # Verified mass balance is separate from cross-year comparability.
     from backend.app.simulation_quality import eligibility
 

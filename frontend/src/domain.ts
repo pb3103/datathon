@@ -44,6 +44,12 @@ const reasons: Record<string, string> = {
   nonconsecutive_years:
     'Dostupne godine nisu uzastopne; između njih se ne prikazuje povezan trend.',
   methodology_group_changed: 'Promijenila se metodološka skupina; godine se ne povezuju u trend.',
+  historical_mass_scope_mismatch:
+    'Za 2019. ukupna i miješana masa nemaju potvrđen jednak obuhvat; udio nije izračunat.',
+  historical_share_not_applicable: 'Izračunati povijesni udio nije pokazatelj za ovu godinu.',
+  historical_share_source_not_verified:
+    'Revizija povijesnog izvora nije provjerena za ovaj izračun.',
+  missing_or_invalid_mass: 'Nedostaju valjane i kompatibilne mase za izračun udjela.',
   source_aggregate_mismatch: 'Zbrojevi XLSX podataka razlikuju se od agregata PDF izvještaja.',
 };
 
@@ -125,4 +131,8 @@ export function visibleSourceIssues(issues: Issue[] = []): Issue[] {
 export function sourceDisplayName(source: { year: number; path: string }): string {
   const extension = source.path.toLowerCase().endsWith('.csv') ? 'csv' : 'xlsx';
   return `Prikaz odabranih podataka_JLS za ${source.year}.${extension}`;
+}
+
+export function rateMetricKey(year: number): string {
+  return year < 2021 ? 'calculated_nonmixed_share_pct' : 'separate_collection_pct';
 }

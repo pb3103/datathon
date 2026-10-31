@@ -116,7 +116,7 @@ export function Sources({
                   {historical && (
                     <p className="small-muted">
                       {observation.year === 2019
-                        ? '2019.: ukupno uključuje javnu uslugu i povezane usluge, dok je miješani otpad prijavljen u sklopu javne usluge (SO-1). Obuhvat nije jednak definiciji novijih godina.'
+                        ? '2019.: ukupna masa obuhvaća organizaciju JLS (javnu i povezanu uslugu), a miješani tok prijavljen je na SO-1. Razlika daje široki udio izvan miješanog toka, ne užu stopu prema Uredbi. Izravna usporedivost s novijim godinama nije potvrđena.'
                         : observation.year === 2020
                           ? '2020.: oba stupca navode organizaciju JLS; mase su objavljene u cijelim tonama. U ovoj tablici nije objavljena službena stopa.'
                           : 'Povijesna tablica sadrži ukupno sakupljeni otpad, miješani otpad (20 03 01), obuhvaćenu populaciju i objavljene kg/stan. Istovjetnost novijoj javnoj usluzi nije potvrđena.'}

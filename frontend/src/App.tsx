@@ -190,9 +190,10 @@ function Explorer() {
           )}
           {observations.length > 0 ? (
             <>
-              <Quality selected={selected} observations={observations} />
+              <Quality compact selected={selected} observations={observations} />
               <Suspense fallback={<Loading message="Učitavanje godišnjeg pregleda…" />}>
                 <Trends
+                  municipalityName={data.profile.municipality.name}
                   observations={observations}
                   selectedYear={selected?.year ?? null}
                   onYear={chooseYear}

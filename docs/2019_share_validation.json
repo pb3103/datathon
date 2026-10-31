@@ -1,0 +1,242 @@
+{
+  "year": 2019,
+  "pdf_path": "podaci/2019/OTP_Izvješće o komunalnom otpadu za 2019_rev2_0.pdf",
+  "pdf_sha256": "628c767823870d70603bd1efe6d9c5ce50c31f21de2c58b9219f8ed113ab3ebe",
+  "csv_path": "podaci/2019/wastewise_2019_ZUPANIJE_DOPUNJENE.csv",
+  "csv_sha256": "1c346b1a47e7815684ac8095012f03db60e4404c4d1c40435f562b52a0cecf49",
+  "table": "Tablica 27 / Prilog 1",
+  "pdf_pages": [
+    119,
+    135
+  ],
+  "definitions_pages": [
+    12,
+    13,
+    14,
+    34,
+    39,
+    40
+  ],
+  "rows": 556,
+  "unique_jls": 556,
+  "mass_pairs_matching_reviewed_pdf": 556,
+  "available_shares": 556,
+  "mass_extraction_mismatches": 0,
+  "published_kg_corrections_already_documented": 25,
+  "samples": [
+    {
+      "id": "456c3924-5ade-53f4-a6a0-ebc6b066181f",
+      "name": "Split",
+      "county": "Splitsko-dalmatinska",
+      "csv_row": 422,
+      "pdf_page": 131,
+      "pdf_tokens": [
+        "69.247,98",
+        "58.666,73"
+      ],
+      "total_t": "69247.98",
+      "mixed_t": "58666.73",
+      "population": 178102,
+      "share_pct": "15.28022911282033064357978384351428012774"
+    },
+    {
+      "id": "5d689f9c-986c-5a23-9261-ca8f6489f51e",
+      "name": "Zagreb",
+      "county": "Grad Zagreb",
+      "csv_row": 557,
+      "pdf_page": 135,
+      "pdf_tokens": [
+        "258.465,05",
+        "200.923,60"
+      ],
+      "total_t": "258465.05",
+      "mixed_t": "200923.6",
+      "population": 790017,
+      "share_pct": "22.26275854317634047620751819249836680046"
+    },
+    {
+      "id": "91dc934c-0a44-51d1-a8e1-5f5922d2545d",
+      "name": "Severin",
+      "county": "Bjelovarsko-bilogorska",
+      "csv_row": 176,
+      "pdf_page": 124,
+      "pdf_tokens": [
+        "57,76",
+        "44,62"
+      ],
+      "total_t": "57.76",
+      "mixed_t": "44.62",
+      "population": 877,
+      "share_pct": "22.74930747922437673130193905817174515235"
+    },
+    {
+      "id": "95b08485-b0ae-5238-9481-920336dc5050",
+      "name": "Dragalić",
+      "county": "Brodsko-posavska",
+      "csv_row": 267,
+      "pdf_page": 126,
+      "pdf_tokens": [
+        "118,72",
+        "110,09"
+      ],
+      "total_t": "118.72",
+      "mixed_t": "110.09",
+      "population": 1361,
+      "share_pct": "7.269204851752021563342318059299191374663"
+    },
+    {
+      "id": "99d6d000-2d62-52c7-9014-b28103abbb09",
+      "name": "Janjina",
+      "county": "Dubrovačko-neretvanska",
+      "csv_row": 517,
+      "pdf_page": 134,
+      "pdf_tokens": [
+        "750,00",
+        "750,00"
+      ],
+      "total_t": "750.0",
+      "mixed_t": "750.0",
+      "population": 551,
+      "share_pct": "0"
+    },
+    {
+      "id": "1becb353-c3b3-5701-97ef-716f44c3b24a",
+      "name": "Lanišće",
+      "county": "Istarska",
+      "csv_row": 491,
+      "pdf_page": 133,
+      "pdf_tokens": [
+        "119,14",
+        "103,50"
+      ],
+      "total_t": "119.14",
+      "mixed_t": "103.5",
+      "population": 329,
+      "share_pct": "13.12741312741312741312741312741312741313"
+    },
+    {
+      "id": "b6d0ba54-245c-5a46-b220-e3e1c5d68dea",
+      "name": "Ribnik",
+      "county": "Karlovačka",
+      "csv_row": 104,
+      "pdf_page": 122,
+      "pdf_tokens": [
+        "103,49",
+        "94,81"
+      ],
+      "total_t": "103.49",
+      "mixed_t": "94.81",
+      "population": 475,
+      "share_pct": "8.387283795535800560440622282346120398106"
+    },
+    {
+      "id": "0437de40-0abf-5045-839e-4ea01bbbcd15",
+      "name": "Kalnik",
+      "county": "Koprivničko-križevačka",
+      "csv_row": 147,
+      "pdf_page": 123,
+      "pdf_tokens": [
+        "140,69",
+        "95,84"
+      ],
+      "total_t": "140.69",
+      "mixed_t": "95.84",
+      "population": 1351,
+      "share_pct": "31.87859833676878242945482976757409908309"
+    },
+    {
+      "id": "1edb518a-4428-5a2f-9152-32b9c6c7e92a",
+      "name": "Novi Golubovec",
+      "county": "Krapinsko-zagorska",
+      "csv_row": 59,
+      "pdf_page": 120,
+      "pdf_tokens": [
+        "85,96",
+        "68,54"
+      ],
+      "total_t": "85.96",
+      "mixed_t": "68.54",
+      "population": 645,
+      "share_pct": "20.26523964634713820381572824569567240577"
+    },
+    {
+      "id": "a8b022d0-bca6-5ffa-86c8-b3ac00162aab",
+      "name": "Lovinac",
+      "county": "Ličko-senjska",
+      "csv_row": 228,
+      "pdf_page": 125,
+      "pdf_tokens": [
+        "256,00",
+        "256,00"
+      ],
+      "total_t": "256.0",
+      "mixed_t": "256.0",
+      "population": 1007,
+      "share_pct": "0"
+    },
+    {
+      "id": "00f0378e-23bb-512b-94f8-e0c8eddf61aa",
+      "name": "Dekanovec",
+      "county": "Međimurska",
+      "csv_row": 536,
+      "pdf_page": 134,
+      "pdf_tokens": [
+        "194,70",
+        "60,29"
+      ],
+      "total_t": "194.7",
+      "mixed_t": "60.29",
+      "population": 774,
+      "share_pct": "69.03441191576784797123780174627632254751"
+    },
+    {
+      "id": "4ea9c55a-6fcc-5ad1-94f7-03894a768a28",
+      "name": "Levanjska Varoš",
+      "county": "Osječko-baranjska",
+      "csv_row": 345,
+      "pdf_page": 129,
+      "pdf_tokens": [
+        "91,64",
+        "81,44"
+      ],
+      "total_t": "91.64",
+      "mixed_t": "81.44",
+      "population": 1194,
+      "share_pct": "11.13051069402007856831078131820165866434"
+    },
+    {
+      "id": "d12a8206-11dd-59e6-94dc-f460801b357d",
+      "name": "Berek",
+      "county": "Bjelovarsko-bilogorska",
+      "csv_row": 167,
+      "pdf_page": 124,
+      "pdf_tokens": [
+        "175,57",
+        "169,66"
+      ],
+      "total_t": "175.57",
+      "mixed_t": "169.66",
+      "population": 1443,
+      "share_pct": "3.366178732129634903457310474454633479524"
+    }
+  ],
+  "aggregate": {
+    "calculated_jls_sum_not_official_national_total": true,
+    "total_t": "1372385.76",
+    "mixed_t": "1086393.41",
+    "outside_mixed_t": "285992.35",
+    "weighted_share_pct": "20.83906422928783522207342052281276949420",
+    "published_rounded_share_pct": 21,
+    "difference_from_rounded_pp": "-0.16093577071216477792657947718723050580",
+    "published_table11_total_t": 1372358,
+    "published_table11_mixed_t": 1086872,
+    "published_table11_other_t": 285486,
+    "published_masses_share_pct": "20.80258941180071089322173951694820156257",
+    "difference_from_published_masses_pp": "0.03647481748712432885168100586456793163",
+    "total_difference_t": "27.76",
+    "mixed_difference_t": "-478.59",
+    "rounds_to_published_integer_pct": true,
+    "max_556_row_rounding_half_t": "2.780"
+  },
+  "limitations": "Razlika agregata nije objašnjena samim zaokruživanjem redaka; uzrok razlike među tablicama nije potvrđen. Lokalne mase nisu mijenjane niti skalirane. Široki udio nije stopa prema Uredbi (14%), RH udio (37%), recikliranje niti potvrđen međugodišnji trend."
+}

@@ -1,3 +1,4 @@
+import { RateEvidence } from './RateEvidence';
 import { visibleSourceIssues } from '../domain';
 import { useId, useState } from 'react';
 import {
@@ -41,13 +42,18 @@ const configurations = {
     ],
   },
   rate: {
-    title: 'Stopa odvojenog sakupljanja',
+    title: 'Izračunati udjeli i službene stope',
     unit: '%',
     series: [
       {
         key: 'separate_collection_pct',
-        title: 'Objavljena stopa odvojenog sakupljanja',
+        title: 'Službeno objavljeno · stopa odvojenog sakupljanja',
         color: '#226446',
+      },
+      {
+        key: 'calculated_nonmixed_share_pct',
+        title: 'Izračunato · udio izvan miješanog toka',
+        color: '#8292a5',
       },
     ],
   },
@@ -55,10 +61,12 @@ const configurations = {
 
 export function Trends({
   observations,
+  municipalityName,
   selectedYear,
   onYear,
 }: {
   observations: Observation[];
+  municipalityName: string;
   selectedYear: number | null;
   onYear: (year: number) => void;
 }) {
@@ -117,7 +125,7 @@ export function Trends({
           >
             <option value="mass">Količine otpada (t)</option>
             <option value="per_person">Po obuhvaćenom stanovniku (kg)</option>
-            <option value="rate">Odvojeno sakupljanje (%)</option>
+            <option value="rate">Udjeli i stope (%)</option>
           </select>
         </div>
         <span className={`badge ${connected ? 'neutral' : 'warning'}`}>
@@ -199,7 +207,12 @@ export function Trends({
                         key={series.key}
                         name={series.key}
                         dataKey={series.key}
-                        fill={series.key.startsWith('mixed_') ? `url(#${patternId})` : series.color}
+                        fill={
+                          series.key.startsWith('mixed_') ||
+                          series.key === 'calculated_nonmixed_share_pct'
+                            ? `url(#${patternId})`
+                            : series.color
+                        }
                         radius={[4, 4, 0, 0]}
                         maxBarSize={42}
                         isAnimationActive={false}
@@ -312,6 +325,14 @@ export function Trends({
             </tbody>
           </table>
         </div>
+      )}
+      {mode === 'rate' && (
+        <RateEvidence
+          records={sorted.map((observation) => ({
+            name: municipalityName,
+            observation,
+          }))}
+        />
       )}
     </section>
   );

@@ -39,10 +39,11 @@ export function MetricCards({ observation }: { observation: Observation }) {
       className: '',
     },
     {
-      key: 'separate_collection_pct',
-      label: 'Odvojeno sakupljanje',
+      key: observation.year < 2021 ? 'calculated_nonmixed_share_pct' : 'separate_collection_pct',
+      label: observation.year < 2021 ? 'Udio izvan miješanog toka' : 'Odvojeno sakupljanje',
       unit: '%',
-      hint: 'Objavljena stopa odvojenog sakupljanja',
+      hint:
+        observation.year < 2021 ? 'Izračunato iz objavljenih masa' : 'Službeno objavljena stopa',
       index: '04',
       className: 'accent-card',
     },
@@ -65,11 +66,20 @@ export function MetricCards({ observation }: { observation: Observation }) {
               </div>
               <h3 id={`metric-${card.key}`}>{card.label}</h3>
               <p className={`metric-value ${missing ? 'missing-value' : ''}`}>
-                <Value metric={value} />
+                {missing && card.key === 'calculated_nonmixed_share_pct' ? (
+                  'Nije dostupno'
+                ) : (
+                  <Value metric={value} />
+                )}
                 {!missing && <span className="metric-unit">{card.unit}</span>}
               </p>
-              {missing && <p className="metric-reason">{explainReason(value?.reason)}</p>}
+              {missing && card.key !== 'calculated_nonmixed_share_pct' && (
+                <p className="metric-reason">{explainReason(value?.reason)}</p>
+              )}
               <p className="metric-hint">{card.hint}</p>
+              {card.key === 'calculated_nonmixed_share_pct' && !missing && (
+                <span className="badge neutral indicator-origin">Izračunato</span>
+              )}
               {card.key === 'total_kg_per_covered_person' && (
                 <div className={`published-value ${mismatch ? 'mismatch' : ''}`}>
                   <span>
@@ -101,16 +111,6 @@ export function MetricCards({ observation }: { observation: Observation }) {
           );
         })}
       </div>
-      {m.calculated_nonmixed_share_pct && (
-        <p className="notice warning">
-          <span>
-            Kontrolni omjer razlike tokova (T−M)/T:{' '}
-            <strong>{formatMetric(m.calculated_nonmixed_share_pct)} %</strong>. Izračun iz masa,
-            nije službena stopa odvojenog sakupljanja. Obuhvat zahtijeva metodološku provjeru; ne
-            koristi se za zaključak o poboljšanju ni u Simulatoru.
-          </span>
-        </p>
-      )}
       <div className="coverage-strip">
         <span>
           <Icon name="pin" />

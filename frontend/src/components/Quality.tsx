@@ -1,3 +1,4 @@
+import { DataNotes } from './DataNotes';
 import type { Observation } from '../api/client';
 import { explainIssue, explainReason, isVerified, visibleSourceIssues } from '../domain';
 import { Icon } from './Icon';
@@ -5,10 +6,13 @@ import { Icon } from './Icon';
 export function Quality({
   selected,
   observations,
+  compact = false,
 }: {
+  compact?: boolean;
   selected?: Observation;
   observations: Observation[];
 }) {
+  if (compact) return <DataNotes selected={selected} observations={observations} />;
   const warnings = observations.flatMap((observation) =>
     visibleSourceIssues(observation.source.issues)
       .filter((issue) => issue.code !== 'historical_scope_unverified')

@@ -13,7 +13,7 @@ import { Search } from '../components/Search';
 import { Icon } from '../components/Icon';
 import { ErrorState, Loading } from '../components/State';
 import { Quality } from '../components/Quality';
-import { explainIssue, formatMetric, formatNumber, numeric } from '../domain';
+import { explainIssue, formatMetric, formatNumber, numeric, rateMetricKey } from '../domain';
 import { compareReason, unitLabel } from './helpers';
 import { CompareSources } from './CompareSources';
 const CompareCharts = lazy(() => import('./CompareCharts'));
@@ -378,7 +378,13 @@ export default function Compare() {
                   <h3>{m.municipality.name}</h3>
                   <dl>
                     {[
-                      ['separate_collection_pct', 'Odvojeno sakupljanje', '%'],
+                      [
+                        rateMetricKey(comparison.year),
+                        comparison.year < 2021
+                          ? 'Udio izvan miješanog toka'
+                          : 'Odvojeno sakupljanje',
+                        '%',
+                      ],
                       [
                         'total_kg_per_covered_person',
                         'Ukupno po obuhvaćenom stanovniku',
@@ -390,7 +396,10 @@ export default function Compare() {
                       <div key={key}>
                         <dt>{label}</dt>
                         <dd>
-                          {formatMetric(m.metrics[key])}
+                          {key === 'calculated_nonmixed_share_pct' &&
+                          numeric(m.metrics[key]) === null
+                            ? 'Nije dostupno'
+                            : formatMetric(m.metrics[key])}
                           {numeric(m.metrics[key]) !== null && ` ${unit}`}
                           {m.metrics[key]?.quality_status === 'review_required' && (
                             <span className="badge warning">Potrebna provjera</span>
@@ -505,6 +514,7 @@ export default function Compare() {
             </details>
           </section>
           <Quality
+            compact
             selected={
               comparison.members.find((m) => m.municipality.id === comparison.baseline_id)
                 ?.observation ?? undefined
@@ -548,6 +558,22 @@ export default function Compare() {
                   {member.population_ratio !== null &&
                     ` · ${formatNumber(Number(member.population_ratio))}× prema početnoj JLS`}
                 </p>
+                <p className="reference-rate">
+                  {member.metrics[rateMetricKey(comparison.year)]?.value == null
+                    ? 'Nije dostupno'
+                    : formatMetric(member.metrics[rateMetricKey(comparison.year)])}
+                  {numeric(member.metrics[rateMetricKey(comparison.year)]) !== null && ' %'}
+                  <small>
+                    {comparison.year < 2021
+                      ? 'Izračunati udio izvan miješanog toka'
+                      : 'Službena stopa odvojenog sakupljanja'}
+                  </small>
+                </p>
+                {member.metrics[rateMetricKey(comparison.year)]?.value != null && (
+                  <span className="badge neutral indicator-origin">
+                    {comparison.year < 2021 ? 'Izračunato' : 'Službeno objavljeno'}
+                  </span>
+                )}
                 {member.warnings.includes('population_outside_preferred_range') && (
                   <p className="source-warning">
                     <Icon name="alert" />
@@ -555,19 +581,6 @@ export default function Compare() {
                     razliku u veličini.
                   </p>
                 )}
-                {member.observation?.metrics.calculated_nonmixed_share_pct && (
-                  <p className="source-warning">
-                    Kontrolni omjer (T−M)/T:{' '}
-                    {formatMetric(member.observation.metrics.calculated_nonmixed_share_pct)} %.
-                    Izračun iz masa, nije službena stopa; nije korišten u razlikama stopa ili
-                    automatskim uvidima.
-                  </p>
-                )}
-                <p className="reference-rate">
-                  {formatMetric(member.metrics.separate_collection_pct)}
-                  {numeric(member.metrics.separate_collection_pct) !== null && ' %'}
-                  <small>objavljena stopa odvojenog sakupljanja</small>
-                </p>
                 {member.simulation_url && member.observation?.target_rate_available && (
                   <>
                     <a className="button secondary" href={member.simulation_url}>
@@ -594,12 +607,14 @@ export default function Compare() {
                 {!member.observation && (
                   <p className="notice warning">{compareReason('missing_year')}</p>
                 )}
-                {member.observation?.issues.map((issue, i) => (
-                  <p className="source-warning" key={i}>
-                    <Icon name="alert" />
-                    {explainIssue(issue)}
-                  </p>
-                ))}
+                {member.observation?.issues
+                  .filter((issue) => issue.severity !== 'info')
+                  .map((issue, i) => (
+                    <p className="source-warning" key={i}>
+                      <Icon name="alert" />
+                      {explainIssue(issue)}
+                    </p>
+                  ))}
                 <a
                   className="text-button profile-link"
                   href={`/explorer?${changedSelection(member.municipality.id, String(comparison.year))}`}
@@ -607,8 +622,11 @@ export default function Compare() {
                   Otvori profil u Exploreru ↗
                 </a>
                 <details className="quality-details">
-                  <summary>Izvori i materijalne kategorije</summary>
+                  <summary>Izvori i detalji</summary>
                   <div>
+                    {member.observation?.issues
+                      .filter((issue) => issue.severity === 'info')
+                      .map((issue, i) => <p key={i}>{explainIssue(issue)}</p>)}
                     {member.observation && (
                       <>
                         <p>

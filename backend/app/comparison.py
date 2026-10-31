@@ -38,6 +38,7 @@ MATERIAL_LABELS = {
     "bio": "Biootpad",
 }
 CORE = [
+    ("calculated_nonmixed_share_pct", "Udio izvan miješanog toka · izračunato", "%", "pp", "historical_share"),
     (
         "total_kg_per_covered_person",
         "Ukupno po obuhvaćenom stanovniku",
@@ -288,7 +289,7 @@ def calculate_insights(members, catalog, year):
     candidates = []
     excluded = []
     for index, definition in enumerate(catalog):
-        if definition.family == "published":
+        if definition.family in ("published", "historical_share"):
             continue  # Avoid double-counting the published/derived pair.
         values = [
             (m.metrics[definition.key].value, m)
