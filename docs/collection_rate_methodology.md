@@ -1,5 +1,7 @@
 # Provjera rekonstrukcije stope odvojenog sakupljanja
 
+> **Ažuriranje završne provjere 2019.:** široki udio izvan miješanog toka sada je odobren za svih 556 JLS, na temelju definicije na str. 12 i Tablica 11/27 izvješća Rev2. Prethodna blokada u izvještaju ispod zamijenjena je tim zaključkom za široki udio; nije odobreno poistovjećivanje s užom stopom prema Uredbi. [Detaljna provjera, primjeri i razlika agregata](2019_share_methodology.md).
+
 Datum: 31. listopada 2026. Izvedena read-only provjera lokalnih CSV/XLSX/PDF izvora. Ovo je metodološki izvještaj i preporuka prema dopuštenoj alternativi iz zahtjeva; povijesni kontrolni omjeri nisu promovirani u službene stope ili jedinstveni potvrđeni vremenski niz.
 
 ## 1. Formula i validacija 2021.–2024.

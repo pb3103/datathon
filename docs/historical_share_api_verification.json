@@ -1,0 +1,29 @@
+{
+  "status": "passed",
+  "years": [
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "municipalities": 556,
+  "observations_checked": 4448,
+  "explorer_compare_pairs": 4448,
+  "metric_cells_checked_including_overlap": 31192,
+  "historical_control_ratios_not_official": 1668,
+  "published_rates": 2224,
+  "tolerance_for_decimal_serialization": "1e-9",
+  "checks": [
+    "T>=M>=0",
+    "1000*mass/P",
+    "unusable denominator stays null",
+    "historical official rates null",
+    "historical diagnostic ratio",
+    "Simulator only eligible 2023/2024",
+    "Explorer/Compare same-year values and quality flags"
+  ]
+}

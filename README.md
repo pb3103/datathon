@@ -284,6 +284,7 @@ docker compose run --rm api python -m pipeline.audit_collection_rates > docs/col
 
 Nakon dodavanja audita prvo obnovite API image (`docker compose build api`). Svih 2.224 objavljenih stopa 2021.–2024. odgovara intervalima preciznosti mase i stope. To ne potvrđuje istovjetnost povijesnih definicija: izvješće 2019. opisuje užu metodu s isključenim tokovima, dok 2020. podupire široki udio nemiješanog otpada u organizaciji JLS. Postojeći povijesni kontrolni omjer ostaje odvojen od objavljenog pokazatelja; nema novih službenih stopa, promjene masa niti proširenja Simulatora. Berek 124,20 / 100,36 t primjer je iz 2024. Detaljna odluka, preciznosti, statistika i preporuka: [metodološki izvještaj](docs/collection_rate_methodology.md), [rezultati po retku](docs/collection_rate_validation.json).
 
+
 ## Karta reciklažnih dvorišta na početnoj stranici
 
 Početna stranica koristi pripremljeni skup `frontend/src/data/recycling-locations.json`
@@ -323,3 +324,17 @@ Za reproducibilnu pripremu iz izvornih CSV/GeoJSON/PDF datoteka koristite Python
 instaliranim `pypdf` te `python -m pipeline.prepare_recycling`. Pripremljeni JSON
 čuva izvornu datoteku i njezin SHA-256. Raniji `recycling-zagreb.json` više se ne
 koristi za prikaz karte.
+=======
+## Povijesni udio otpada izvan miješanog toka
+
+Explorer i Compare zasebno prikazuju **izračunati široki udio** `100×(T−M)/T` za 2017.–2020. (po 556 JLS). Završna provjera Rev2 za 2019. potvrdila je široki obuhvat organizacije JLS; to nije uža stopa prema Uredbi. To nije zamjena za službene stope 2021.–2024. niti potvrđen povezani trend. Izvedeni API ključ je `calculated_nonmixed_share_pct`; objavljene stope ostaju u `separate_collection_pct`.
+
+API provjerava izvor/checksum i valjanost masa; prikaz ima zasebne oznake „Izračunato” / „Službeno objavljeno”, metodološku napomenu te detalje mase, formule i izvora. Simulator ostaje samo 2023./2024. Ova široka definicija dopunjuje raniji audit užih službenih stopa, bez promjene njegovih aritmetičkih nalaza. Detalji: [povijesni udjeli](docs/historical_shares.md). Nakon izmjene obnovite API image i frontend build; migracija ili ponovni uvoz nisu potrebni.
+
+### Sažeti kontekst podataka u Exploreru i Compareu
+
+KPI i referentne kartice ističu raspoloživi pokazatelj: izračunati udio za 2017.–2020. ili službenu stopu za 2021.–2024. Zajednička kompaktna komponenta „O podacima i usporedivosti” prilagođava sažetak odabranoj godini. Formule, definicije kvalitete i izvori ostaju u proširivim detaljima; konkretna upozorenja JLS ostaju vidljiva. Relevantni grafovi povezuju se s tim objašnjenjem bez ponavljanja općih odlomaka. Simulatorov prikaz ostaje isti. Provjere su opisane u [izvještaju poliranja](docs/product_polish_verification.md).
+
+
+Završna metodološka provjera 2019., svih 556 PDF redaka, primjeri iz 12 županija i kontrola agregata (20,8391%, uz dokumentiranu razliku masa među tablicama): [izvještaj 2019.](docs/2019_share_methodology.md). Prethodni auditni izvještaji ostaju datirane snimke tadašnje procjene; sada je široki udio dostupan za sve četiri povijesne godine.
+

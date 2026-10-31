@@ -66,8 +66,10 @@ def main():
                     if abs(Decimal(m["calculated_nonmixed_share_pct"]["value"]) - ratio) > Decimal(
                         "1e-9"
                     ):
-                        raise ValueError("Wrong control ratio")
-                    historical_diagnostics += 1
+                        raise ValueError("Wrong calculated historical share")
+                    historical_diagnostics += int(
+                        m["calculated_nonmixed_share_pct"]["value"] is not None
+                    )
                 else:
                     published_rates += int(m["separate_collection_pct"]["value"] is not None)
                 if o["year"] < 2023 and o["target_rate_available"]:
@@ -86,6 +88,7 @@ def main():
     parity = set()
     cells = 0
     keys = [
+        "calculated_nonmixed_share_pct",
         "total_t",
         "mixed_t",
         "total_kg_per_covered_person",

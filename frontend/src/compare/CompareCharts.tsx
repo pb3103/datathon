@@ -1,3 +1,5 @@
+import { RateEvidence } from '../components/RateEvidence';
+import { rateMetricKey } from '../domain';
 import { useId } from 'react';
 import {
   Bar,
@@ -38,10 +40,16 @@ export default function CompareCharts({
   const title = useId();
   const definition = data.metrics.find((m) => m.key === selectedMetric) ?? data.metrics[0];
   const key = definition.key;
+  const isRate = key === 'separate_collection_pct';
+  const displayKey = isRate ? rateMetricKey(data.year) : key;
+  const historyKey = (year: number) => (isRate ? rateMetricKey(year) : key);
   const snapshot = data.members.map((member) => ({
     name: member.municipality.name,
     id: member.municipality.id,
-    value: member.metrics[key].quality_status === 'available' ? numeric(member.metrics[key]) : null,
+    value:
+      member.metrics[displayKey].quality_status === 'available'
+        ? numeric(member.metrics[displayKey])
+        : null,
   }));
   const years = [
     ...new Set(data.members.flatMap((member) => member.history.map((o) => o.year))),
@@ -50,7 +58,7 @@ export default function CompareCharts({
     year,
     ...Object.fromEntries(
       data.members.map((member) => {
-        const m = historyMetric(member, year, key);
+        const m = historyMetric(member, year, historyKey(year));
         return [member.municipality.id, m?.quality_status === 'available' ? numeric(m) : null];
       }),
     ),
@@ -87,10 +95,11 @@ export default function CompareCharts({
           <select id="compare-metric" value={key} onChange={(e) => onMetric(e.target.value)}>
             <optgroup label="Ključni pokazatelji">
               {data.metrics
-                .filter((m) => m.family !== 'materials')
+                .filter((m) => m.family !== 'materials' && m.family !== 'historical_share')
                 .map((m) => (
                   <option key={m.key} value={m.key}>
-                    {m.label} ({unitLabel(m.unit)})
+                    {m.key === 'separate_collection_pct' ? 'Udjeli i službene stope' : m.label} (
+                    {unitLabel(m.unit)})
                   </option>
                 ))}
             </optgroup>
@@ -99,7 +108,8 @@ export default function CompareCharts({
                 .filter((m) => m.family === 'materials')
                 .map((m) => (
                   <option key={m.key} value={m.key}>
-                    {m.label} ({unitLabel(m.unit)})
+                    {m.key === 'separate_collection_pct' ? 'Udjeli i službene stope' : m.label} (
+                    {unitLabel(m.unit)})
                   </option>
                 ))}
             </optgroup>
@@ -128,6 +138,12 @@ export default function CompareCharts({
           nije nula; provjerite izvore ili odaberite drugi pokazatelj.
         </p>
       )}
+      {isRate && (
+        <p className="small-muted">
+          2017.–2020.: Izračunato · udio izvan miješanog toka. 2021.–2024.: Službeno objavljeno ·
+          stopa odvojenog sakupljanja.
+        </p>
+      )}
       {view === 'chart' ? (
         <>
           <div
@@ -152,7 +168,9 @@ export default function CompareCharts({
                   <Tooltip
                     formatter={(value) => [
                       `${formatNumber(Number(value))} ${unit}`,
-                      definition.label,
+                      isRate && data.year < 2021
+                        ? 'Izračunato · udio izvan miješanog toka'
+                        : definition.label,
                     ]}
                   />
                   <Bar
@@ -186,7 +204,9 @@ export default function CompareCharts({
                       data.members.find((m) => m.municipality.id === name)?.municipality.name ??
                         name,
                     ]}
-                    labelFormatter={(label) => `${label}. godina`}
+                    labelFormatter={(label) =>
+                      `${label}. godina${isRate ? (Number(label) < 2021 ? ' · Izračunato' : ' · Službeno objavljeno') : ''}`
+                    }
                   />
                   <Legend
                     formatter={(value) =>
@@ -224,12 +244,13 @@ export default function CompareCharts({
             {data.members
               .filter(
                 (m) =>
-                  m.metrics[key].value === null || m.metrics[key].quality_status !== 'available',
+                  m.metrics[displayKey].value === null ||
+                  m.metrics[displayKey].quality_status !== 'available',
               )
               .map((member) => (
                 <li key={member.municipality.id}>
                   <strong>{member.municipality.name}:</strong>{' '}
-                  {compareReason(member.metrics[key].reason ?? 'quality_requires_review')}
+                  {compareReason(member.metrics[displayKey].reason ?? 'quality_requires_review')}
                 </li>
               ))}
           </ul>
@@ -243,7 +264,8 @@ export default function CompareCharts({
         >
           <table>
             <caption>
-              {definition.label} · {unit}. Razlika = odabrana JLS − početna JLS.
+              {isRate ? 'Izračunati udio / službena stopa' : definition.label} · {unit}. Razlika =
+              odabrana JLS − početna JLS.
             </caption>
             <thead>
               <tr>
@@ -259,7 +281,10 @@ export default function CompareCharts({
                 ) : (
                   years.map((year) => (
                     <th key={year} scope="col">
-                      {year}.
+                      {year}.{' '}
+                      {isRate && (
+                        <small>{year < 2021 ? 'Izračunato' : 'Službeno objavljeno'}</small>
+                      )}
                     </th>
                   ))
                 )}
@@ -275,18 +300,18 @@ export default function CompareCharts({
                   {mode === 'snapshot' ? (
                     <>
                       <td>
-                        {formatMetric(member.metrics[key])}
-                        {member.metrics[key].value === null && (
-                          <small>{compareReason(member.metrics[key].reason)}</small>
+                        {formatMetric(member.metrics[displayKey])}
+                        {member.metrics[displayKey].value === null && (
+                          <small>{compareReason(member.metrics[displayKey].reason)}</small>
                         )}
-                        {member.metrics[key].quality_status === 'review_required' && (
+                        {member.metrics[displayKey].quality_status === 'review_required' && (
                           <small>Potrebna provjera</small>
                         )}
                       </td>
                       <td>
-                        {formatMetric(member.differences[key])}
-                        {member.differences[key].value === null && (
-                          <small>{compareReason(member.differences[key].reason)}</small>
+                        {formatMetric(member.differences[displayKey])}
+                        {member.differences[displayKey].value === null && (
+                          <small>{compareReason(member.differences[displayKey].reason)}</small>
                         )}
                       </td>
                       {definition.family === 'per_person' && (
@@ -304,12 +329,13 @@ export default function CompareCharts({
                   ) : (
                     years.map((year) => (
                       <td key={year}>
-                        {formatMetric(historyMetric(member, year, key))}
-                        {historyMetric(member, year, key)?.quality_status === 'review_required' && (
-                          <small>Nesklad · potrebna provjera</small>
-                        )}
-                        {historyMetric(member, year, key)?.value == null && (
-                          <small>{compareReason(historyMetric(member, year, key)?.reason)}</small>
+                        {formatMetric(historyMetric(member, year, historyKey(year)))}
+                        {historyMetric(member, year, historyKey(year))?.quality_status ===
+                          'review_required' && <small>Nesklad · potrebna provjera</small>}
+                        {historyMetric(member, year, historyKey(year))?.value == null && (
+                          <small>
+                            {compareReason(historyMetric(member, year, historyKey(year))?.reason)}
+                          </small>
                         )}
                       </td>
                     ))
@@ -324,6 +350,15 @@ export default function CompareCharts({
         Izvori i kvaliteta prikazani su niže za svaku JLS. Graf je dostupan tipkovnicom; iste su
         vrijednosti u tablici. Materijalne kategorije ne zbrajaju se i ne pretvaraju u tone.
       </p>
+      {isRate && (
+        <RateEvidence
+          records={data.members.flatMap((member) =>
+            member.history
+              .filter((o) => mode === 'history' || o.year === data.year)
+              .map((observation) => ({ name: member.municipality.name, observation })),
+          )}
+        />
+      )}
     </section>
   );
 }

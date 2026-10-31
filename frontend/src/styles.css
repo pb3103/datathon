@@ -3759,6 +3759,7 @@ fieldset.simulator-workbench:disabled .simulator-controls {
   text-underline-offset: 4px;
 }
 
+
 /* A compact introduction, followed by actions and a shared search/map panel. */
 .module-home .home-hero {
   display: block;
@@ -4090,4 +4091,104 @@ fieldset.simulator-workbench:disabled .simulator-controls {
 .recycling-toolbar .yard-legend {
   flex-wrap: wrap;
   font-size: 12px;
+=======
+.rate-method-note {
+  margin-top: 14px;
+  padding: 10px 14px;
+  border-left: 3px solid #bacdac;
+  background: #f5f8f1;
+  font-size: 13px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.rate-method-note p {
+  margin: 4px 0;
+}
+.rate-method-note summary {
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.rate-method-note li {
+  margin: 10px 0;
+}
+
+/* Explorer/Compare: one contextual methodology disclosure, local issues stay visible. */
+.data-notes {
+  margin: 18px 0;
+}
+.data-notes-card {
+  display: flex;
+  gap: 10px;
+  padding: 12px 16px;
+  background: #f3f7ef;
+  border: 1px solid #dbe5d3;
+  border-radius: 10px;
+  color: #39523b;
+  font-size: 13px;
+  line-height: 1.65;
+}
+.data-notes-card > .icon {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+}
+.data-notes-card > div {
+  min-width: 0;
+}
+.data-notes-card p {
+  margin: 3px 0;
+}
+.data-notes-card summary {
+  cursor: pointer;
+  margin-top: 4px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.data-notes-details {
+  padding-top: 10px;
+  overflow-wrap: anywhere;
+}
+.data-notes-details p {
+  margin-bottom: 10px;
+}
+.data-notes-details dt {
+  font-weight: 600;
+}
+.data-notes-details dd {
+  margin: 0 0 10px;
+}
+.indicator-origin {
+  align-self: flex-start;
+  margin-top: 7px;
+  font-size: 11px;
+}
+.metric-card .metric-value {
+  font-variant-numeric: tabular-nums;
+}
+.rate-evidence-compact {
+  padding: 8px 0 0;
+  background: transparent;
+  border: 0;
+}
+.rate-evidence-compact details {
+  margin-top: 7px;
+}
+.rate-notes-link {
+  font-size: 12px;
+}
+.comparison-reference .reference-rate {
+  margin-top: 16px;
+  margin-bottom: 4px;
+}
+.comparison-reference .reference-rate small {
+  line-height: 1.5;
+  margin-top: 6px;
+}
+@media (max-width: 600px) {
+  .data-notes-card {
+    padding: 10px 12px;
+  }
+
 }

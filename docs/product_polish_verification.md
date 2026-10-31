@@ -71,3 +71,31 @@ Ujednačeni su samo prikazni nazivi glavnih CSV/XLSX izvora; fizički nazivi, iz
 
 
 Provjere ove dorade: 43 pytest testa, četiri frontend unit testa, TypeScript, produkcijski build i Prettier prošli. Svih 29 Playwright browser testova prošlo je preko stvarnog API-ja (uključujući novi test jedne napomene, tipkovničkog proširivanja, četiri izvora, osam prikaznih naziva, odsutnosti općih kartica, mobilnog prelamanja i axe pristupačnosti). Postojeći testovi izmijenjeni su samo u očekivanju uklonjenih općih napomena; lokalne kvalitativne provjere ostaju. Mobilni test otkrio je prelijevanje dugog PDF hasha u otvorenim detaljima, riješeno prelamanjem teksta. Ponovljeni cjeloviti live API audit vratio je identičan rezultat prethodnoj evidenciji: 4.448 opažanja i 26.736 ćelija metrika. Simulator, navigacija, izvoz i ispis prošli su regresijske tokove. Fizički nazivi nisu mijenjani pa ETL reference i identiteti izvora ne zahtijevaju migraciju.
+
+## Ciljana dorada Explorera i Comparea — povijesni udjeli
+
+Za ovu UX doradu nisu mijenjani izračuni, izvorni podaci, službene stope, obuhvat izračuna 2017./2018./2020., blokada 2019., peer algoritam, API ni Simulator. Postojeće prethodno implementirane promjene u radnom stablu ostaju odvojena funkcionalnost.
+
+### Komponente i organizacija
+
+- Novi `frontend/src/components/DataNotes.tsx`: jedna kratka komponenta „O podacima i usporedivosti”, s kontekstom odabrane godine i jednim proširivim dijelom. Lokalni problemi i drugi relevantni problemi izvora ostaju vidljivi izvan proširivog općeg objašnjenja. Detalji čuvaju formulu, definicije kvalitete, objašnjenje 2019., izvore po godinama i napomene odabranog zapisa.
+- `Quality.tsx` dobiva opcijski kompaktni prikaz, uključen samo u `App.tsx` (Explorer) i `Compare.tsx`. Simulator zadržava prethodni prikaz.
+- `MetricCards.tsx`: kraći podnaslovi, mali badge „Izračunato”, neutralno „Nije dostupno” za nedostupan povijesni udio, bez dupliciranog postotka i kontrolnog omjera ispod kartica. Ostali pokazatelji i njihovi razlozi nedostupnosti nisu preimenovani ili zamijenjeni nulom.
+- `Compare.tsx`: pregledne i referentne kartice koriste postojeći odgovarajući API pokazatelj (`rateMetricKey`) samo za izbor prikaza. Povijesni udio je glavni postotak za 2017./2018./2020.; za 2019. „Nije dostupno”; za 2021.–2024. službena stopa. Dodani su kratki badgeovi podrijetla. Uklonjeni su duplicirani kontrolni omjeri i opća upozorenja unutar referentnih kartica. Informativne oznake ostaju u „Izvori i detalji”; konkretni problemi zapisa i nesrazmjer populacije ostaju vidljivi.
+- `RateEvidence.tsx`: umjesto ponovljenih općih odlomaka, uz relevantan graf daje poveznicu na zajedničko objašnjenje i proširive ulazne mase/formulu/izvore. Za grafove drugih pokazatelja nije prikazan. Prugasti Explorer stupci, odvojene serije, legende i oznake podrijetla u Compareu ostaju.
+- `styles.css`: ciljano formatiranje kompaktne napomene, badgeova, razmaka i čitljivih detalja; bez novih biblioteka ili promjene identiteta.
+- `frontend/e2e/historical.spec.ts`: prilagođene provjere sažetog prikaza i novi scenarij Zagreb/Split, promjene godina, neutralne nedostupnosti, tipkovnice, širina 1440/820/390 px i axe pristupačnosti.
+
+### Uklonjena ponavljanja
+
+U Exploreru više nema ponovljenog izračunatog postotka ispod KPI kartica, odvojenog velikog naslova „Prije tumačenja podataka”, zasebnog povijesnog bloka i zasebnog općeg kvalitetnog objašnjenja. U Compareu nema velikog „Nema podatka” za službenu stopu kada je dostupan povijesni udio, ni ponavljanja definicije istog udjela u svakoj kartici i ispod grafa. Izračunate vrijednosti nisu predstavljene kao službene stope.
+
+### Provjere i ograničenja
+
+Završni rezultati testova i vizualne provjere dopunjeni su nakon izvršavanja. Preostaje stvarno podatkovno ograničenje za 2019., a ne UX pogreška; neutralna nedostupnost ostaje namjerna.
+
+Završna provjera ove UX dorade: **64 backend/podatkovna testa, 5 frontend unit testova i 31 browser test prošli su**. Browser testovi izvršeni su stvarnim Chromiumom preko pokrenutog API-ja i baze; pokrivaju Zagreb 2018. (13,38%), Zagreb 2021. (31,40%), Zagreb/Split 2018. (13,38% / 5,45%), neutralnu nedostupnost 2019., nepromijenjene službene stope 2024., lokalnu napomenu o populaciji, sažeti kontekst, tipkovnicu i axe pristupačnost. U prvom pokretanju novi test pogrešno je tražio odsutnost tehničkog teksta i u zatvorenim izvornim detaljima; prilagođen je da potvrđuje odsutnost iz vidljivog prikaza, uz očuvanu transparentnost. Nakon toga cijeli skup prolazi (31 test, 53,4 s).
+
+TypeScript, produkcijski build, Ruff, Prettier i `git diff --check` prolaze. Ponovljeni cjeloviti live API audit daje **identičan rezultat prethodnom izvještaju**: 4.448 opažanja i 31.192 ćelije metrika, uz iste brojke dostupnih izračunatih udjela i objavljenih stopa. Time je dodatno provjereno da UX nije promijenio rezultate.
+
+Vizualno su pregledane snimke referentnih kartica pri 1440, 820 i 390 px te sažetih metodoloških napomena za 2018., 2019. i 2021. Postoci ostaju poravnani; konkretno upozorenje o populaciji nalazi se ispod glavnog pokazatelja. Snimke `refined-compare-*.png` i `refined-note-*.png` su u ignoriranom `frontend/test-results/`. Nisu pronađeni novi blokirajući UX problemi u provjerenim tokovima. Ostaje namjerna metodološka nedostupnost za 2019.; nisu testirani fizički mobilni uređaji ni Safari/Firefox.

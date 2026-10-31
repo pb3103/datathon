@@ -93,11 +93,13 @@ def test_all_eight_year_api_contract_and_same_year_comparison(historical_client)
             assert o["target_rate_available"] == (year >= 2023)
             if year < 2021:
                 assert m["metrics"]["separate_collection_pct"]["value"] is None
+                share = o["metrics"]["calculated_nonmixed_share_pct"]
+                assert share["value"] == m["metrics"]["calculated_nonmixed_share_pct"]["value"]
+                assert share["value"] is not None
                 assert m["simulation_url"] is None
                 assert m["history_metrics"][str(year)]["material_paper"]["value"] is None
-                assert (
-                    o["metrics"]["calculated_nonmixed_share_pct"]["quality_status"]
-                    == "review_required"
+                assert o["metrics"]["calculated_nonmixed_share_pct"]["quality_status"] == (
+                    "available"
                 )
         for insight in data["insights"]:
             low, high = map(D, [insight["low_value"], insight["high_value"]])

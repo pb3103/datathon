@@ -2,6 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   explainReason,
+  rateMetricKey,
   formatMetric,
   mayConnect,
   numeric,
@@ -104,4 +105,11 @@ test('cross-module URLs remove stale references and preserve comparison membersh
   assert.equal(moduleUrl('explorer', query), '/explorer?jls=a&godina=2024&usporedi=b%2Cc');
   assert.equal(changedSelection('b', '2023', query).get('usporedi'), 'a,c');
   assert.equal(changedSelection('a', '2023', query).has('referenca'), false);
+});
+
+test('historical view chooses a separate derived metric and keeps official rates distinct', () => {
+  for (const year of [2017, 2018, 2019, 2020])
+    assert.equal(rateMetricKey(year), 'calculated_nonmixed_share_pct');
+  for (const year of [2021, 2022, 2023, 2024])
+    assert.equal(rateMetricKey(year), 'separate_collection_pct');
 });
