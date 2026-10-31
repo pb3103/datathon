@@ -283,3 +283,43 @@ docker compose run --rm api python -m pipeline.audit_collection_rates > docs/col
 ```
 
 Nakon dodavanja audita prvo obnovite API image (`docker compose build api`). Svih 2.224 objavljenih stopa 2021.–2024. odgovara intervalima preciznosti mase i stope. To ne potvrđuje istovjetnost povijesnih definicija: izvješće 2019. opisuje užu metodu s isključenim tokovima, dok 2020. podupire široki udio nemiješanog otpada u organizaciji JLS. Postojeći povijesni kontrolni omjer ostaje odvojen od objavljenog pokazatelja; nema novih službenih stopa, promjene masa niti proširenja Simulatora. Berek 124,20 / 100,36 t primjer je iz 2024. Detaljna odluka, preciznosti, statistika i preporuka: [metodološki izvještaj](docs/collection_rate_methodology.md), [rezultati po retku](docs/collection_rate_validation.json).
+
+## Karta reciklažnih dvorišta na početnoj stranici
+
+Početna stranica koristi pripremljeni skup `frontend/src/data/recycling-locations.json`
+iz dostavljenih GeoJSON, CSV i PDF izvora. Koordinate se čitaju iz izvornika;
+nema geokodiranja ni pristupa bazi za lokacije. Zagrebački GeoJSON navodi CRS84
+(geografska dužina, geografska širina).
+
+Leaflet prikazuje OpenStreetMap podlogu s atribucijom; za podlogu je potrebna
+internetska veza. Popis lokacija ostaje dostupan i kada se podloga ne učita.
+Pretraga gradova i općina i dalje otvara Explorer; područje karte mijenja se zasebnim
+filtrom. Mobilne lokacije nisu potvrda trenutačne prisutnosti dvorišta. Radno vrijeme,
+materijali i napomene prikazuju se prema dostavljenom izvoru, bez tvrdnje o aktualnosti.
+
+Nakon ažuriranja frontend ovisnosti u postojećem Docker volumenu pokrenite:
+
+```sh
+docker compose run --rm --no-deps frontend npm ci
+docker compose restart frontend
+```
+
+### Proširenje karte na dodatna područja
+
+Karta sada koristi `frontend/src/data/recycling-locations.json`: 59 lokacija s
+koordinatama iz 11 područja izvora, uz 8 zapisa bez koordinata dostupnih samo u
+popisu. Odvojene su vrste: stalno dvorište, mobilno dvorište, zeleni otok i lokacija
+bez navedene vrste. Za 18 rugvičkih točaka tablica ne navodi zasebnu vrstu;
+ne prikazuju se kao potvrđena reciklažna dvorišta. Dvorište Rugvica nema koordinate.
+
+Izvornici nisu mijenjani. Nazivi datoteka za Sopje i Posedarje zamijenjeni su u
+dostavljenom skupu: povezivanje je napravljeno prema sadržaju i koordinatama.
+Bistrin izvor navodi lokaciju u Zaprešiću; filter predstavlja područje izvora,
+a ne tvrdnju o teritorijalnoj pripadnosti objekta. Nedostajući kontakt, radno vrijeme
+i materijali ne preuzimaju se iz drugih općina. Zagrebački CSV i GeoJSON nisu
+uvezeni dvaput.
+
+Za reproducibilnu pripremu iz izvornih CSV/GeoJSON/PDF datoteka koristite Python s
+instaliranim `pypdf` te `python -m pipeline.prepare_recycling`. Pripremljeni JSON
+čuva izvornu datoteku i njezin SHA-256. Raniji `recycling-zagreb.json` više se ne
+koristi za prikaz karte.

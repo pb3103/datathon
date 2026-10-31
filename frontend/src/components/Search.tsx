@@ -6,7 +6,13 @@ type Result =
   | { status: 'idle' | 'loading' }
   | { status: 'error'; message: string }
   | { status: 'success'; data: MunicipalityPage };
-export function Search({ onSelect }: { onSelect: (municipality: Municipality) => void }) {
+export function Search({
+  onSelect,
+  onSearch,
+}: {
+  onSelect: (municipality: Municipality) => void;
+  onSearch?: (query: string) => void;
+}) {
   const [query, setQuery] = useState('');
   const [submitted, setSubmitted] = useState<{
     query: string;
@@ -36,6 +42,7 @@ export function Search({ onSelect }: { onSelect: (municipality: Municipality) =>
   function search(value: string, page = 1) {
     if (!value.trim()) return;
     controller.current?.abort();
+    if (page === 1) onSearch?.(value.trim());
     setQuery(value);
     setResult({ status: 'loading' });
     setSubmitted((old) => ({ query: value.trim(), page, attempt: (old?.attempt ?? 0) + 1 }));
