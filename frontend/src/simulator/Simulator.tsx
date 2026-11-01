@@ -393,14 +393,6 @@ export default function Simulator() {
     : [];
   return (
     <WorkspaceLayout module="simulator">
-      <div className="notice simulator-intro">
-        <strong>Istražite što se matematički mijenja.</strong>
-        <p>
-          Hipotetski scenarij, ne prognoza učinka javne politike. Odvojeno sakupljanje nije
-          recikliranje. Matematička granica od 100 % ne znači da je sav miješani otpad moguće
-          odvojiti.
-        </p>
-      </div>
       <Search onSelect={(m) => navigate(m.id, '2024')} />
       {id && (
         <div className="simulator-context-bar panel">
@@ -694,7 +686,6 @@ export default function Simulator() {
                       {issue.description}
                     </p>
                   ))}
-                  <small>Referentni rezultat nije preporuka ni dokaz ostvarivosti.</small>
                 </aside>
               )}
             </section>
@@ -1028,7 +1019,7 @@ export default function Simulator() {
             <h2>Ključne pretpostavke</h2>
             <p>
               Hipotetski matematički scenarij, ne prognoza učinka javne politike. Obuhvat i pouzdana
-              obuhvaćena populacija ostaju isti. Stopa odvojenog sakupljanja nije recikliranje.
+              obuhvaćena populacija ostaju isti.
             </p>
             <p>
               Preusmjeravanje čuva ukupnu masu; prevencija čuva odvojeno sakupljenu masu. Ne tvrdimo

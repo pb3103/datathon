@@ -129,10 +129,7 @@ export function MetricCards({ observation }: { observation: Observation }) {
       </div>
       <p className="definition-note">
         <Icon name="info" />
-        <span>
-          „Stanovnik” ovdje znači stanovnika obuhvaćenog uslugom. Stopa odvojenog sakupljanja nije
-          stopa recikliranja.
-        </span>
+        <span>„Stanovnik” ovdje znači stanovnika obuhvaćenog uslugom.</span>
       </p>
       {numeric(computed) === null && numeric(published) !== null && (
         <p className="notice warning">

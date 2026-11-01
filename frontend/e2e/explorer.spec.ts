@@ -1,9 +1,12 @@
 import { test, expect, type Page } from '@playwright/test';
 
 async function selectMunicipality(page: Page, name: string) {
-  await page.getByRole('searchbox', { name: 'Grad ili općina' }).fill(name);
-  await page.getByRole('searchbox', { name: 'Grad ili općina' }).press('Enter');
-  await page.getByRole('button', { name: new RegExp(`^Otvori ${name},`) }).click();
+  await page.getByRole('combobox', { name: 'Grad ili općina' }).fill(name);
+  await page
+    .getByRole('option')
+    .filter({ has: page.locator('strong', { hasText: new RegExp(`^${name}$`) }) })
+    .first()
+    .click();
   await expect(page.getByRole('heading', { name: new RegExp(`^${name}`) })).toBeVisible();
   await expect(page.getByLabel('Godina podataka')).toHaveValue('2024');
 }
@@ -88,15 +91,11 @@ test('real API: Seget discrepancy keeps published value and withholds derived kg
 test('real API: keyboard search and mobile single-column layout', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/explorer');
-  const search = page.getByRole('searchbox', { name: 'Grad ili općina' });
+  const search = page.getByRole('combobox', { name: 'Grad ili općina' });
   await search.fill('Bjelovar');
+  await expect(page.getByRole('option').filter({ hasText: /^Bjelovar/ })).toBeVisible();
+  await search.press('ArrowDown');
   await search.press('Enter');
-  const result = page.getByRole('button', { name: /^Otvori Bjelovar,/ });
-  await expect(result).toBeVisible();
-  await search.press('Tab');
-  await page.keyboard.press('Tab');
-  await expect(result).toBeFocused();
-  await page.keyboard.press('Enter');
   await expect(page.getByLabel('Godina podataka')).toHaveValue('2024');
   const cards = page.getByRole('article');
   const first = await cards.nth(0).boundingBox();
@@ -115,9 +114,9 @@ test('real API: keyboard search and mobile single-column layout', async ({ page 
 
 test('real API: empty search results and missing requested year', async ({ page }) => {
   await page.goto('/explorer');
-  await page.getByRole('searchbox', { name: 'Grad ili općina' }).fill('NepostojecaJLS123');
-  await page.getByRole('button', { name: 'Pretraži', exact: true }).click();
-  await expect(page.getByText('Nema rezultata', { exact: true })).toBeVisible();
+  await page.getByRole('combobox', { name: 'Grad ili općina' }).fill('NepostojecaJLS123');
+  await page.getByRole('button', { name: 'Odaberi područje', exact: true }).click();
+  await expect(page.getByText('Nema rezultata za uneseni naziv.', { exact: true })).toBeVisible();
   await selectMunicipality(page, 'Bjelovar');
   const url = new URL(page.url());
   url.searchParams.set('godina', '2030');
@@ -155,9 +154,8 @@ test('controlled loading: year/profile request shows a separate loading state', 
     await hold;
     await route.continue();
   });
-  await page.getByRole('searchbox', { name: 'Grad ili općina' }).fill('Bjelovar');
-  await page.getByRole('searchbox', { name: 'Grad ili općina' }).press('Enter');
-  await page.getByRole('button', { name: /^Otvori Bjelovar,/ }).click();
+  await page.getByRole('combobox', { name: 'Grad ili općina' }).fill('Bjelovar');
+  await page.getByRole('combobox', { name: 'Grad ili općina' }).press('Enter');
   await expect(
     page.getByText('Učitavanje profila i dostupnih godina…', { exact: true }),
   ).toBeVisible();

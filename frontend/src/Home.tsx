@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { WorkspaceLayout } from './components/Layout';
-import { Search } from './components/Search';
+import AreaSearch from './components/AreaSearch';
+import type { AreaSelection } from './recycling';
 import RecyclingMap from './components/RecyclingMap';
 import { Icon } from './components/Icon';
 
@@ -24,12 +25,12 @@ const steps = [
     name: 'Waste Simulator',
     verb: 'Simulirajte',
     icon: 'flask' as const,
-    text: 'Istražite hipotetske promjene u količinama otpada i stopi odvojenog sakupljanja.',
+    text: 'Izračunajte promjene količina otpada za odabrani scenarij.',
   },
 ];
 
 export default function Home() {
-  const [mapSearch, setMapSearch] = useState<{ query: string; attempt: number } | null>(null);
+  const [mapSearch, setMapSearch] = useState<AreaSelection>(null);
   const hero = (
     <section className="home-hero" aria-labelledby="page-title">
       <div className="home-hero-copy">
@@ -41,13 +42,11 @@ export default function Home() {
         </p>
         <p className="home-eyebrow">KOMUNALNI OTPAD · HRVATSKA</p>
         <h1 id="page-title" tabIndex={-1}>
-          Od podataka do <span>pametnih odluka.</span>
+          Podaci o <span>komunalnom otpadu.</span>
         </h1>
         <p className="home-lead">
-          Istražite podatke o komunalnom otpadu u hrvatskim gradovima i općinama, usporedite
-          rezultate i istražite moguće scenarije promjena.
+          Godišnji pokazatelji po gradovima i općinama, usporedbe i scenariji promjena.
         </p>
-        <p className="home-audience">Za građane i jedinice lokalne samouprave.</p>
       </div>
     </section>
   );
@@ -103,16 +102,13 @@ export default function Home() {
               <h2>Pronađite svoj grad ili općinu</h2>
             </div>
           </div>
-          <Search
-            onSearch={(query) =>
-              setMapSearch((old) => ({ query, attempt: (old?.attempt ?? 0) + 1 }))
+          <AreaSearch
+            onChoose={(area) =>
+              setMapSearch((old) => ({ id: area.id, attempt: (old?.attempt ?? 0) + 1 }))
             }
-            onSelect={(m) => {
-              window.location.href = `/explorer?${new URLSearchParams({ jls: m.id })}`;
-            }}
           />
         </div>
-        <RecyclingMap searchRequest={mapSearch} />
+        <RecyclingMap selection={mapSearch} />
       </section>
       <section className="home-data-note" aria-labelledby="home-data-title">
         <div className="home-data-icon" aria-hidden="true">
@@ -137,9 +133,14 @@ export default function Home() {
             (poveznica na zagrebački skup). Karta obuhvaća Zagreb i dodatne gradove i općine prema
             dostupnim izvorima; popis nije potpun.
           </p>
-          <p className="home-data-caveat">
-            Rezultati Simulatora hipotetski su matematički scenariji, a ne prognoze ili preporuke.
-            Odvojeno sakupljanje nije recikliranje.
+          <p>
+            Dodatne lokacije diljem Hrvatske:{' '}
+            <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">
+              © OpenStreetMap suradnici, ODbL
+            </a>
+            . Preuzeto 1. studenoga 2026. Ovaj zajednički uređivani sloj odvojen je od podataka s
+            data.gov.hr. Prikaz ne predstavlja potpun službeni registar niti potvrdu aktualnosti
+            lokacija.
           </p>
         </div>
         <span className="home-data-period">

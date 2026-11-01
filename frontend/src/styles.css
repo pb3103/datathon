@@ -3759,7 +3759,6 @@ fieldset.simulator-workbench:disabled .simulator-controls {
   text-underline-offset: 4px;
 }
 
-
 /* A compact introduction, followed by actions and a shared search/map panel. */
 .module-home .home-hero {
   display: block;
@@ -4091,7 +4090,8 @@ fieldset.simulator-workbench:disabled .simulator-controls {
 .recycling-toolbar .yard-legend {
   flex-wrap: wrap;
   font-size: 12px;
-=======
+}
+
 .rate-method-note {
   margin-top: 14px;
   padding: 10px 14px;
@@ -4190,5 +4190,130 @@ fieldset.simulator-workbench:disabled .simulator-controls {
   .data-notes-card {
     padding: 10px 12px;
   }
+}
 
+.area-autocomplete {
+  position: relative;
+  min-width: 0;
+}
+.area-options {
+  position: absolute;
+  z-index: 1100;
+  top: calc(100% + 7px);
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  max-height: 330px;
+  overflow-y: auto;
+  border: 1px solid #b5cba8;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 12px 28px #183e2d22;
+}
+.area-options li {
+  margin: 0;
+}
+.area-options button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+  padding: 11px 10px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #183e2d;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.area-options button:hover,
+.area-options button[aria-selected='true'] {
+  background: #e8f0e1;
+}
+.area-options strong,
+.area-options small {
+  display: block;
+}
+.area-options strong {
+  font-size: 14px;
+}
+.area-options small {
+  margin-top: 3px;
+  font-size: 11px;
+  color: #52634e;
+}
+.area-count {
+  font-size: 11px;
+  text-align: right;
+  color: #52634e;
+  max-width: 90px;
+}
+.area-search-status {
+  margin: 8px 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.area-search-status:empty {
+  display: none;
+}
+.area-explorer-link {
+  display: inline-block;
+  margin-top: 14px;
+  font-size: 14px;
+}
+.module-home .home-discovery {
+  overflow: visible;
+}
+.module-home .home-discovery .home-start {
+  border-radius: 22px 0 0 22px;
+}
+.recycling-area-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+  font-size: 13px;
+}
+.recycling-sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.recycling-sources button {
+  border: 1px solid #b5cba8;
+  border-radius: 20px;
+  padding: 7px 11px;
+  background: #fff;
+  color: #31563d;
+  font-size: 12px;
+  cursor: pointer;
+}
+.recycling-sources button[aria-pressed='true'] {
+  background: #1d6046;
+  color: #fff;
+  border-color: #1d6046;
+}
+.recycling-map .marker-cluster-small,
+.recycling-map .marker-cluster-medium,
+.recycling-map .marker-cluster-large {
+  background: #b6cfa5bb;
+}
+.recycling-map .marker-cluster-small div,
+.recycling-map .marker-cluster-medium div,
+.recycling-map .marker-cluster-large div {
+  background: #1d6046;
+  color: #fff;
+  font-weight: 700;
+}
+@media (max-width: 1000px) {
+  .module-home .home-discovery .home-start {
+    border-radius: 22px 22px 0 0;
+  }
 }

@@ -234,10 +234,6 @@ export function Trends({
               'Miješani otpad označen je prugastim stupcima. '}
             Izvori: godišnji XLSX prilozi i pregledani CSV/PDF retci odabrane JLS.{' '}
             <a href="#sources">Pregled izvora i napomena ↗</a>
-            <span className="chart-keyboard">
-              Graf možete pregledavati strelicama nakon fokusa; iste su vrijednosti dostupne u
-              tablici.
-            </span>
           </figcaption>
         </figure>
       ) : (

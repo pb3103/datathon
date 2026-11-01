@@ -56,9 +56,8 @@ export function DataNotes({
               </p>
               <p>
                 Za 2017.–2020. prikazuje se izračunati udio izvan miješanog toka: (T−M)/T × 100,
-                gdje je T ukupna, a M miješana masa. To nije službeno objavljena stopa odvojenog
-                sakupljanja. Službene stope za 2021.–2024. ostaju zasebni podaci. Odvojeno
-                sakupljanje nije recikliranje.
+                gdje je T ukupna, a M miješana masa. Službene stope za 2021.–2024. ostaju zasebni
+                podaci. Odvojeno sakupljanje nije recikliranje.
               </p>
               <p>
                 Za 2019. javna i povezana usluga zajedno čine organizaciju JLS. Prikazani udio

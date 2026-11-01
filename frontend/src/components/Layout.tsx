@@ -40,10 +40,9 @@ export function WorkspaceLayout({
           </span>
           <span>
             Waste<span className="brand-light">Wise</span>
-            <small>PODACI ZA ODRŽIVIJI PROSTOR</small>
+            <small>PODACI O KOMUNALNOM OTPADU</small>
           </span>
         </a>
-        <div className="nav-section-label">Radni prostor</div>
         <nav aria-label="Moduli">
           <a
             className={`nav-link ${module === 'home' ? 'active' : ''}`}
@@ -79,11 +78,6 @@ export function WorkspaceLayout({
           </a>
         </nav>
         <div className="sidebar-bottom">
-          <div className="sidebar-note">
-            <Icon name="leaf" />
-            <strong>O otpadu u vašoj zajednici</strong>
-            <p>Pogledajte koliko se otpada sakuplja u vašem gradu ili općini.</p>
-          </div>
           <div className="project-label">
             DATATHON 2026<span>Okoliš i održivi prostor</span>
           </div>
@@ -92,7 +86,6 @@ export function WorkspaceLayout({
       <div className="main-shell">
         <header className="topbar">
           <span className="breadcrumb">
-            Radni prostor <span aria-hidden="true">/</span>
             <strong>{title}</strong>
           </span>
           <span className="data-period">
@@ -104,32 +97,16 @@ export function WorkspaceLayout({
           {heading ?? (
             <div className="page-heading">
               <div>
-                <p className="eyebrow">
-                  {module === 'home'
-                    ? 'JAVNI PODACI, JASNIJI IZBORI'
-                    : module === 'compare'
-                      ? 'USPOREDBA S KONTEKSTOM'
-                      : module === 'simulator'
-                        ? 'ISTRAŽITE MOGUĆE PROMJENE'
-                        : 'ISTRAŽITE SVOJU ZAJEDNICU'}
-                </p>
                 <h1 id="page-title" tabIndex={-1}>
                   {title}
                   <span className="heading-dot">.</span>
                 </h1>
                 <p>
-                  {module === 'home' ? (
-                    'Od otvorenih podataka do pametnijeg gospodarenja otpadom.'
-                  ) : module === 'compare' ? (
-                    'Pronađite slične zajednice. Usporedite rezultate, razumijte razlike.'
-                  ) : module === 'simulator' ? (
-                    'Oblikujte scenarije. Usporedite mase, razumijte pretpostavke.'
-                  ) : (
-                    <>
-                      Komunalni otpad, jasnije. Pronađite grad ili općinu
-                      <br className="desktop-break" /> i istražite podatke u njihovom kontekstu.
-                    </>
-                  )}
+                  {module === 'compare'
+                    ? 'Usporedba pokazatelja za 2–5 gradova i općina.'
+                    : module === 'simulator'
+                      ? 'Izračun scenarija preusmjeravanja i prevencije otpada.'
+                      : 'Količine i sastav komunalnog otpada po godinama.'}
                 </p>
               </div>
               <div className="heading-art" aria-hidden="true">
@@ -149,7 +126,6 @@ export function WorkspaceLayout({
             <span>
               WasteWise <span aria-hidden="true">/</span> Komunalni otpad u Hrvatskoj
             </span>
-            <span>Odvojeno sakupljanje ≠ recikliranje</span>
           </footer>
         </main>
       </div>

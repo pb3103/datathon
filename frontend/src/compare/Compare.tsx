@@ -248,15 +248,11 @@ export default function Compare() {
         <section className="peer-section" aria-labelledby="peers-title">
           <div className="section-title">
             <div>
-              <div className="section-kicker">02 / Slična veličina, drugi rezultati</div>
               <h2 id="peers-title">Potencijalni vršnjaci</h2>
             </div>
             <span className="badge neutral">{peers.value.items.length} prijedloga</span>
           </div>
-          <p className="small-muted">
-            Prednost imaju JLS-ovi s 0,5–2 puta obuhvaćene populacije. Redoslijed određuje sličnost
-            obuhvaćene populacije; količine otpada i stopa odvajanja ne utječu na odabir.
-          </p>
+
           {peers.value.status === 'unavailable' && (
             <p className="notice warning">
               <Icon name="alert" />
@@ -345,7 +341,7 @@ export default function Compare() {
           <div className="welcome-icon">
             <Icon name="compare" />
           </div>
-          <h2>Usporedite zajednice koje imaju smisla.</h2>
+          <h2>Odaberite područja za usporedbu</h2>
           <p>
             Pronađite početni grad ili općinu, a zatim dodajte druge JLS-ove
             <br className="desktop-break" /> ili istražite prijedloge prema obuhvaćenoj populaciji.
@@ -439,10 +435,7 @@ export default function Compare() {
               </div>
               <span className="badge neutral">{comparison.year}.</span>
             </div>
-            <p className="small-muted">
-              Opis odabrane skupine, bez zaključaka o uzrocima ili preporuke mjera. Viša ili niža
-              vrijednost sama po sebi ne znači bolju uslugu.
-            </p>
+
             <div className="insight-grid">
               {[...comparison.insights]
                 .sort(
