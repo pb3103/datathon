@@ -14,10 +14,10 @@ import {
 } from 'recharts';
 import type { Observation } from '../api/client';
 import {
+  explainIssue,
   explainReason,
   formatMetric,
   formatNumber,
-  isVerified,
   mayConnect,
   numeric,
 } from '../domain';
@@ -244,6 +244,13 @@ export function Trends({
           aria-label="Godišnje vrijednosti, vodoravno pomicanje na manjim ekranima"
           tabIndex={0}
         >
+          <p className="notice">
+            <Icon name="info" />
+            <span>
+              Podaci različitih godina mogu obuhvaćati različita područja ili usluge sakupljanja
+              otpada. Zato promjena vrijednosti ne mora značiti samo promjenu količine otpada.
+            </span>
+          </p>
           <table>
             <caption>
               {config.title} ({config.unit}). Kliknite godinu za odabir.
@@ -264,7 +271,6 @@ export function Trends({
                     </th>
                   ))
                 )}
-                <th scope="col">Napomene</th>
               </tr>
             </thead>
             <tbody>
@@ -284,6 +290,23 @@ export function Trends({
                         <span className="sr-only">(odabrano)</span>
                       )}
                     </button>
+                    {observation.issues
+                      .filter((issue) => issue.severity !== 'info')
+                      .map((issue, index) => (
+                        <small className="warning-text" key={`local-${index}`}>
+                          {explainIssue(issue)}
+                        </small>
+                      ))}
+                    {visibleSourceIssues(observation.source.issues)
+                      .filter(
+                        (issue) =>
+                          issue.code !== 'historical_scope_unverified' && issue.severity !== 'info',
+                      )
+                      .map((issue, index) => (
+                        <small className="warning-text" key={`source-${index}`}>
+                          {explainIssue(issue)}
+                        </small>
+                      ))}
                   </th>
                   {mode === 'rate' ? (
                     <>
@@ -316,17 +339,6 @@ export function Trends({
                       </td>
                     ))
                   )}
-                  <td>
-                    <span>
-                      {isVerified(observation) ? 'Usporedivi podaci' : 'Ograničena usporedivost'}
-                    </span>
-                    {visibleSourceIssues(observation.source.issues).length > 0 && (
-                      <small className="warning-text">Napomena izvora za {observation.year}.</small>
-                    )}
-                    {observation.issues.some((issue) => issue.severity !== 'info') && (
-                      <small className="warning-text">Potrebna provjera zapisa</small>
-                    )}
-                  </td>
                 </tr>
               ))}
             </tbody>

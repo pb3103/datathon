@@ -77,9 +77,6 @@ export function MetricCards({ observation }: { observation: Observation }) {
                 <p className="metric-reason">{explainReason(value?.reason)}</p>
               )}
               <p className="metric-hint">{card.hint}</p>
-              {card.key === 'calculated_nonmixed_share_pct' && !missing && (
-                <span className="badge neutral indicator-origin">Izračunato</span>
-              )}
               {card.key === 'total_kg_per_covered_person' && mismatch && (
                 <p className="metric-reason">
                   <Icon name="alert" />

@@ -1,0 +1,127 @@
+{
+  "catalog_url": "https://isgo-portal.haop.hr/hr/komunalni-otpad-odlagalista-lokacije-odbacenog-otpada",
+  "verified_on": "2026-11-02",
+  "method": "Downloaded via HTTPS; SHA-256 matches local files. Historical CSV citations point to the original PDF of the same year.",
+  "documents": [
+    {
+      "year": 2024,
+      "url": "https://isgo-portal.haop.hr/sites/default/files/izvjesca/2025-07/Izvje%C5%A1%C4%87e%20o%20komunalnom%20otpadu%20za%202024_FV.pdf",
+      "sha256": "380f94d1c986ac74bc97d049c709608336be36bfe73e131336feec937d36b746",
+      "bytes": 5355362,
+      "type": "application/pdf",
+      "local_matches": [
+        "podaci/2024/Izvješće o komunalnom otpadu za 2024_FV.pdf"
+      ]
+    },
+    {
+      "year": 2023,
+      "url": "https://isgo-portal.haop.hr/sites/default/files/izvjesca/2024-10/Izvje%C5%A1%C4%87e%20o%20komunalnom%20otpadu%20za%202023%20-%20rev1.pdf",
+      "sha256": "d00ac882466d9a81741ea636170eb21ffa4d65669f7643a559521af436105904",
+      "bytes": 4959603,
+      "type": "application/pdf",
+      "local_matches": [
+        "podaci/2023/Izvješće o komunalnom otpadu za 2023 - rev1.pdf"
+      ]
+    },
+    {
+      "year": 2022,
+      "url": "https://isgo-portal.haop.hr/sites/default/files/izvjesca/2024-10/OTP_Izvje%C5%A1%C4%87e%20o%20komunalnom%20otpadu%20za%202022.%20godinu_rev3.pdf",
+      "sha256": "ef4bb4f944711f62e9e211eb3aa20dda36545cb5a7bc1232f763a618f9ebd837",
+      "bytes": 4112492,
+      "type": "application/pdf",
+      "local_matches": [
+        "podaci/2022/OTP_Izvješće o komunalnom otpadu za 2022. godinu_rev3.pdf"
+      ]
+    },
+    {
+      "year": 2021,
+      "url": "https://isgo-portal.haop.hr/sites/default/files/izvjesca/2023-04/OTP_Izvje%C5%A1%C4%87e%20o%20komunalnom%20otpadu%20za%202021.%20godinu_V3_8.pdf",
+      "sha256": "0cc3189131324a603af1baf26b912fb96ac718d6e91eef3be1024766e04a4023",
+      "bytes": 2492146,
+      "type": "application/pdf",
+      "local_matches": [
+        "podaci/2021/OTP_Izvješće o komunalnom otpadu za 2021. godinu_V3_8.pdf"
+      ]
+    },
+    {
+      "year": 2020,
+      "url": "https://isgo-portal.haop.hr/sites/default/files/izvjesca/2023-04/OTP_Izvje%C5%A1%C4%87e%20o%20komunalnom%20otpadu%20za%202020.%20godinu_Rev1_19-5-2022_0.pdf",
+      "sha256": "7dca4dd600299bf26def921c9245db7557a6039e419399fa6e86fcc157ab3979",
+      "bytes": 2337251,
+      "type": "application/pdf",
+      "local_matches": [
+        "podaci/2020/pytest.ini.pdf"
+      ]
+    },
+    {
+      "year": 2019,
+      "url": "https://isgo-portal.haop.hr/sites/default/files/izvjesca/2023-04/OTP_Izvje%C5%A1%C4%87e%20o%20komunalnom%20otpadu%20za%202019_rev2_0.pdf",
+      "sha256": "628c767823870d70603bd1efe6d9c5ce50c31f21de2c58b9219f8ed113ab3ebe",
+      "bytes": 3291734,
+      "type": "application/pdf",
+      "local_matches": [
+        "podaci/2019/OTP_Izvješće o komunalnom otpadu za 2019_rev2_0.pdf"
+      ]
+    },
+    {
+      "year": 2018,
+      "url": "https://isgo-portal.haop.hr/sites/default/files/izvjesca/2023-04/OTP_Izvje%C5%A1%C4%87e%20o%20komunalnom%20otpadu_2018%20FV_0_0.pdf",
+      "sha256": "8c97c535119d578532629e6777d381d9acf611f8fde70c0809b499965df43f02",
+      "bytes": 5929460,
+      "type": "application/pdf",
+      "local_matches": [
+        "podaci/2018/OTP_Izvješće o komunalnom otpadu_2018 FV_0_0.pdf"
+      ]
+    },
+    {
+      "year": 2017,
+      "url": "https://isgo-portal.haop.hr/sites/default/files/izvjesca/2023-04/OTP_Izvje%C5%A1%C4%87e%20o%20komunalnom%20otpadu_2017_0.pdf",
+      "sha256": "528ff9d42abdc30cded93e47f999b8dc3c17dca35d065d202af44f07deb7153d",
+      "bytes": 5890944,
+      "type": "application/pdf",
+      "local_matches": [
+        "podaci/2017/OTP_Izvješće o komunalnom otpadu_2017_0.pdf"
+      ]
+    },
+    {
+      "year": 2024,
+      "url": "https://isgo-portal.haop.hr/sites/default/files/izvjesca/2026-04/Prikaz%20odabranih%20podataka_JLS%20za%202024.xlsx",
+      "sha256": "11c98568f49d18f4a6592e3a1f1efdfdc81fabb31e2d3fdc8ad9ab8d07ed4f72",
+      "bytes": 1685024,
+      "type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "local_matches": [
+        "podaci/2024/Prikaz odabranih podataka_JLS za 2024.xlsx"
+      ]
+    },
+    {
+      "year": 2023,
+      "url": "https://isgo-portal.haop.hr/sites/default/files/izvjesca/2026-04/Prikaz%20odabranih%20podataka_JLS%20za%202023.xlsx",
+      "sha256": "df0950bb499be23f75183b96e545ca583b691b230dda78c8722e5701a42d3761",
+      "bytes": 1313073,
+      "type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "local_matches": [
+        "podaci/2023/Prikaz odabranih podataka_JLS za 2023.xlsx"
+      ]
+    },
+    {
+      "year": 2022,
+      "url": "https://isgo-portal.haop.hr/sites/default/files/izvjesca/2026-04/Prikaz%20odabranih%20podataka_JLS%20za%202022_.xlsx",
+      "sha256": "d87449e9434aa546e9aa59763468e73bc26cf91a69856e0070ed63dde9813804",
+      "bytes": 847566,
+      "type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "local_matches": [
+        "podaci/2022/Prikaz odabranih podataka_JLS za 2022_.xlsx"
+      ]
+    },
+    {
+      "year": 2021,
+      "url": "https://isgo-portal.haop.hr/sites/default/files/izvjesca/2026-04/Prikaz%20odabranih%20podataka_JLS%20za%202021_.xlsx",
+      "sha256": "5408f1fe20894fe7d080a43dc8c3ae3556caa5b2991aa4d5a794f6c0a8dcd1f5",
+      "bytes": 93775,
+      "type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "local_matches": [
+        "podaci/2021/Prikaz odabranih podataka_JLS za 2021_.xlsx"
+      ]
+    }
+  ]
+}

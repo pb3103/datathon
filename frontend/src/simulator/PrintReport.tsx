@@ -4,7 +4,7 @@ const labels: Record<string, string> = {
   total_t: 'Ukupno (t)',
   mixed_t: 'Miješano (t)',
   separate_t: 'Odvojeno sakupljeno (t)',
-  rate_pct: 'Stopa (%; razlika u pb)',
+  rate_pct: 'Odvojeno sakupljanje (%; prije → poslije)',
   total_kg_per_person: 'Ukupno (kg/obuhv. stan.)',
   mixed_kg_per_person: 'Miješano (kg/obuhv. stan.)',
   separate_kg_per_person: 'Odvojeno (kg/obuhv. stan.)',
@@ -60,7 +60,15 @@ export function PrintReport({ data, history }: { data: SimulationOutput; history
               <td>{fmt(scenarios[0].initial[key as keyof (typeof scenarios)[0]['initial']])}</td>
               {scenarios.map((s, i) => (
                 <td key={i}>
-                  {fmt(s.result[key as keyof typeof s.result])} / {fmt(s.difference[key])}
+                  {key === 'rate_pct' ? (
+                    <>
+                      {fmt(s.initial.rate_pct)} % → {fmt(s.result.rate_pct)} %
+                    </>
+                  ) : (
+                    <>
+                      {fmt(s.result[key as keyof typeof s.result])} / {fmt(s.difference[key])}
+                    </>
+                  )}
                 </td>
               ))}
             </tr>

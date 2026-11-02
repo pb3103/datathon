@@ -290,17 +290,11 @@ export default function Compare() {
             </summary>
             <div>
               <p>
-                Udaljenost je |ln(P kandidata) − ln(P početne lokacije)|. Manja znači sličniju
-                obuhvaćenu populaciju. Prvo se popunjava raspon 0,5–2, zatim najbliži izvan njega.
-                Županija je samo opcijski filtar, bez bodovne težine. Izjednačenja razrješava
-                stabilni interni identifikator.
+                Predlažemo mjesta sa sličnim brojem stanovnika obuhvaćenih uslugom sakupljanja
+                otpada, uz odabrani filtar županije. Ako ih nema dovoljno, uključujemo i mjesta
+                koja se više razlikuju po veličini. Slična veličina ne znači i jednake uvjete
+                gospodarenja otpadom.
               </p>
-              <p>
-                {peers.value.eligible_candidates} kandidata nakon provjera kvalitete. Broj
-                stanovnika odnosi se na obuhvat usluge; sličnost ne potvrđuje isti turizam, gustoću,
-                uslugu ili mogućnost postizanja istog rezultata.
-              </p>
-              <p>{compareReason('comparability_provisional')}</p>
               {peers.value.items.length < 5 && <p>{compareReason('fewer_candidates_available')}</p>}
             </div>
           </details>
@@ -574,68 +568,6 @@ export default function Compare() {
                 >
                   Otvori profil u Exploreru ↗
                 </a>
-                <details className="quality-details">
-                  <summary>Izvori i detalji</summary>
-                  <div>
-                    {member.observation?.issues
-                      .filter((issue) => issue.severity === 'info')
-                      .map((issue, i) => <p key={i}>{explainIssue(issue)}</p>)}
-                    {member.observation && (
-                      <>
-                        <p>
-                          <strong>{member.observation.source.title}</strong>
-                          <br />
-                          {member.observation.source.sheet} · redak {member.observation.source_row}
-                        </p>
-                        <p className="checksum">SHA-256: {member.observation.source.sha256}</p>
-                      </>
-                    )}
-                    <p>{compareReason('material_cross_year_unverified')}</p>
-                    {member.materials.length ? (
-                      <>
-                        <p>
-                          <strong>{member.materials[0].source.title}</strong>
-                          <br />
-                          {member.materials[0].source.sheet} · redak{' '}
-                          {member.materials[0].source_row}
-                        </p>
-                        <p className="checksum">SHA-256: {member.materials[0].source.sha256}</p>
-                        <ul>
-                          {member.materials.map((material) => (
-                            <li key={material.material}>
-                              <strong>{material.label}:</strong> {formatMetric(material.published)}{' '}
-                              kg/stan. · objavljeno
-                              {material.comparable.value === null && (
-                                <small className="warning-text">
-                                  {compareReason(material.comparable.reason)}
-                                </small>
-                              )}
-                              <small>
-                                Kontrolna PDF stranica:{' '}
-                                {String(material.evidence.pdf_page ?? 'nije potvrđena')}.{' '}
-                                {material.denominator_status === 'verified_against_pdf'
-                                  ? 'Nazivnik aritmetički usklađen s PDF masom.'
-                                  : 'Nazivnik nije potvrđen.'}
-                              </small>
-                            </li>
-                          ))}
-                        </ul>
-                      </>
-                    ) : (
-                      <p>Materijalni podaci nisu dostupni.</p>
-                    )}
-                    <p>
-                      Obuhvat materijala:{' '}
-                      {member.materials[0]?.source.scope ===
-                      'materials_public_service_and_public_containers'
-                        ? 'javna usluga i spremnici na javnim površinama'
-                        : member.materials.length
-                          ? 'javna usluga'
-                          : 'nije potvrđen'}
-                      . Ne zbrajamo kategorije niti iz njih izvodimo tone.
-                    </p>
-                  </div>
-                </details>
                 <div className="reference-warnings">
                   {member.warnings.includes('population_outside_preferred_range') && (
                     <p className="source-warning">

@@ -28,7 +28,7 @@ export function compareReason(reason?: string | null) {
     material_cross_year_unverified:
       'Kontinuitet obuhvata i nazivnika materijala među godinama nije potvrđen. Nema povezujuće linije ni godišnjih promjena.',
     population_range_expanded:
-      'Nema dovoljno kandidata u rasponu 0,5–2. Dodani su najbliži kandidati izvan raspona, uz isti filtar županije.',
+      'Nema dovoljno mjesta s brojem stanovnika obuhvaćenih uslugom između polovice i dvostrukog broja početne lokacije (raspon 0,5–2). Dodana su najbliža dostupna mjesta izvan tog raspona, uz isti filtar županije.',
     fewer_candidates_available: 'Dostupno je manje od pet prihvatljivih kandidata.',
     comparability_provisional:
       'Usporedba je uvjetna: lokalni obuhvat i kontinuitet granica još nisu potvrđeni.',

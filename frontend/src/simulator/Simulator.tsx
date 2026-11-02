@@ -417,7 +417,9 @@ export default function Simulator() {
                 ))}
             </select>
           </label>
-          <a href={moduleUrl('compare')}>Natrag na usporedbu</a>
+          <a className="button primary" href={moduleUrl('compare')}>
+            Natrag na usporedbu →
+          </a>
         </div>
       )}
       {loading && <Loading />}
@@ -452,9 +454,13 @@ export default function Simulator() {
             {[
               ['Ukupno', context.observation.metrics.total_t.value, 't'],
               ['Miješano', context.observation.metrics.mixed_t.value, 't'],
-              ['Objavljena stopa', context.observation.metrics.separate_collection_pct.value, '%'],
               [
-                'Stopa iz masa',
+                'Objavljeni postotak odvojenog sakupljanja',
+                context.observation.metrics.separate_collection_pct.value,
+                '%',
+              ],
+              [
+                'Izračunati postotak odvojenog sakupljanja',
                 context.observation.metrics.control_separate_collection_pct.value,
                 '%',
               ],
@@ -462,7 +468,8 @@ export default function Simulator() {
               <article className="panel" key={label}>
                 <span>{label}</span>
                 <strong>
-                  {number(value, label === 'Stopa iz masa' ? 4 : 2)} <small>{u}</small>
+                  {number(value, label === 'Izračunati postotak odvojenog sakupljanja' ? 4 : 2)}{' '}
+                  <small>{u}</small>
                 </strong>
                 <span className="small-muted">{context.observation.year}. · početno stanje</span>
               </article>
@@ -474,7 +481,7 @@ export default function Simulator() {
               <h2 id="scenario-heading">Oblikujte scenarij</h2>
               <p className="draft-status" role="status">
                 {dirty
-                  ? 'Nespremljene promjene · valjani nacrt obnavlja se u ovoj kartici preglednika.'
+                  ? 'Promjene se pamte privremeno. Za kasnije korištenje odaberite „Spremi lokalno”.'
                   : 'Radni scenarij · za trajno čuvanje koristite Spremi lokalno ili izvoz.'}
               </p>
               <label>
@@ -502,8 +509,8 @@ export default function Simulator() {
                       <strong>{modelName(m)}</strong>
                       <small>
                         {m === 'diversion'
-                          ? 'Ukupno ostaje isto. Odvojeni tok raste.'
-                          : 'Ukupno i miješano se smanjuju. Odvojeni tok ostaje isti.'}
+                          ? 'Dio otpada koji bi završio u miješanom spremniku sakuplja se odvojeno. Ukupna količina otpada ostaje ista.'
+                          : 'Sprječava se nastanak dijela otpada koji bi završio u miješanom spremniku. Ukupnog i miješanog otpada ima manje, a odvojeno sakupljena količina ostaje ista.'}
                       </small>
                     </span>
                   </label>
@@ -548,11 +555,17 @@ export default function Simulator() {
                       ? Number(context.observation.metrics.mixed_t.value)
                       : 100
                   }
-                  step="any"
+                  step="0.01"
                   value={
-                    draft.kind === 'fraction'
-                      ? String(Number(draft.value) * 100)
-                      : String(draft.value).replace(/(\.\d*?[1-9])0+$|\.0+$/, '$1')
+                    draft.value === ''
+                      ? ''
+                      : String(
+                          Number(
+                            (Number(draft.value) * (draft.kind === 'fraction' ? 100 : 1)).toFixed(
+                              2,
+                            ),
+                          ),
+                        )
                   }
                   onChange={(e) => {
                     update({
@@ -560,8 +573,12 @@ export default function Simulator() {
                         e.target.value === ''
                           ? ''
                           : draft.kind === 'fraction'
-                            ? String(Number(e.target.value) / 100)
-                            : e.target.value,
+                            ? String(
+                                Number(
+                                  (Number(Number(e.target.value).toFixed(2)) / 100).toFixed(4),
+                                ),
+                              )
+                            : String(Number(Number(e.target.value).toFixed(2))),
                       reference: null,
                     });
                     setReference(null);
@@ -574,9 +591,11 @@ export default function Simulator() {
                   aria-label="Smanjenje miješanog klizačem"
                   min="0"
                   max="100"
-                  step="1"
-                  value={Number(draft.value) * 100 || 0}
-                  onChange={(e) => update({ value: String(Number(e.target.value) / 100) })}
+                  step="0.01"
+                  value={Number((Number(draft.value) * 100).toFixed(2)) || 0}
+                  onChange={(e) =>
+                    update({ value: String(Number((Number(e.target.value) / 100).toFixed(4))) })
+                  }
                 />
               )}
               <p className="small-muted">
@@ -607,14 +626,29 @@ export default function Simulator() {
                 <>
                   <div className="simulator-change">
                     <span>
-                      {draft.model === 'diversion'
-                        ? 'Potrebno preusmjeriti iz miješanog otpada'
-                        : 'Potrebno spriječiti nastanak miješanog otpada'}
+                      {draft.kind === 'tonnes' ? (
+                        draft.model === 'diversion' ? (
+                          `Za preusmjeravanje ${number(latest.change_t)} t u odvojeno sakupljanje potrebno je izdvojiti sljedeći postotak početnog miješanog otpada:`
+                        ) : (
+                          `Za smanjenje otpada za ${number(latest.change_t)} t potrebno je spriječiti nastanak sljedećeg postotka početnog miješanog otpada:`
+                        )
+                      ) : (
+                        <>
+                          {draft.kind === 'target'
+                            ? `Za postotak odvojenog sakupljanja od ${number(draft.value)} % potrebno je `
+                            : `Za smanjenje početnog miješanog otpada za ${number(latest.mixed_reduction_pct)} % potrebno je `}
+                          {draft.model === 'diversion'
+                            ? 'preusmjeriti u odvojeno sakupljanje:'
+                            : 'spriječiti nastanak sljedeće količine otpada:'}
+                        </>
+                      )}
                     </span>
                     <strong>
-                      {number(latest.change_t)} <small>t</small>
+                      {number(
+                        draft.kind === 'tonnes' ? latest.mixed_reduction_pct : latest.change_t,
+                      )}
+                      <small>{draft.kind === 'tonnes' ? '%' : 't'}</small>
                     </strong>
-                    <p>{number(latest.mixed_reduction_pct)} % početnog miješanog otpada</p>
                   </div>
                   <p className="result-explanation">
                     {draft.model === 'diversion'
@@ -629,20 +663,14 @@ export default function Simulator() {
                         · Željeni cilj: <strong>{number(draft.value)} %</strong>
                       </>
                     )}
-                    . <a href="#scenario-comparison">Usporedi na grafikonu i u tablici ↓</a>
-                  </p>
-                  <p className="small-muted">
-                    Promjena stope računa se prema početnoj stopi iz masa, uz puni račun prije
-                    zaokruživanja. Postotni bodovi (pb) nisu relativni postoci.
+                    .
                   </p>
                   <div className="simulator-result-grid">
                     <div>
-                      <span>Nova stopa odvojenog sakupljanja</span>
-                      <strong>{number(latest.result.rate_pct)} %</strong>
-                    </div>
-                    <div>
-                      <span>Promjena u postotnim bodovima</span>
-                      <strong>{number(latest.difference.rate_pct)} pb</strong>
+                      <span>Odvojeno sakupljanje · prije → poslije</span>
+                      <strong>
+                        {number(latest.initial.rate_pct)} % → {number(latest.result.rate_pct)} %
+                      </strong>
                     </div>
                     <div>
                       <span>Promjena ukupnog</span>
@@ -687,6 +715,11 @@ export default function Simulator() {
                     </p>
                   ))}
                 </aside>
+              )}
+              {latest && (
+                <a className="button primary simulator-compare-link" href="#scenario-comparison">
+                  Usporedi na grafikonu i u tablici ↓
+                </a>
               )}
             </section>
           </fieldset>
@@ -774,7 +807,7 @@ export default function Simulator() {
                         <span>{s.input.name}</span>
                         <strong>{number(s.result.rate_pct)} %</strong>
                         <small>
-                          {number(s.difference.rate_pct)} pb prema početnoj stopi iz masa
+                          {number(s.initial.rate_pct)} % → {number(s.result.rate_pct)} %
                         </small>
                       </article>
                     ))}
@@ -820,7 +853,7 @@ export default function Simulator() {
                         <th scope="row">
                           {labels[key]} (
                           {key === 'rate_pct'
-                            ? '% / pb'
+                            ? '% · prije → poslije'
                             : key.includes('kg')
                               ? 'kg/obuhvaćeni stan.'
                               : 't'}
@@ -829,8 +862,16 @@ export default function Simulator() {
                         <td>{number(data.scenarios[0].initial[key as keyof ScenarioState])}</td>
                         {data.scenarios.map((s, i) => (
                           <td key={i}>
-                            {number(s.result[key as keyof ScenarioState])} /{' '}
-                            {number(s.difference[key])}
+                            {key === 'rate_pct' ? (
+                              <>
+                                {number(s.initial.rate_pct)} % → {number(s.result.rate_pct)} %
+                              </>
+                            ) : (
+                              <>
+                                {number(s.result[key as keyof ScenarioState])} /{' '}
+                                {number(s.difference[key])}
+                              </>
+                            )}
                           </td>
                         ))}
                       </tr>
@@ -1040,7 +1081,7 @@ export default function Simulator() {
               </p>
               <p>
                 <strong>Po stanovniku:</strong> 1000 × masa / P, uz konstantnu i pouzdanu obuhvaćenu
-                populaciju. Promjena stope je u postotnim bodovima.
+                populaciju.
               </p>
               <p>
                 Niži cilj smatra se dosegnutim; nema automatskog smanjivanja odvajanja. Uz T′ = 0
