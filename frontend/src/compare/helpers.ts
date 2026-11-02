@@ -18,9 +18,10 @@ export function compareReason(reason?: string | null) {
   const messages: Record<string, string> = {
     material_denominator_not_verified:
       'Nazivnik materijalnog pokazatelja nije potvrđen; objavljena vrijednost ostaje u izvorima.',
-    no_comparison_values: 'Nema dostupnih pokazatelja za usporedbu početne JLS.',
+    no_comparison_values: 'Nema dostupnih pokazatelja za usporedbu početne lokacije.',
     materials_not_imported: 'Materijalni podaci nisu učitani za ovaj zapis.',
-    scope_or_methodology_mismatch: 'Obuhvat ili metodološka skupina nisu usklađeni s početnom JLS.',
+    scope_or_methodology_mismatch:
+      'Obuhvat ili metodološka skupina nisu usklađeni s početnom lokacijom.',
     missing_year: 'Za odabranu godinu nema zapisa. Nije zamijenjen drugom godinom.',
     quality_requires_review:
       'Najmanje jedna od vrijednosti zahtijeva provjeru; razlika nije izračunata.',

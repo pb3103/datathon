@@ -65,7 +65,7 @@ function Explorer() {
       navigate(selection.id, String(latest), true);
     }
     if (focusOnLoad.current && profileHeading.current) {
-      profileHeading.current.focus();
+      profileHeading.current.focus({ preventScroll: true });
       focusOnLoad.current = false;
     }
     document.title = `${data.profile.municipality.name} · Waste Explorer`;
@@ -154,10 +154,7 @@ function Explorer() {
                     Istraži scenarij →
                   </a>
                 ) : (
-                  <span className="small-muted">
-                    Automatski Simulator dostupan je samo za provjerene zapise javne usluge
-                    2023./2024.
-                  </span>
+                  <span className="small-muted">Simulator: provjereni podaci za 2023. i 2024.</span>
                 )}
               </div>
             </>

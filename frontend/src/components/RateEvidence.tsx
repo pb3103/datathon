@@ -1,5 +1,4 @@
 import type { Observation } from '../api/client';
-import { explainReason, formatMetric } from '../domain';
 
 export function RateEvidence({
   records,
@@ -14,29 +13,11 @@ export function RateEvidence({
         O udjelima, stopama i usporedivosti ↑
       </a>
       <details>
-        <summary>Izračun, ulazne mase i izvori</summary>
+        <summary>Kako se izračunava udio?</summary>
         <p>
-          Formula: ((ukupno − miješano) / ukupno) × 100. Izračunati udio nije službeno objavljena
-          stopa odvojenog sakupljanja.
+          Za sve godine s izračunatim udjelom koristi se ista formula: ((ukupno − miješano) /
+          ukupno) × 100. Taj udio nije službeno objavljena stopa odvojenog sakupljanja.
         </p>
-        <ul>
-          {historical.map(({ name, observation: o }) => (
-            <li key={`${name}-${o.year}`}>
-              <strong>
-                {name} · {o.year}.
-              </strong>{' '}
-              Ukupno: {formatMetric(o.metrics.total_t)} t; miješano:{' '}
-              {formatMetric(o.metrics.mixed_t)} t.{' '}
-              {o.metrics.calculated_nonmixed_share_pct?.value != null ? (
-                <>Izračunato: {formatMetric(o.metrics.calculated_nonmixed_share_pct)} %.</>
-              ) : (
-                explainReason(o.metrics.calculated_nonmixed_share_pct?.reason)
-              )}{' '}
-              <a href={`#source-${o.year}`}>Izvor za {o.year}.</a> {o.source.path}, redak{' '}
-              {o.source_row}.
-            </li>
-          ))}
-        </ul>
       </details>
     </div>
   );

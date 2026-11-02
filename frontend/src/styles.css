@@ -4317,3 +4317,54 @@ fieldset.simulator-workbench:disabled .simulator-controls {
     border-radius: 22px 22px 0 0;
   }
 }
+
+.compare-filters .button {
+  margin-left: 0;
+}
+.compare-filters .county-select {
+  width: min(100%, 280px);
+}
+.compare-core-heading {
+  margin-top: 28px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.compare-year-heading {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.compare-year-heading h2 {
+  margin: 0;
+}
+.compare-year-heading select {
+  width: auto;
+  min-width: 130px;
+}
+
+/* Shared rows keep the same fields aligned across each row of location cards. */
+.comparison-reference-grid {
+  row-gap: 16px;
+}
+.comparison-reference {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 8;
+  align-items: start;
+}
+.comparison-reference > p,
+.comparison-reference .profile-link,
+.comparison-reference .quality-details {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.comparison-reference .peer-card-top h3 small {
+  display: block;
+}
+.reference-warnings:empty {
+  display: none;
+}
+.reference-warnings .source-warning {
+  margin: 0 0 8px;
+}

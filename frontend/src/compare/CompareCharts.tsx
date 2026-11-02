@@ -71,6 +71,9 @@ export default function CompareCharts({
         member.history.slice(1).every((o, i) => mayConnect(member.history[i], o)),
     );
   const unit = unitLabel(definition.unit);
+  const baselineName =
+    data.members.find((member) => member.municipality.id === data.baseline_id)?.municipality.name ??
+    'početnu lokaciju';
   return (
     <section className="panel compare-chart" aria-labelledby={title}>
       <div className="trend-heading">
@@ -98,7 +101,7 @@ export default function CompareCharts({
                 .filter((m) => m.family !== 'materials' && m.family !== 'historical_share')
                 .map((m) => (
                   <option key={m.key} value={m.key}>
-                    {m.key === 'separate_collection_pct' ? 'Udjeli i službene stope' : m.label} (
+                    {m.key === 'separate_collection_pct' ? 'Otpad izvan miješanog toka' : m.label} (
                     {unitLabel(m.unit)})
                   </option>
                 ))}
@@ -108,7 +111,7 @@ export default function CompareCharts({
                 .filter((m) => m.family === 'materials')
                 .map((m) => (
                   <option key={m.key} value={m.key}>
-                    {m.key === 'separate_collection_pct' ? 'Udjeli i službene stope' : m.label} (
+                    {m.key === 'separate_collection_pct' ? 'Otpad izvan miješanog toka' : m.label} (
                     {unitLabel(m.unit)})
                   </option>
                 ))}
@@ -126,22 +129,22 @@ export default function CompareCharts({
       </div>
       <p className="chart-description">
         {mode === 'snapshot'
-          ? `${data.year}. · Razlike su izračunate u odnosu na početnu JLS. Predznak opisuje smjer razlike, ne kvalitetu usluge.`
+          ? `${data.year}. · Vrijednosti za odabrane gradove i općine.`
           : connected
             ? 'Povezane su samo uzastopne godine s potvrđenom usporedivošću.'
-            : 'Godine su prikazane odvojeno. Usporedivost cijelog razdoblja nije potvrđena; nema povezujućih linija ni godišnjih promjena.'}{' '}
+            : 'Obuhvat podataka razlikuje se među godinama, pa su vrijednosti prikazane zasebno.'}{' '}
         Jedinica: {unit}.
       </p>
       {mode === 'snapshot' && snapshot.every((row) => row.value === null) && (
         <p className="notice warning">
-          Za ovaj pokazatelj i godinu nema metodološki dostupnih vrijednosti. Nedostajući podatak
-          nije nula; provjerite izvore ili odaberite drugi pokazatelj.
+          Za ovaj pokazatelj i godinu podaci nedostaju ili zahtijevaju provjeru. Odaberite drugu
+          godinu ili pokazatelj.
         </p>
       )}
       {isRate && (
         <p className="small-muted">
-          2017.–2020.: Izračunato · udio izvan miješanog toka. 2021.–2024.: Službeno objavljeno ·
-          stopa odvojenog sakupljanja.
+          2017.–2020.: izračunati udio izvan miješanog toka. Od 2021.: objavljena stopa odvojenog
+          sakupljanja. To nije postotak recikliranog otpada.
         </p>
       )}
       {view === 'chart' ? (
@@ -168,8 +171,10 @@ export default function CompareCharts({
                   <Tooltip
                     formatter={(value) => [
                       `${formatNumber(Number(value))} ${unit}`,
-                      isRate && data.year < 2021
-                        ? 'Izračunato · udio izvan miješanog toka'
+                      isRate
+                        ? data.year < 2021
+                          ? 'Izvan miješanog toka · izračunati udio'
+                          : 'Odvojeno sakupljanje · objavljena stopa'
                         : definition.label,
                     ]}
                   />
@@ -263,9 +268,8 @@ export default function CompareCharts({
           aria-label="Usporedni podaci, vodoravno pomicanje"
         >
           <table>
-            <caption>
-              {isRate ? 'Izračunati udio / službena stopa' : definition.label} · {unit}. Razlika =
-              odabrana JLS − početna JLS.
+            <caption className="sr-only">
+              {isRate ? 'Otpad izvan miješanog toka' : definition.label} ({unit})
             </caption>
             <thead>
               <tr>
@@ -273,7 +277,9 @@ export default function CompareCharts({
                 {mode === 'snapshot' ? (
                   <>
                     <th scope="col">Vrijednost · {data.year}.</th>
-                    <th scope="col">Razlika · {unitLabel(definition.difference_unit)}</th>
+                    <th scope="col">
+                      Razlika u odnosu na {baselineName} · {unitLabel(definition.difference_unit)}
+                    </th>
                     {definition.family === 'per_person' && (
                       <th scope="col">Objavljeno ukupno kg/stan.</th>
                     )}
@@ -295,7 +301,7 @@ export default function CompareCharts({
                 <tr key={member.municipality.id}>
                   <th scope="row">
                     {member.municipality.name}
-                    {member.municipality.id === data.baseline_id && <small>Početna JLS</small>}
+                    {member.municipality.id === data.baseline_id && <small>Početna lokacija</small>}
                   </th>
                   {mode === 'snapshot' ? (
                     <>
@@ -347,8 +353,8 @@ export default function CompareCharts({
         </div>
       )}
       <p className="chart-footnote">
-        Izvori i kvaliteta prikazani su niže za svaku JLS. Graf je dostupan tipkovnicom; iste su
-        vrijednosti u tablici. Materijalne kategorije ne zbrajaju se i ne pretvaraju u tone.
+        Izvori i kvaliteta prikazani su niže za svaku lokaciju. Graf je dostupan tipkovnicom; iste
+        su vrijednosti u tablici. Materijalne kategorije ne zbrajaju se i ne pretvaraju u tone.
       </p>
       {isRate && (
         <RateEvidence

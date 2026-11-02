@@ -1,3 +1,4 @@
+import { beginPageUpdate } from '../scrollPosition';
 import type { components } from './schema';
 
 export type Municipality = components['schemas']['MunicipalityOut'];
@@ -21,6 +22,7 @@ export class ApiError extends Error {
 const base = (import.meta.env.VITE_API_BASE_URL || '/api/v1').replace(/\/$/, '');
 
 export async function get<T>(path: string, signal: AbortSignal): Promise<T> {
+  const finishPageUpdate = beginPageUpdate();
   const controller = new AbortController();
   const cancel = () => controller.abort();
   signal.addEventListener('abort', cancel, { once: true });
@@ -59,6 +61,7 @@ export async function get<T>(path: string, signal: AbortSignal): Promise<T> {
       'Nije moguće povezati se s podatkovnom uslugom. Provjerite vezu i pokušajte ponovno.',
     );
   } finally {
+    finishPageUpdate();
     clearTimeout(timeout);
     signal.removeEventListener('abort', cancel);
   }
@@ -107,6 +110,7 @@ export const simulationApi = {
       signal,
     ),
   calculate: async (input: SimulationInput, signal: AbortSignal): Promise<SimulationOutput> => {
+    const finishPageUpdate = beginPageUpdate();
     const controller = new AbortController();
     const cancel = () => controller.abort();
     signal.addEventListener('abort', cancel, { once: true });
@@ -137,6 +141,7 @@ export const simulationApi = {
           : 'Nije moguće povezati se s podatkovnom uslugom. Pokušajte ponovno.',
       );
     } finally {
+      finishPageUpdate();
       clearTimeout(timeout);
       signal.removeEventListener('abort', cancel);
     }
