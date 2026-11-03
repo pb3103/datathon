@@ -23,7 +23,7 @@ export function WorkspaceLayout({
           : 'Waste Simulator';
   const context = window.location.search;
   useEffect(() => {
-    document.title = `${title} · ${module === 'home' ? 'Otvoreni podaci o otpadu' : 'WasteWise'}`;
+    document.title = `${title} — ${module === 'home' ? 'Otvoreni podaci o otpadu' : 'WasteWise'}`;
     document.getElementById('page-title')?.focus({ preventScroll: true });
   }, [title, module]);
   return (

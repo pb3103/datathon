@@ -1,3 +1,4 @@
+import { Methodology } from './Methodology';
 import { PrintReport } from './PrintReport';
 import { changedSelection, moduleUrl } from '../navigation';
 import { useEffect, useState, useRef } from 'react';
@@ -114,7 +115,6 @@ export default function Simulator() {
   const [savedSignature, setSavedSignature] = useState('');
   const [validSignature, setValidSignature] = useState('');
   const signature = JSON.stringify([...saved, draft]);
-  const dirty = savedSignature !== '' && signature !== savedSignature;
   const [data, setData] = useState<SimulationOutput | null>(null);
   const [loadError, setLoadError] = useState('');
   const [calcError, setCalcError] = useState('');
@@ -322,65 +322,6 @@ export default function Simulator() {
     setDraft((old) => ({ ...old, ...patch }));
     setNotice('');
   }
-  function share() {
-    if (!context || !data) return;
-    const q = new URLSearchParams({
-      jls: id!,
-      godina: year,
-      verzija: VERSION,
-      zapis_baze: context.observation.id,
-      sha_baze: context.observation.source.sha256,
-      scenariji: JSON.stringify([...saved, draft]),
-    });
-    if (params.get('usporedi')) q.set('usporedi', params.get('usporedi')!);
-    window.history.replaceState(null, '', `/simulator?${q}`);
-    setSavedSignature(signature);
-    navigator.clipboard
-      ?.writeText(window.location.href)
-      .then(() => setNotice('Poveznica je kopirana.'))
-      .catch(() => setNotice('Poveznica je u adresnoj traci; možete je kopirati.'));
-    setNotice('Poveznica je u adresnoj traci; možete je kopirati.');
-  }
-  function saveLocal() {
-    if (!context || !data) return;
-    try {
-      localStorage.setItem(
-        `wastewise-simulator:${id}:${year}`,
-        JSON.stringify({
-          version: VERSION,
-          observation: context.observation.id,
-          sha256: context.observation.source.sha256,
-          scenarios: [...saved, draft],
-        }),
-      );
-      setSavedSignature(signature);
-      setNotice('Scenariji su spremljeni u ovom pregledniku.');
-    } catch {
-      setNotice('Lokalno spremanje nije dostupno.');
-    }
-  }
-  function restore() {
-    try {
-      const item = JSON.parse(localStorage.getItem(`wastewise-simulator:${id}:${year}`) || 'null');
-      if (!item) throw new Error('Nema spremljenih scenarija za ovu JLS i godinu.');
-      if (
-        item.version !== VERSION ||
-        item.observation !== context?.observation.id ||
-        item.sha256 !== context?.observation.source.sha256
-      )
-        throw new Error('Spremljeni scenariji koriste drugu verziju modela ili izvora.');
-      const list = decode(
-        new URLSearchParams({ verzija: item.version, scenariji: JSON.stringify(item.scenarios) }),
-      );
-      setSaved(list.slice(0, -1));
-      setDraft(list[list.length - 1]);
-      setReference(null);
-      setSavedSignature(JSON.stringify(list));
-      setNotice('Scenariji su učitani i ponovno se provjeravaju na API-ju.');
-    } catch (e) {
-      setNotice((e as Error).message);
-    }
-  }
   const chartData = data
     ? [
         { name: 'Početno stanje', ...data.scenarios[0].initial },
@@ -479,10 +420,8 @@ export default function Simulator() {
             <section className="panel simulator-controls" aria-labelledby="scenario-heading">
               <div className="section-kicker">01 / Postavite pretpostavku</div>
               <h2 id="scenario-heading">Oblikujte scenarij</h2>
-              <p className="draft-status" role="status">
-                {dirty
-                  ? 'Promjene se pamte privremeno. Za kasnije korištenje odaberite „Spremi lokalno”.'
-                  : 'Radni scenarij · za trajno čuvanje koristite Spremi lokalno ili izvoz.'}
+              <p className="draft-status">
+                Za preuzimanje rezultata koristite izvoz u CSV ili PDF izvještaj.
               </p>
               <label>
                 Naziv scenarija
@@ -908,84 +847,6 @@ export default function Simulator() {
                 ))}
               </div>
               <div className="simulator-toolbar no-print">
-                <button className="button secondary" onClick={saveLocal}>
-                  Spremi lokalno
-                </button>
-                <button className="button secondary" onClick={restore}>
-                  Učitaj spremljeno
-                </button>
-                <label className="button secondary">
-                  Uvezi JSON
-                  <input
-                    type="file"
-                    className="sr-only"
-                    accept="application/json,.json"
-                    aria-label="Uvezi scenarije iz JSON-a"
-                    onChange={async (e) => {
-                      const file = e.target.files?.[0];
-                      e.target.value = '';
-                      if (!file) return;
-                      try {
-                        if (file.size > 1000000) throw new Error('Datoteka je prevelika.');
-                        const item = JSON.parse(await file.text());
-                        const input = item.input;
-                        if (
-                          item.version !== VERSION ||
-                          input?.model_version !== VERSION ||
-                          input?.municipality_id !== id ||
-                          input?.year !== Number(year) ||
-                          input?.observation_id !== context.observation.id ||
-                          input?.sha256 !== context.observation.source.sha256
-                        )
-                          throw new Error(
-                            'Izvoz koristi drugu JLS, godinu ili reviziju modela/izvora.',
-                          );
-                        const list = decode(
-                          new URLSearchParams({
-                            verzija: VERSION,
-                            scenariji: JSON.stringify(input.scenarios),
-                          }),
-                        );
-                        setSaved(list.slice(0, -1));
-                        setDraft(list[list.length - 1]);
-                        setReference(null);
-                        setNotice('Uvezeni parametri ponovno se provjeravaju na API-ju.');
-                      } catch (error) {
-                        setNotice((error as Error).message);
-                      }
-                    }}
-                  />
-                </label>
-                <button className="button secondary" onClick={share}>
-                  Kopiraj poveznicu
-                </button>
-                <button
-                  className="button secondary"
-                  onClick={() =>
-                    download(
-                      'wastewise-scenariji.json',
-                      JSON.stringify(
-                        {
-                          version: VERSION,
-                          input: {
-                            municipality_id: id,
-                            year: Number(year),
-                            observation_id: context.observation.id,
-                            sha256: context.observation.source.sha256,
-                            model_version: VERSION,
-                            scenarios: [...saved, draft],
-                          },
-                          report: data,
-                        },
-                        null,
-                        2,
-                      ),
-                      'application/json',
-                    )
-                  }
-                >
-                  Izvezi JSON
-                </button>
                 <button
                   className="button secondary"
                   onClick={() => {
@@ -1066,43 +927,7 @@ export default function Simulator() {
               Preusmjeravanje čuva ukupnu masu; prevencija čuva odvojeno sakupljenu masu. Ne tvrdimo
               da je sav miješani otpad moguće odvojiti.
             </p>
-            <details className="formula-details">
-              <summary>Formule i detaljna metodološka objašnjenja</summary>
-              <p>
-                <strong>Početno:</strong> S = T − M; stopa = 100 × S / T.
-              </p>
-              <p>
-                <strong>Preusmjeravanje D tona:</strong> T′ = T; M′ = M − D; S′ = S + D. Za cilj g
-                (%): D = gT/100 − S.
-              </p>
-              <p>
-                <strong>Prevencija D tona:</strong> T′ = T − D; M′ = M − D; S′ = S. Za cilj g (%)
-                iznad početnog: D = T − 100S/g, samo uz S &gt; 0.
-              </p>
-              <p>
-                <strong>Po stanovniku:</strong> 1000 × masa / P, uz konstantnu i pouzdanu obuhvaćenu
-                populaciju.
-              </p>
-              <p>
-                Niži cilj smatra se dosegnutim; nema automatskog smanjivanja odvajanja. Uz T′ = 0
-                stopa nije definirana.
-              </p>
-              <ul>
-                {(
-                  data?.assumptions || [
-                    'Isti obuhvat javne usluge za ukupnu i miješanu masu.',
-                    'Nema raspodjele promjene na sedam materijalnih kategorija.',
-                    'Potpuna usporedivost godina 2021.–2024. nije potvrđena.',
-                  ]
-                ).map((a) => (
-                  <li key={a}>{a}</li>
-                ))}
-              </ul>
-              <p className="small-muted">
-                {context.evidence} · Model {VERSION}. Provjera po retku uključuje preciznost
-                objavljenih masa i stope; objavljena i izračunata stopa nisu zamjenjive.
-              </p>
-            </details>
+            <Methodology />
           </section>
           <p className="print-only">
             Početni izvor: {context.observation.source.path}; list{' '}

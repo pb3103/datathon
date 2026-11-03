@@ -4551,3 +4551,182 @@ fieldset.simulator-workbench:disabled .simulator-controls {
 .simulator-result-grid > div > strong {
   align-self: start;
 }
+
+.simulator-comparison .simulator-toolbar {
+  align-items: flex-end;
+}
+.simulator-comparison .simulator-toolbar > .button,
+.simulator-comparison .simulator-toolbar select {
+  min-height: 46px;
+  height: 46px;
+  box-sizing: border-box;
+}
+
+.methodology-content {
+  margin-top: 22px;
+  color: #52665a;
+  font-size: 14px;
+  line-height: 1.65;
+}
+.formula-symbols {
+  padding: 20px;
+  border: 1px solid #dce6db;
+  border-radius: 14px;
+  background: #f6f8f3;
+}
+.methodology-content h3 {
+  margin: 0 0 12px;
+  font-size: 17px;
+  color: #244b37;
+}
+.formula-symbols dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 24px;
+  margin: 0;
+}
+.formula-symbols dl > div {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 10px;
+}
+.formula-symbols dt {
+  font-family: Georgia, serif;
+  font-size: 19px;
+  color: #24583c;
+}
+.formula-symbols dd {
+  margin: 0;
+}
+.formula-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+.formula-card {
+  padding: 22px;
+  border: 1px solid #dce6db;
+  border-radius: 14px;
+}
+.formula-card p {
+  margin: 10px 0;
+}
+.formula-card h4 {
+  font-size: 13px;
+  font-weight: 500;
+  margin: 18px 0 8px;
+}
+.formula-equation {
+  background: #edf4e9;
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin: 10px 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 21px;
+  line-height: 1.8;
+  color: #214e38;
+  overflow-wrap: anywhere;
+}
+.methodology-limits {
+  margin-top: 22px;
+}
+.methodology-limits li + li {
+  margin-top: 8px;
+}
+@media (max-width: 700px) {
+  .formula-card-grid,
+  .formula-symbols dl {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media print {
+  @page simulator-report {
+    size: A4;
+    margin: 0;
+  }
+  .print-report {
+    page: simulator-report;
+    padding: 13mm;
+    box-sizing: border-box;
+  }
+}
+
+@media print {
+  .print-baseline-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3mm;
+    margin: 3mm 0 5mm;
+  }
+  .print-baseline-grid > div {
+    border: 1px solid #dce6db;
+    border-radius: 3mm;
+    padding: 3mm;
+    break-inside: avoid;
+  }
+  .print-baseline-grid dt {
+    font-size: 8pt;
+    color: #53665b;
+    min-height: 7mm;
+  }
+  .print-baseline-grid dd {
+    margin: 1mm 0 0;
+    font-size: 14pt;
+    font-weight: 600;
+    color: #214e38;
+  }
+  .print-method-section {
+    break-before: page;
+  }
+  .print-methodology > summary {
+    display: none;
+  }
+  .print-methodology .methodology-content {
+    font-size: 8pt;
+    line-height: 1.4;
+    margin-top: 3mm;
+  }
+  .print-methodology .formula-symbols,
+  .print-methodology .formula-card {
+    padding: 3mm;
+    border-radius: 3mm;
+    break-inside: avoid;
+  }
+  .print-methodology .formula-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3mm;
+    margin-top: 3mm;
+  }
+  .print-methodology .formula-symbols dl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2mm 4mm;
+  }
+  .print-methodology h3 {
+    font-size: 11pt;
+    margin: 0 0 2mm;
+  }
+  .print-methodology h4 {
+    font-size: 8pt;
+    margin: 2mm 0;
+  }
+  .print-methodology .formula-equation {
+    padding: 2mm 3mm;
+    margin: 2mm 0;
+    font-size: 12pt;
+    line-height: 1.5;
+    border: 1px solid #dce6db;
+  }
+  .print-methodology .formula-symbols dt {
+    font-size: 12pt;
+  }
+  .print-methodology .methodology-limits {
+    margin-top: 3mm;
+  }
+  .print-source-credit {
+    margin-top: 4mm;
+    break-inside: avoid;
+    font-size: 8pt;
+  }
+}
