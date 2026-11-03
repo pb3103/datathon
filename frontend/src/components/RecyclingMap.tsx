@@ -1,119 +1,123 @@
 import { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import data from '../data/recycling-locations.json';
-const yards = data.locations;
-const areas = [...new Set(yards.map((yard) => yard.municipality))].sort((a, b) =>
-  a.localeCompare(b, 'hr'),
-);
+import 'leaflet.markercluster';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+import { recyclingLocations as yards, recyclingAreas, type AreaSelection } from '../recycling';
+
 const labels: Record<string, string> = {
   fixed: 'Stalno reciklažno dvorište',
   mobile: 'Mobilno reciklažno dvorište',
   island: 'Zeleni otok',
-  collection: 'Lokacija za prikupljanje — vrsta nije navedena',
+  collection: 'Lokacija za prikupljanje otpada',
 };
 
-function normalizeArea(value: string) {
-  return value
-    .toLocaleLowerCase('hr')
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/^(grad|opcina)\s+/, '')
-    .trim();
-}
-
-export default function RecyclingMap({
-  searchRequest,
-}: {
-  searchRequest?: { query: string; attempt: number } | null;
-}) {
+export default function RecyclingMap({ selection }: { selection?: AreaSelection }) {
   const container = useRef<HTMLDivElement>(null);
   const map = useRef<L.Map | null>(null);
+  const group = useRef<L.MarkerClusterGroup | null>(null);
   const markers = useRef(new Map<string, L.Marker>());
   const [kind, setKind] = useState('all');
-  const [area, setArea] = useState('all');
+  const [areaId, setAreaId] = useState('all');
+  const [source, setSource] = useState('all');
   const [tileError, setTileError] = useState(false);
-  const [searchMessage, setSearchMessage] = useState('');
+  const [viewport, setViewport] = useState<L.LatLngBounds | null>(null);
+  const area = recyclingAreas.find((item) => item.id === areaId);
   const visible = yards.filter(
     (yard) =>
-      (kind === 'all' || yard.kind === kind) && (area === 'all' || yard.municipality === area),
+      (kind === 'all' || yard.kind === kind) &&
+      (areaId === 'all' || yard.areaId === areaId) &&
+      (source === 'all' || yard.sourceGroup === source),
   );
-  const unmapped = data.unmapped.filter(
-    (yard) =>
-      (kind === 'all' || yard.kind === kind) && (area === 'all' || yard.municipality === area),
-  );
+  const listed = visible.filter((yard) => !viewport || viewport.contains([yard.lat, yard.lon]));
+  const view = useRef<{ points: L.LatLngExpression[]; bounds?: L.LatLngBoundsExpression }>({
+    points: [],
+  });
+
+  function fitView() {
+    const instance = map.current;
+    if (!instance) return;
+    if (view.current.points.length)
+      instance.fitBounds(L.latLngBounds(view.current.points), {
+        padding: [32, 32],
+        maxZoom: 13,
+        animate: false,
+      });
+    else if (view.current.bounds)
+      instance.fitBounds(view.current.bounds, { padding: [24, 24], maxZoom: 12, animate: false });
+  }
 
   useEffect(() => {
-    if (!searchRequest) return;
-    const query = normalizeArea(searchRequest.query);
-    const exact = areas.find((name) => normalizeArea(name) === query);
-    const matches = areas.filter((name) => normalizeArea(name).includes(query));
-    const match = exact ?? (matches.length === 1 ? matches[0] : undefined);
-    if (match) {
-      setArea(match);
+    if (selection) {
+      setAreaId(selection.id);
       setKind('all');
-      setSearchMessage(`Karta prikazuje lokacije za područje ${match}.`);
-    } else {
-      setSearchMessage(
-        matches.length > 1
-          ? 'Više područja odgovara pretrazi. Odaberite područje u izborniku karte.'
-          : `Za područje „${searchRequest.query}” još nemamo lokacije na karti. Prethodni prikaz karte ostaje dostupan; podatke o otpadu možete otvoriti iz rezultata pretrage.`,
-      );
+      setSource('all');
     }
-  }, [searchRequest]);
+  }, [selection]);
 
   useEffect(() => {
     if (!container.current) return;
-    const instance = L.map(container.current, { scrollWheelZoom: false, fadeAnimation: false });
+    const instance = L.map(container.current, {
+      scrollWheelZoom: false,
+      fadeAnimation: false,
+      zoomAnimation: false,
+      markerZoomAnimation: false,
+    });
     map.current = instance;
+    const updateViewport = () => setViewport(instance.getBounds());
+    instance.on('moveend zoomend', updateViewport);
     const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors · <a href="https://opendatacommons.org/licenses/odbl/1-0/">ODbL</a>',
       maxZoom: 19,
     }).addTo(instance);
     tiles.on('tileerror', () => setTileError(true));
+    group.current = L.markerClusterGroup({
+      maxClusterRadius: 45,
+      showCoverageOnHover: false,
+      disableClusteringAtZoom: 13,
+      animate: false,
+      spiderfyOnMaxZoom: true,
+    }).addTo(instance);
     const observer = new ResizeObserver(() => {
       instance.invalidateSize();
       instance.closePopup();
-      const points = [...markers.current.values()].map((marker) => marker.getLatLng());
-      if (points.length)
-        instance.fitBounds(L.latLngBounds(points), { padding: [30, 30], maxZoom: 12 });
+      fitView();
     });
     observer.observe(container.current);
     return () => {
       observer.disconnect();
+      instance.off('moveend zoomend', updateViewport);
       instance.remove();
       map.current = null;
+      group.current = null;
     };
   }, []);
 
   useEffect(() => {
     const instance = map.current;
-    if (!instance) return;
-    markers.current.forEach((marker) => marker.remove());
+    if (!instance || !group.current) return;
+    instance.closePopup();
+    group.current.clearLayers();
     markers.current.clear();
     visible.forEach((yard) => {
       const popup = document.createElement('div');
       const title = document.createElement('strong');
-      title.textContent = yard.name;
+      const hasName = yard.name.trim() && !yard.name.includes('naziv nije naveden');
+      const address =
+        yard.address && !yard.address.startsWith('Adresa nije navedena') ? yard.address : '';
+      const complete = hasName && address && yard.hours;
+      title.textContent = complete ? yard.name : labels[yard.kind];
       popup.append(title);
-      [
-        labels[yard.kind],
-        `Područje izvora: ${yard.municipality}`,
-        yard.address,
-        yard.hours ? `Radno vrijeme prema izvoru: ${yard.hours}` : '',
-        yard.phone ? `Telefon: ${yard.phone}` : '',
-        yard.materials.length
-          ? `Prihvaćeni materijali prema izvoru: ${yard.materials.join(', ')}`
-          : 'Prihvaćeni materijali nisu navedeni u izvoru.',
-        yard.note,
-      ]
-        .filter(Boolean)
-        .forEach((text) => {
-          const p = document.createElement('p');
-          p.textContent = text;
-          popup.append(p);
-        });
+      const details = complete
+        ? [address, `Radno vrijeme: ${yard.hours}`]
+        : [`${yard.municipality}, ${yard.county}`];
+      details.forEach((text) => {
+        const p = document.createElement('p');
+        p.textContent = text;
+        popup.append(p);
+      });
       const icon = L.divIcon({
         className: 'yard-marker-wrapper',
         html: `<span class="yard-marker ${yard.kind}"><span></span></span>`,
@@ -121,17 +125,26 @@ export default function RecyclingMap({
         iconAnchor: [15, 36],
         popupAnchor: [0, -30],
       });
-      const marker = L.marker([yard.lat, yard.lon], { icon, title: yard.name, alt: yard.name })
-        .addTo(instance)
-        .bindPopup(popup, { maxWidth: 240, maxHeight: 220 });
+      const marker = L.marker([yard.lat, yard.lon], {
+        icon,
+        title: yard.name,
+        alt: yard.name,
+      }).bindPopup(popup, { maxWidth: 240, maxHeight: 220 });
+      group.current!.addLayer(marker);
       markers.current.set(yard.id, marker);
     });
-    if (visible.length)
-      instance.fitBounds(L.latLngBounds(visible.map((yard) => [yard.lat, yard.lon])), {
-        padding: [30, 30],
-        maxZoom: 12,
-      });
-  }, [kind, area, searchRequest]);
+    const b = area?.bounds;
+    view.current = {
+      points: visible.map((yard) => [yard.lat, yard.lon] as L.LatLngTuple),
+      bounds: b
+        ? [
+            [b[1], b[0]],
+            [b[3], b[2]],
+          ]
+        : undefined,
+    };
+    fitView();
+  }, [kind, areaId, source, selection]);
 
   return (
     <div className="recycling-explorer">
@@ -140,39 +153,31 @@ export default function RecyclingMap({
           <p className="home-eyebrow">MJESTA ZA ODGOVORNO ODLAGANJE</p>
           <h2>Reciklažna dvorišta i zeleni otoci</h2>
         </div>
-        <span className="badge neutral">{visible.length} lokacija</span>
+        <span className="badge neutral" data-testid="map-count">
+          {visible.length} lokacija
+        </span>
       </div>
-      {searchMessage && (
-        <p className="recycling-source" role="status">
-          {searchMessage}
-        </p>
-      )}
+      <div className="recycling-area-heading">
+        <strong>
+          {area ? `${area.name} · ${area.county}` : 'Hrvatska · sva dostupna područja'}
+        </strong>
+        {area && (
+          <button
+            type="button"
+            className="text-button"
+            onClick={() => {
+              setAreaId('all');
+              setKind('all');
+              setSource('all');
+            }}
+          >
+            Prikaži cijelu Hrvatsku
+          </button>
+        )}
+      </div>
       <div className="recycling-toolbar">
-        <label htmlFor="yard-area">Područje</label>
-        <select
-          id="yard-area"
-          value={area}
-          onChange={(event) => {
-            setArea(event.target.value);
-            setSearchMessage('');
-          }}
-        >
-          <option value="all">Sva područja ({areas.length})</option>
-          {areas.map((name) => (
-            <option key={name} value={name}>
-              {name}
-            </option>
-          ))}
-        </select>
         <label htmlFor="yard-kind">Prikaži</label>
-        <select
-          id="yard-kind"
-          value={kind}
-          onChange={(event) => {
-            setKind(event.target.value);
-            setSearchMessage('');
-          }}
-        >
+        <select id="yard-kind" value={kind} onChange={(event) => setKind(event.target.value)}>
           <option value="all">Sve lokacije</option>
           <option value="fixed">Stalna dvorišta</option>
           <option value="mobile">Mobilna dvorišta</option>
@@ -184,6 +189,22 @@ export default function RecyclingMap({
           <i className="collection" /> Ostalo
         </span>
       </div>
+      <div className="recycling-sources" role="group" aria-label="Izvor lokacija">
+        {[
+          ['all', 'Svi izvori'],
+          ['portal', 'data.gov.hr'],
+          ['osm', 'OpenStreetMap'],
+        ].map(([value, label]) => (
+          <button
+            key={value}
+            type="button"
+            aria-pressed={source === value}
+            onClick={() => setSource(value)}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
       <div
         ref={container}
         className="recycling-map"
@@ -193,53 +214,37 @@ export default function RecyclingMap({
       {tileError && (
         <p role="status">Podloga karte nije dostupna. Lokacije možete pregledati u popisu ispod.</p>
       )}
-      {visible.length === 0 && (
-        <p role="status">Za odabrane filtre nema lokacija s koordinatama.</p>
-      )}
-      <p className="recycling-source">
-        Izvori: dostavljeni GeoJSON, CSV i PDF skupovi s portala data.gov.hr. Prikazano je{' '}
-        {yards.length} lokacija iz {areas.length} područja izvora; pokrivenost nije potpuna. Radno
-        vrijeme, prihvaćeni otpad i raspored mobilnih dvorišta provjerite kod lokalnog upravitelja.
-        Izvorna datoteka navedena je uz svaku lokaciju u popisu.
-      </p>
-      {unmapped.length > 0 && (
-        <details className="recycling-list">
-          <summary>Lokacije bez koordinata — nisu prikazane na karti ({unmapped.length})</summary>
-          <ul>
-            {unmapped.map((yard) => (
-              <li key={yard.id}>
-                <strong>{yard.name}</strong>
-                <span>
-                  {yard.address} · {yard.municipality}
-                </span>
-                <small>Izvor: {yard.source}</small>
-              </li>
-            ))}
-          </ul>
-        </details>
+      {!visible.length && (
+        <p role="status">
+          Za {area?.name ?? 'odabrano područje'} nema lokacija koje odgovaraju odabranim filtrima u
+          našem skupu. To ne znači da lokacije ne postoje.
+          {area?.bounds
+            ? ' Karta prikazuje područje.'
+            : ' Granice područja nisu dostupne u ovom izvoru.'}
+        </p>
       )}
       <details className="recycling-list">
-        <summary>Pregledajte popis lokacija ({visible.length})</summary>
+        <summary>Pregledajte popis lokacija ({listed.length})</summary>
+        {!listed.length && <p>Nema lokacija u trenutačnom prikazu karte.</p>}
         <ul>
-          {visible.map((yard) => (
+          {listed.map((yard) => (
             <li key={yard.id}>
               <button
                 type="button"
                 onClick={() => {
-                  map.current?.setView([yard.lat, yard.lon], 15);
-                  markers.current.get(yard.id)?.openPopup();
+                  const marker = markers.current.get(yard.id);
+                  if (marker) group.current?.zoomToShowLayer(marker, () => marker.openPopup());
                   container.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }}
               >
-                {yard.name}
+                {yard.name.includes('naziv nije naveden') ? labels[yard.kind] : yard.name}
               </button>
               <span>
-                {yard.address} · {yard.municipality}
+                {yard.address.startsWith('Adresa nije navedena')
+                  ? yard.municipality
+                  : `${yard.address} · ${yard.municipality}`}
               </span>
-              <small>
-                {[labels[yard.kind], yard.hours, yard.phone].filter(Boolean).join(' · ')}
-              </small>
-              <small>Izvor: {yard.source}</small>
+              <small>{[labels[yard.kind], yard.hours].filter(Boolean).join(' · ')}</small>
             </li>
           ))}
         </ul>

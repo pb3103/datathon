@@ -1,3 +1,4 @@
+import { Methodology } from './Methodology';
 import { PrintReport } from './PrintReport';
 import { changedSelection, moduleUrl } from '../navigation';
 import { useEffect, useState, useRef } from 'react';
@@ -114,7 +115,6 @@ export default function Simulator() {
   const [savedSignature, setSavedSignature] = useState('');
   const [validSignature, setValidSignature] = useState('');
   const signature = JSON.stringify([...saved, draft]);
-  const dirty = savedSignature !== '' && signature !== savedSignature;
   const [data, setData] = useState<SimulationOutput | null>(null);
   const [loadError, setLoadError] = useState('');
   const [calcError, setCalcError] = useState('');
@@ -322,65 +322,6 @@ export default function Simulator() {
     setDraft((old) => ({ ...old, ...patch }));
     setNotice('');
   }
-  function share() {
-    if (!context || !data) return;
-    const q = new URLSearchParams({
-      jls: id!,
-      godina: year,
-      verzija: VERSION,
-      zapis_baze: context.observation.id,
-      sha_baze: context.observation.source.sha256,
-      scenariji: JSON.stringify([...saved, draft]),
-    });
-    if (params.get('usporedi')) q.set('usporedi', params.get('usporedi')!);
-    window.history.replaceState(null, '', `/simulator?${q}`);
-    setSavedSignature(signature);
-    navigator.clipboard
-      ?.writeText(window.location.href)
-      .then(() => setNotice('Poveznica je kopirana.'))
-      .catch(() => setNotice('Poveznica je u adresnoj traci; možete je kopirati.'));
-    setNotice('Poveznica je u adresnoj traci; možete je kopirati.');
-  }
-  function saveLocal() {
-    if (!context || !data) return;
-    try {
-      localStorage.setItem(
-        `wastewise-simulator:${id}:${year}`,
-        JSON.stringify({
-          version: VERSION,
-          observation: context.observation.id,
-          sha256: context.observation.source.sha256,
-          scenarios: [...saved, draft],
-        }),
-      );
-      setSavedSignature(signature);
-      setNotice('Scenariji su spremljeni u ovom pregledniku.');
-    } catch {
-      setNotice('Lokalno spremanje nije dostupno.');
-    }
-  }
-  function restore() {
-    try {
-      const item = JSON.parse(localStorage.getItem(`wastewise-simulator:${id}:${year}`) || 'null');
-      if (!item) throw new Error('Nema spremljenih scenarija za ovu JLS i godinu.');
-      if (
-        item.version !== VERSION ||
-        item.observation !== context?.observation.id ||
-        item.sha256 !== context?.observation.source.sha256
-      )
-        throw new Error('Spremljeni scenariji koriste drugu verziju modela ili izvora.');
-      const list = decode(
-        new URLSearchParams({ verzija: item.version, scenariji: JSON.stringify(item.scenarios) }),
-      );
-      setSaved(list.slice(0, -1));
-      setDraft(list[list.length - 1]);
-      setReference(null);
-      setSavedSignature(JSON.stringify(list));
-      setNotice('Scenariji su učitani i ponovno se provjeravaju na API-ju.');
-    } catch (e) {
-      setNotice((e as Error).message);
-    }
-  }
   const chartData = data
     ? [
         { name: 'Početno stanje', ...data.scenarios[0].initial },
@@ -393,14 +334,6 @@ export default function Simulator() {
     : [];
   return (
     <WorkspaceLayout module="simulator">
-      <div className="notice simulator-intro">
-        <strong>Istražite što se matematički mijenja.</strong>
-        <p>
-          Hipotetski scenarij, ne prognoza učinka javne politike. Odvojeno sakupljanje nije
-          recikliranje. Matematička granica od 100 % ne znači da je sav miješani otpad moguće
-          odvojiti.
-        </p>
-      </div>
       <Search onSelect={(m) => navigate(m.id, '2024')} />
       {id && (
         <div className="simulator-context-bar panel">
@@ -425,7 +358,9 @@ export default function Simulator() {
                 ))}
             </select>
           </label>
-          <a href={moduleUrl('compare')}>Natrag na usporedbu</a>
+          <a className="button primary" href={moduleUrl('compare')}>
+            Natrag na usporedbu →
+          </a>
         </div>
       )}
       {loading && <Loading />}
@@ -460,9 +395,13 @@ export default function Simulator() {
             {[
               ['Ukupno', context.observation.metrics.total_t.value, 't'],
               ['Miješano', context.observation.metrics.mixed_t.value, 't'],
-              ['Objavljena stopa', context.observation.metrics.separate_collection_pct.value, '%'],
               [
-                'Stopa iz masa',
+                'Objavljeni postotak odvojenog sakupljanja',
+                context.observation.metrics.separate_collection_pct.value,
+                '%',
+              ],
+              [
+                'Izračunati postotak odvojenog sakupljanja',
                 context.observation.metrics.control_separate_collection_pct.value,
                 '%',
               ],
@@ -470,7 +409,8 @@ export default function Simulator() {
               <article className="panel" key={label}>
                 <span>{label}</span>
                 <strong>
-                  {number(value, label === 'Stopa iz masa' ? 4 : 2)} <small>{u}</small>
+                  {number(value, label === 'Izračunati postotak odvojenog sakupljanja' ? 4 : 2)}{' '}
+                  <small>{u}</small>
                 </strong>
                 <span className="small-muted">{context.observation.year}. · početno stanje</span>
               </article>
@@ -480,10 +420,8 @@ export default function Simulator() {
             <section className="panel simulator-controls" aria-labelledby="scenario-heading">
               <div className="section-kicker">01 / Postavite pretpostavku</div>
               <h2 id="scenario-heading">Oblikujte scenarij</h2>
-              <p className="draft-status" role="status">
-                {dirty
-                  ? 'Nespremljene promjene · valjani nacrt obnavlja se u ovoj kartici preglednika.'
-                  : 'Radni scenarij · za trajno čuvanje koristite Spremi lokalno ili izvoz.'}
+              <p className="draft-status">
+                Za preuzimanje rezultata koristite izvoz u CSV ili PDF izvještaj.
               </p>
               <label>
                 Naziv scenarija
@@ -510,8 +448,8 @@ export default function Simulator() {
                       <strong>{modelName(m)}</strong>
                       <small>
                         {m === 'diversion'
-                          ? 'Ukupno ostaje isto. Odvojeni tok raste.'
-                          : 'Ukupno i miješano se smanjuju. Odvojeni tok ostaje isti.'}
+                          ? 'Dio otpada koji bi završio u miješanom spremniku sakuplja se odvojeno. Ukupna količina otpada ostaje ista.'
+                          : 'Sprječava se nastanak dijela otpada koji bi završio u miješanom spremniku. Ukupnog i miješanog otpada ima manje, a odvojeno sakupljena količina ostaje ista.'}
                       </small>
                     </span>
                   </label>
@@ -556,11 +494,17 @@ export default function Simulator() {
                       ? Number(context.observation.metrics.mixed_t.value)
                       : 100
                   }
-                  step="any"
+                  step="0.01"
                   value={
-                    draft.kind === 'fraction'
-                      ? String(Number(draft.value) * 100)
-                      : String(draft.value).replace(/(\.\d*?[1-9])0+$|\.0+$/, '$1')
+                    draft.value === ''
+                      ? ''
+                      : String(
+                          Number(
+                            (Number(draft.value) * (draft.kind === 'fraction' ? 100 : 1)).toFixed(
+                              2,
+                            ),
+                          ),
+                        )
                   }
                   onChange={(e) => {
                     update({
@@ -568,8 +512,12 @@ export default function Simulator() {
                         e.target.value === ''
                           ? ''
                           : draft.kind === 'fraction'
-                            ? String(Number(e.target.value) / 100)
-                            : e.target.value,
+                            ? String(
+                                Number(
+                                  (Number(Number(e.target.value).toFixed(2)) / 100).toFixed(4),
+                                ),
+                              )
+                            : String(Number(Number(e.target.value).toFixed(2))),
                       reference: null,
                     });
                     setReference(null);
@@ -582,9 +530,11 @@ export default function Simulator() {
                   aria-label="Smanjenje miješanog klizačem"
                   min="0"
                   max="100"
-                  step="1"
-                  value={Number(draft.value) * 100 || 0}
-                  onChange={(e) => update({ value: String(Number(e.target.value) / 100) })}
+                  step="0.01"
+                  value={Number((Number(draft.value) * 100).toFixed(2)) || 0}
+                  onChange={(e) =>
+                    update({ value: String(Number((Number(e.target.value) / 100).toFixed(4))) })
+                  }
                 />
               )}
               <p className="small-muted">
@@ -615,14 +565,29 @@ export default function Simulator() {
                 <>
                   <div className="simulator-change">
                     <span>
-                      {draft.model === 'diversion'
-                        ? 'Potrebno preusmjeriti iz miješanog otpada'
-                        : 'Potrebno spriječiti nastanak miješanog otpada'}
+                      {draft.kind === 'tonnes' ? (
+                        draft.model === 'diversion' ? (
+                          `Za preusmjeravanje ${number(latest.change_t)} t u odvojeno sakupljanje potrebno je izdvojiti sljedeći postotak početnog miješanog otpada:`
+                        ) : (
+                          `Za smanjenje otpada za ${number(latest.change_t)} t potrebno je spriječiti nastanak sljedećeg postotka početnog miješanog otpada:`
+                        )
+                      ) : (
+                        <>
+                          {draft.kind === 'target'
+                            ? `Za postotak odvojenog sakupljanja od ${number(draft.value)} % potrebno je `
+                            : `Za smanjenje početnog miješanog otpada za ${number(latest.mixed_reduction_pct)} % potrebno je `}
+                          {draft.model === 'diversion'
+                            ? 'preusmjeriti u odvojeno sakupljanje:'
+                            : 'spriječiti nastanak sljedeće količine otpada:'}
+                        </>
+                      )}
                     </span>
                     <strong>
-                      {number(latest.change_t)} <small>t</small>
+                      {number(
+                        draft.kind === 'tonnes' ? latest.mixed_reduction_pct : latest.change_t,
+                      )}
+                      <small>{draft.kind === 'tonnes' ? '%' : 't'}</small>
                     </strong>
-                    <p>{number(latest.mixed_reduction_pct)} % početnog miješanog otpada</p>
                   </div>
                   <p className="result-explanation">
                     {draft.model === 'diversion'
@@ -637,20 +602,14 @@ export default function Simulator() {
                         · Željeni cilj: <strong>{number(draft.value)} %</strong>
                       </>
                     )}
-                    . <a href="#scenario-comparison">Usporedi na grafikonu i u tablici ↓</a>
-                  </p>
-                  <p className="small-muted">
-                    Promjena stope računa se prema početnoj stopi iz masa, uz puni račun prije
-                    zaokruživanja. Postotni bodovi (pb) nisu relativni postoci.
+                    .
                   </p>
                   <div className="simulator-result-grid">
                     <div>
-                      <span>Nova stopa odvojenog sakupljanja</span>
-                      <strong>{number(latest.result.rate_pct)} %</strong>
-                    </div>
-                    <div>
-                      <span>Promjena u postotnim bodovima</span>
-                      <strong>{number(latest.difference.rate_pct)} pb</strong>
+                      <span>Odvojeno sakupljanje · prije → poslije</span>
+                      <strong>
+                        {number(latest.initial.rate_pct)} % → {number(latest.result.rate_pct)} %
+                      </strong>
                     </div>
                     <div>
                       <span>Promjena ukupnog</span>
@@ -694,8 +653,12 @@ export default function Simulator() {
                       {issue.description}
                     </p>
                   ))}
-                  <small>Referentni rezultat nije preporuka ni dokaz ostvarivosti.</small>
                 </aside>
+              )}
+              {latest && (
+                <a className="button primary simulator-compare-link" href="#scenario-comparison">
+                  Usporedi na grafikonu i u tablici ↓
+                </a>
               )}
             </section>
           </fieldset>
@@ -783,7 +746,7 @@ export default function Simulator() {
                         <span>{s.input.name}</span>
                         <strong>{number(s.result.rate_pct)} %</strong>
                         <small>
-                          {number(s.difference.rate_pct)} pb prema početnoj stopi iz masa
+                          {number(s.initial.rate_pct)} % → {number(s.result.rate_pct)} %
                         </small>
                       </article>
                     ))}
@@ -829,7 +792,7 @@ export default function Simulator() {
                         <th scope="row">
                           {labels[key]} (
                           {key === 'rate_pct'
-                            ? '% / pb'
+                            ? '% · prije → poslije'
                             : key.includes('kg')
                               ? 'kg/obuhvaćeni stan.'
                               : 't'}
@@ -838,8 +801,16 @@ export default function Simulator() {
                         <td>{number(data.scenarios[0].initial[key as keyof ScenarioState])}</td>
                         {data.scenarios.map((s, i) => (
                           <td key={i}>
-                            {number(s.result[key as keyof ScenarioState])} /{' '}
-                            {number(s.difference[key])}
+                            {key === 'rate_pct' ? (
+                              <>
+                                {number(s.initial.rate_pct)} % → {number(s.result.rate_pct)} %
+                              </>
+                            ) : (
+                              <>
+                                {number(s.result[key as keyof ScenarioState])} /{' '}
+                                {number(s.difference[key])}
+                              </>
+                            )}
                           </td>
                         ))}
                       </tr>
@@ -876,84 +847,6 @@ export default function Simulator() {
                 ))}
               </div>
               <div className="simulator-toolbar no-print">
-                <button className="button secondary" onClick={saveLocal}>
-                  Spremi lokalno
-                </button>
-                <button className="button secondary" onClick={restore}>
-                  Učitaj spremljeno
-                </button>
-                <label className="button secondary">
-                  Uvezi JSON
-                  <input
-                    type="file"
-                    className="sr-only"
-                    accept="application/json,.json"
-                    aria-label="Uvezi scenarije iz JSON-a"
-                    onChange={async (e) => {
-                      const file = e.target.files?.[0];
-                      e.target.value = '';
-                      if (!file) return;
-                      try {
-                        if (file.size > 1000000) throw new Error('Datoteka je prevelika.');
-                        const item = JSON.parse(await file.text());
-                        const input = item.input;
-                        if (
-                          item.version !== VERSION ||
-                          input?.model_version !== VERSION ||
-                          input?.municipality_id !== id ||
-                          input?.year !== Number(year) ||
-                          input?.observation_id !== context.observation.id ||
-                          input?.sha256 !== context.observation.source.sha256
-                        )
-                          throw new Error(
-                            'Izvoz koristi drugu JLS, godinu ili reviziju modela/izvora.',
-                          );
-                        const list = decode(
-                          new URLSearchParams({
-                            verzija: VERSION,
-                            scenariji: JSON.stringify(input.scenarios),
-                          }),
-                        );
-                        setSaved(list.slice(0, -1));
-                        setDraft(list[list.length - 1]);
-                        setReference(null);
-                        setNotice('Uvezeni parametri ponovno se provjeravaju na API-ju.');
-                      } catch (error) {
-                        setNotice((error as Error).message);
-                      }
-                    }}
-                  />
-                </label>
-                <button className="button secondary" onClick={share}>
-                  Kopiraj poveznicu
-                </button>
-                <button
-                  className="button secondary"
-                  onClick={() =>
-                    download(
-                      'wastewise-scenariji.json',
-                      JSON.stringify(
-                        {
-                          version: VERSION,
-                          input: {
-                            municipality_id: id,
-                            year: Number(year),
-                            observation_id: context.observation.id,
-                            sha256: context.observation.source.sha256,
-                            model_version: VERSION,
-                            scenarios: [...saved, draft],
-                          },
-                          report: data,
-                        },
-                        null,
-                        2,
-                      ),
-                      'application/json',
-                    )
-                  }
-                >
-                  Izvezi JSON
-                </button>
                 <button
                   className="button secondary"
                   onClick={() => {
@@ -1028,49 +921,13 @@ export default function Simulator() {
             <h2>Ključne pretpostavke</h2>
             <p>
               Hipotetski matematički scenarij, ne prognoza učinka javne politike. Obuhvat i pouzdana
-              obuhvaćena populacija ostaju isti. Stopa odvojenog sakupljanja nije recikliranje.
+              obuhvaćena populacija ostaju isti.
             </p>
             <p>
               Preusmjeravanje čuva ukupnu masu; prevencija čuva odvojeno sakupljenu masu. Ne tvrdimo
               da je sav miješani otpad moguće odvojiti.
             </p>
-            <details className="formula-details">
-              <summary>Formule i detaljna metodološka objašnjenja</summary>
-              <p>
-                <strong>Početno:</strong> S = T − M; stopa = 100 × S / T.
-              </p>
-              <p>
-                <strong>Preusmjeravanje D tona:</strong> T′ = T; M′ = M − D; S′ = S + D. Za cilj g
-                (%): D = gT/100 − S.
-              </p>
-              <p>
-                <strong>Prevencija D tona:</strong> T′ = T − D; M′ = M − D; S′ = S. Za cilj g (%)
-                iznad početnog: D = T − 100S/g, samo uz S &gt; 0.
-              </p>
-              <p>
-                <strong>Po stanovniku:</strong> 1000 × masa / P, uz konstantnu i pouzdanu obuhvaćenu
-                populaciju. Promjena stope je u postotnim bodovima.
-              </p>
-              <p>
-                Niži cilj smatra se dosegnutim; nema automatskog smanjivanja odvajanja. Uz T′ = 0
-                stopa nije definirana.
-              </p>
-              <ul>
-                {(
-                  data?.assumptions || [
-                    'Isti obuhvat javne usluge za ukupnu i miješanu masu.',
-                    'Nema raspodjele promjene na sedam materijalnih kategorija.',
-                    'Potpuna usporedivost godina 2021.–2024. nije potvrđena.',
-                  ]
-                ).map((a) => (
-                  <li key={a}>{a}</li>
-                ))}
-              </ul>
-              <p className="small-muted">
-                {context.evidence} · Model {VERSION}. Provjera po retku uključuje preciznost
-                objavljenih masa i stope; objavljena i izračunata stopa nisu zamjenjive.
-              </p>
-            </details>
+            <Methodology />
           </section>
           <p className="print-only">
             Početni izvor: {context.observation.source.path}; list{' '}

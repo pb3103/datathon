@@ -4191,3 +4191,542 @@ fieldset.simulator-workbench:disabled .simulator-controls {
     padding: 10px 12px;
   }
 }
+
+.area-autocomplete {
+  position: relative;
+  min-width: 0;
+}
+.area-options {
+  position: absolute;
+  z-index: 1100;
+  top: calc(100% + 7px);
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  max-height: 330px;
+  overflow-y: auto;
+  border: 1px solid #b5cba8;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 12px 28px #183e2d22;
+}
+.area-options li {
+  margin: 0;
+}
+.area-options button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+  padding: 11px 10px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #183e2d;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.area-options button:hover,
+.area-options button[aria-selected='true'] {
+  background: #e8f0e1;
+}
+.area-options strong,
+.area-options small {
+  display: block;
+}
+.area-options strong {
+  font-size: 14px;
+}
+.area-options small {
+  margin-top: 3px;
+  font-size: 11px;
+  color: #52634e;
+}
+.area-count {
+  font-size: 11px;
+  text-align: right;
+  color: #52634e;
+  max-width: 90px;
+}
+.area-search-status {
+  margin: 8px 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.area-search-status:empty {
+  display: none;
+}
+.area-explorer-link {
+  display: inline-block;
+  margin-top: 14px;
+  font-size: 14px;
+}
+.module-home .home-discovery {
+  overflow: visible;
+}
+.module-home .home-discovery .home-start {
+  border-radius: 22px 0 0 22px;
+}
+.recycling-area-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+  font-size: 13px;
+}
+.recycling-sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.recycling-sources button {
+  border: 1px solid #b5cba8;
+  border-radius: 20px;
+  padding: 7px 11px;
+  background: #fff;
+  color: #31563d;
+  font-size: 12px;
+  cursor: pointer;
+}
+.recycling-sources button[aria-pressed='true'] {
+  background: #1d6046;
+  color: #fff;
+  border-color: #1d6046;
+}
+.recycling-map .marker-cluster-small,
+.recycling-map .marker-cluster-medium,
+.recycling-map .marker-cluster-large {
+  background: #b6cfa5bb;
+}
+.recycling-map .marker-cluster-small div,
+.recycling-map .marker-cluster-medium div,
+.recycling-map .marker-cluster-large div {
+  background: #1d6046;
+  color: #fff;
+  font-weight: 700;
+}
+@media (max-width: 1000px) {
+  .module-home .home-discovery .home-start {
+    border-radius: 22px 22px 0 0;
+  }
+}
+
+.compare-filters .button {
+  margin-left: 0;
+}
+.compare-filters .county-select {
+  width: min(100%, 280px);
+}
+.compare-core-heading {
+  margin-top: 28px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.compare-year-heading {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.compare-year-heading h2 {
+  margin: 0;
+}
+.compare-year-heading select {
+  width: auto;
+  min-width: 130px;
+}
+
+/* Shared rows keep the same fields aligned across each row of location cards. */
+.comparison-reference-grid {
+  row-gap: 16px;
+}
+.comparison-reference {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 7;
+  align-items: start;
+}
+.comparison-reference > p,
+.comparison-reference .profile-link,
+.comparison-reference .quality-details {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.comparison-reference .peer-card-top h3 small {
+  display: block;
+}
+.reference-warnings:empty {
+  display: none;
+}
+.reference-warnings .source-warning {
+  margin: 0 0 8px;
+}
+
+.simple-source-list,
+.simple-source-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.simple-source-list > li {
+  display: grid;
+  grid-template-columns: 65px minmax(0, 1fr);
+  gap: 16px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--border);
+}
+.simple-source-list > li:last-child {
+  border-bottom: 0;
+}
+.simple-source-list ul li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  overflow-wrap: anywhere;
+}
+.simple-source-list ul li + li {
+  margin-top: 12px;
+}
+.simple-source-list a {
+  flex-shrink: 0;
+}
+.source-document-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+}
+
+.sources-panel > h2 {
+  font-size: 18px;
+  font-weight: 500;
+  color: #53665b;
+  margin-bottom: 14px;
+}
+.simple-source-list {
+  font-size: 13px;
+  line-height: 1.6;
+  font-weight: 400;
+  color: #637168;
+}
+.simple-source-list .source-year {
+  font-size: 12px;
+  font-weight: 400;
+  color: #6c786f;
+}
+.simple-source-list a {
+  font-size: 12px;
+  font-weight: 400;
+  color: #526d60;
+  text-decoration-color: #bdc9c0;
+  text-underline-offset: 3px;
+}
+.simple-source-list a:hover {
+  color: #225d43;
+  text-decoration-color: currentColor;
+}
+
+.simulator-baseline strong {
+  white-space: nowrap;
+}
+.simulator-baseline strong small {
+  display: inline;
+  margin-left: 4px;
+}
+
+.simulator-baseline article {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 3;
+  align-items: start;
+}
+.simulator-baseline article > span:first-child {
+  font-size: 15px;
+  line-height: 1.45;
+  font-weight: 400;
+}
+.simulator-baseline article > strong {
+  align-self: baseline;
+  line-height: 1.2;
+}
+.simulator-baseline article > .small-muted {
+  margin: 0;
+}
+
+.simulator-change strong {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: nowrap;
+  gap: 10px;
+  white-space: nowrap;
+  font-size: clamp(28px, 4vw, 54px);
+}
+.simulator-change strong small {
+  display: inline;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.simulator-result {
+  display: flex;
+  flex-direction: column;
+  align-self: start;
+  min-height: 0;
+}
+.simulator-result .simulator-compare-link {
+  align-self: flex-start;
+  margin-top: 24px;
+}
+.simulator-result .simulator-compare-link::before {
+  content: none;
+}
+.simulator-result > :has(+ .simulator-compare-link) {
+  margin-bottom: 0;
+}
+
+.simulator-result .simulator-change {
+  padding: 18px 0 20px;
+}
+.simulator-result .simulator-change > span {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #52675a;
+}
+.simulator-result .result-explanation {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #5d6d63;
+  margin: 18px 0 12px;
+}
+.simulator-result-grid {
+  gap: 12px;
+  padding: 18px 0 0;
+}
+.simulator-result-grid > div {
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid #dce7dc;
+  border-radius: 14px;
+  background: #f5f8f2;
+  align-content: start;
+  gap: 12px;
+}
+.simulator-result-grid > div:first-child {
+  grid-column: 1 / -1;
+  background: #edf4e8;
+}
+.simulator-result-grid span {
+  color: #5d7062;
+  line-height: 1.5;
+  font-size: 13px;
+}
+.simulator-result-grid strong {
+  font-size: clamp(19px, 2vw, 25px);
+  line-height: 1.4;
+  letter-spacing: -0.4px;
+  color: #214e38;
+}
+@media (max-width: 600px) {
+  .simulator-result-grid {
+    grid-template-columns: 1fr;
+  }
+  .simulator-result-grid > div {
+    padding: 16px;
+  }
+}
+
+.simulator-result-grid > div {
+  grid-template-rows: subgrid;
+  grid-row: span 2;
+  row-gap: 12px;
+}
+.simulator-result-grid > div > strong {
+  align-self: start;
+}
+
+.simulator-comparison .simulator-toolbar {
+  align-items: flex-end;
+}
+.simulator-comparison .simulator-toolbar > .button,
+.simulator-comparison .simulator-toolbar select {
+  min-height: 46px;
+  height: 46px;
+  box-sizing: border-box;
+}
+
+.methodology-content {
+  margin-top: 22px;
+  color: #52665a;
+  font-size: 14px;
+  line-height: 1.65;
+}
+.formula-symbols {
+  padding: 20px;
+  border: 1px solid #dce6db;
+  border-radius: 14px;
+  background: #f6f8f3;
+}
+.methodology-content h3 {
+  margin: 0 0 12px;
+  font-size: 17px;
+  color: #244b37;
+}
+.formula-symbols dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 24px;
+  margin: 0;
+}
+.formula-symbols dl > div {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 10px;
+}
+.formula-symbols dt {
+  font-family: Georgia, serif;
+  font-size: 19px;
+  color: #24583c;
+}
+.formula-symbols dd {
+  margin: 0;
+}
+.formula-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+.formula-card {
+  padding: 22px;
+  border: 1px solid #dce6db;
+  border-radius: 14px;
+}
+.formula-card p {
+  margin: 10px 0;
+}
+.formula-card h4 {
+  font-size: 13px;
+  font-weight: 500;
+  margin: 18px 0 8px;
+}
+.formula-equation {
+  background: #edf4e9;
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin: 10px 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 21px;
+  line-height: 1.8;
+  color: #214e38;
+  overflow-wrap: anywhere;
+}
+.methodology-limits {
+  margin-top: 22px;
+}
+.methodology-limits li + li {
+  margin-top: 8px;
+}
+@media (max-width: 700px) {
+  .formula-card-grid,
+  .formula-symbols dl {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media print {
+  @page simulator-report {
+    size: A4;
+    margin: 0;
+  }
+  .print-report {
+    page: simulator-report;
+    padding: 13mm;
+    box-sizing: border-box;
+  }
+}
+
+@media print {
+  .print-baseline-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3mm;
+    margin: 3mm 0 5mm;
+  }
+  .print-baseline-grid > div {
+    border: 1px solid #dce6db;
+    border-radius: 3mm;
+    padding: 3mm;
+    break-inside: avoid;
+  }
+  .print-baseline-grid dt {
+    font-size: 8pt;
+    color: #53665b;
+    min-height: 7mm;
+  }
+  .print-baseline-grid dd {
+    margin: 1mm 0 0;
+    font-size: 14pt;
+    font-weight: 600;
+    color: #214e38;
+  }
+  .print-method-section {
+    break-before: page;
+  }
+  .print-methodology > summary {
+    display: none;
+  }
+  .print-methodology .methodology-content {
+    font-size: 8pt;
+    line-height: 1.4;
+    margin-top: 3mm;
+  }
+  .print-methodology .formula-symbols,
+  .print-methodology .formula-card {
+    padding: 3mm;
+    border-radius: 3mm;
+    break-inside: avoid;
+  }
+  .print-methodology .formula-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3mm;
+    margin-top: 3mm;
+  }
+  .print-methodology .formula-symbols dl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2mm 4mm;
+  }
+  .print-methodology h3 {
+    font-size: 11pt;
+    margin: 0 0 2mm;
+  }
+  .print-methodology h4 {
+    font-size: 8pt;
+    margin: 2mm 0;
+  }
+  .print-methodology .formula-equation {
+    padding: 2mm 3mm;
+    margin: 2mm 0;
+    font-size: 12pt;
+    line-height: 1.5;
+    border: 1px solid #dce6db;
+  }
+  .print-methodology .formula-symbols dt {
+    font-size: 12pt;
+  }
+  .print-methodology .methodology-limits {
+    margin-top: 3mm;
+  }
+  .print-source-credit {
+    margin-top: 4mm;
+    break-inside: avoid;
+    font-size: 8pt;
+  }
+}

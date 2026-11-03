@@ -14,10 +14,10 @@ import {
 } from 'recharts';
 import type { Observation } from '../api/client';
 import {
+  explainIssue,
   explainReason,
   formatMetric,
   formatNumber,
-  isVerified,
   mayConnect,
   numeric,
 } from '../domain';
@@ -42,17 +42,17 @@ const configurations = {
     ],
   },
   rate: {
-    title: 'Izračunati udjeli i službene stope',
+    title: 'Otpad izvan miješanog toka',
     unit: '%',
     series: [
       {
         key: 'separate_collection_pct',
-        title: 'Službeno objavljeno · stopa odvojenog sakupljanja',
+        title: 'Odvojeno sakupljanje · objavljena stopa',
         color: '#226446',
       },
       {
         key: 'calculated_nonmixed_share_pct',
-        title: 'Izračunato · udio izvan miješanog toka',
+        title: 'Izvan miješanog toka · izračunati udio',
         color: '#8292a5',
       },
     ],
@@ -77,9 +77,6 @@ export function Trends({
   const patternId = `mixed-pattern-${useId().replaceAll(':', '')}`;
   const config = configurations[mode];
   const sorted = [...observations].sort((a, b) => a.year - b.year);
-  const scopeLabel = sorted.some((item) => item.scope.startsWith('historical_'))
-    ? 'obuhvat ovisi o godišnjem izvoru'
-    : 'javna usluga';
   const connected =
     sorted.length > 1 &&
     sorted.slice(1).every((observation, index) => mayConnect(sorted[index], observation));
@@ -125,7 +122,7 @@ export function Trends({
           >
             <option value="mass">Količine otpada (t)</option>
             <option value="per_person">Po obuhvaćenom stanovniku (kg)</option>
-            <option value="rate">Udjeli i stope (%)</option>
+            <option value="rate">Otpad izvan miješanog toka (%)</option>
           </select>
         </div>
         <span className={`badge ${connected ? 'neutral' : 'warning'}`}>
@@ -136,9 +133,15 @@ export function Trends({
       <p className="chart-description" id={descId}>
         {connected
           ? 'Povezane su samo uzastopne godine s potvrđenom usporedivošću.'
-          : 'Svaka godina prikazana je zasebno. Usporedivost nije potvrđena za cijelo razdoblje, pa nema povezujuće linije ni izračuna godišnjih promjena.'}{' '}
-        Obuhvat: {scopeLabel}. Jedinica: {config.unit}.
+          : 'Obuhvat podataka razlikuje se među godinama, pa su vrijednosti prikazane zasebno.'}{' '}
+        Jedinica: {config.unit}.
       </p>
+      {mode === 'rate' && (
+        <p className="small-muted">
+          2017.–2020.: izračunati udio izvan miješanog toka. Od 2021.: objavljena stopa odvojenog
+          sakupljanja. To nije postotak recikliranog otpada.
+        </p>
+      )}
       {view === 'chart' ? (
         <figure className="chart-figure" aria-labelledby={titleId} aria-describedby={descId}>
           {hasValues ? (
@@ -232,12 +235,6 @@ export function Trends({
             {!connected &&
               config.series.some((series) => series.key.startsWith('mixed_')) &&
               'Miješani otpad označen je prugastim stupcima. '}
-            Izvori: godišnji XLSX prilozi i pregledani CSV/PDF retci odabrane JLS.{' '}
-            <a href="#sources">Pregled izvora i napomena ↗</a>
-            <span className="chart-keyboard">
-              Graf možete pregledavati strelicama nakon fokusa; iste su vrijednosti dostupne u
-              tablici.
-            </span>
           </figcaption>
         </figure>
       ) : (
@@ -247,26 +244,33 @@ export function Trends({
           aria-label="Godišnje vrijednosti, vodoravno pomicanje na manjim ekranima"
           tabIndex={0}
         >
+          <p className="notice">
+            <Icon name="info" />
+            <span>
+              Podaci različitih godina mogu obuhvaćati različita područja ili usluge sakupljanja
+              otpada. Zato promjena vrijednosti ne mora značiti samo promjenu količine otpada.
+            </span>
+          </p>
           <table>
             <caption>
-              {config.title} · {scopeLabel} · {config.unit}. Godina je gumb za promjenu odabira.
+              {config.title} ({config.unit}). Kliknite godinu za odabir.
             </caption>
             <thead>
               <tr>
                 <th scope="col">Godina</th>
-                {config.series.map((series) => (
-                  <th key={series.key} scope="col">
-                    {series.title}
-                    <small>{config.unit}</small>
-                  </th>
-                ))}
-                {mode === 'per_person' && (
-                  <th scope="col">
-                    Ukupno · objavljeno<small>kg/obuhv. stan.</small>
-                  </th>
+                {mode === 'rate' ? (
+                  <>
+                    <th scope="col">Vrijednost (%)</th>
+                    <th scope="col">Pokazatelj</th>
+                  </>
+                ) : (
+                  config.series.map((series) => (
+                    <th key={series.key} scope="col">
+                      {series.title}
+                      <small>{config.unit}</small>
+                    </th>
+                  ))
                 )}
-                <th scope="col">Usporedivost i kvaliteta</th>
-                <th scope="col">Izvor</th>
               </tr>
             </thead>
             <tbody>
@@ -286,40 +290,55 @@ export function Trends({
                         <span className="sr-only">(odabrano)</span>
                       )}
                     </button>
+                    {observation.issues
+                      .filter((issue) => issue.severity !== 'info')
+                      .map((issue, index) => (
+                        <small className="warning-text" key={`local-${index}`}>
+                          {explainIssue(issue)}
+                        </small>
+                      ))}
+                    {visibleSourceIssues(observation.source.issues)
+                      .filter(
+                        (issue) =>
+                          issue.code !== 'historical_scope_unverified' && issue.severity !== 'info',
+                      )
+                      .map((issue, index) => (
+                        <small className="warning-text" key={`source-${index}`}>
+                          {explainIssue(issue)}
+                        </small>
+                      ))}
                   </th>
-                  {config.series.map((series) => (
-                    <td key={series.key}>
-                      {formatMetric(observation.metrics[series.key])}
-                      {numeric(observation.metrics[series.key]) === null && (
-                        <small>{explainReason(observation.metrics[series.key]?.reason)}</small>
-                      )}
-                    </td>
-                  ))}
-                  {mode === 'per_person' && (
-                    <td>
-                      {formatMetric(
-                        observation.metrics.published_kg_per_covered_person,
-                        observation.year === 2024 ? 2 : 0,
-                      )}
-                      {observation.issues.some(
-                        (issue) => issue.code === 'kg_per_capita_mismatch',
-                      ) && <small className="warning-text">Nesklad · potrebna provjera</small>}
-                    </td>
+                  {mode === 'rate' ? (
+                    <>
+                      <td>
+                        {formatMetric(
+                          observation.metrics[
+                            observation.year < 2021
+                              ? 'calculated_nonmixed_share_pct'
+                              : 'separate_collection_pct'
+                          ],
+                        )}
+                      </td>
+                      <td>
+                        {observation.year < 2021
+                          ? 'Izvan miješanog toka · izračunato'
+                          : 'Odvojeno sakupljanje · objavljena stopa'}
+                      </td>
+                    </>
+                  ) : (
+                    config.series.map((series) => (
+                      <td key={series.key}>
+                        {formatMetric(observation.metrics[series.key])}
+                        {numeric(observation.metrics[series.key]) === null && (
+                          <small>{explainReason(observation.metrics[series.key]?.reason)}</small>
+                        )}
+                        {series.key === 'total_kg_per_covered_person' &&
+                          observation.issues.some(
+                            (issue) => issue.code === 'kg_per_capita_mismatch',
+                          ) && <small className="warning-text">Nesklad · potrebna provjera</small>}
+                      </td>
+                    ))
                   )}
-                  <td>
-                    <span>{isVerified(observation) ? 'Usporedivo' : 'Uvjetno'}</span>
-                    {visibleSourceIssues(observation.source.issues).length > 0 && (
-                      <small className="warning-text">Napomena izvora za {observation.year}.</small>
-                    )}
-                    {observation.issues.length > 0 && (
-                      <small className="warning-text">Potrebna provjera zapisa</small>
-                    )}
-                  </td>
-                  <td>
-                    <a href={`#source-${observation.year}`}>
-                      Prilog 1, redak {observation.source_row}
-                    </a>
-                  </td>
                 </tr>
               ))}
             </tbody>

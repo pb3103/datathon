@@ -18,16 +18,17 @@ export function compareReason(reason?: string | null) {
   const messages: Record<string, string> = {
     material_denominator_not_verified:
       'Nazivnik materijalnog pokazatelja nije potvrđen; objavljena vrijednost ostaje u izvorima.',
-    no_comparison_values: 'Nema dostupnih pokazatelja za usporedbu početne JLS.',
+    no_comparison_values: 'Nema dostupnih pokazatelja za usporedbu početne lokacije.',
     materials_not_imported: 'Materijalni podaci nisu učitani za ovaj zapis.',
-    scope_or_methodology_mismatch: 'Obuhvat ili metodološka skupina nisu usklađeni s početnom JLS.',
+    scope_or_methodology_mismatch:
+      'Obuhvat ili metodološka skupina nisu usklađeni s početnom lokacijom.',
     missing_year: 'Za odabranu godinu nema zapisa. Nije zamijenjen drugom godinom.',
     quality_requires_review:
       'Najmanje jedna od vrijednosti zahtijeva provjeru; razlika nije izračunata.',
     material_cross_year_unverified:
       'Kontinuitet obuhvata i nazivnika materijala među godinama nije potvrđen. Nema povezujuće linije ni godišnjih promjena.',
     population_range_expanded:
-      'Nema dovoljno kandidata u rasponu 0,5–2. Dodani su najbliži kandidati izvan raspona, uz isti filtar županije.',
+      'Nema dovoljno mjesta s brojem stanovnika obuhvaćenih uslugom između polovice i dvostrukog broja početne lokacije (raspon 0,5–2). Dodana su najbliža dostupna mjesta izvan tog raspona, uz isti filtar županije.',
     fewer_candidates_available: 'Dostupno je manje od pet prihvatljivih kandidata.',
     comparability_provisional:
       'Usporedba je uvjetna: lokalni obuhvat i kontinuitet granica još nisu potvrđeni.',

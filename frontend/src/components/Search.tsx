@@ -1,183 +1,123 @@
-import { useEffect, useRef, useState, type FormEvent } from 'react';
-import { api, type Municipality, type MunicipalityPage } from '../api/client';
-import { Icon } from './Icon';
+import { useEffect, useRef, useState } from 'react';
+import { api, type Municipality } from '../api/client';
+import { normalizePlace } from '../placeSearch';
+import { PlaceAutocomplete } from './PlaceAutocomplete';
 
 type Result =
   | { status: 'idle' | 'loading' }
   | { status: 'error'; message: string }
-  | { status: 'success'; data: MunicipalityPage };
-export function Search({
-  onSelect,
-  onSearch,
-}: {
-  onSelect: (municipality: Municipality) => void;
-  onSearch?: (query: string) => void;
-}) {
+  | { status: 'success'; items: Municipality[] };
+export function Search({ onSelect }: { onSelect: (municipality: Municipality) => void }) {
   const [query, setQuery] = useState('');
-  const [submitted, setSubmitted] = useState<{
-    query: string;
-    page: number;
-    attempt: number;
-  } | null>(null);
   const [result, setResult] = useState<Result>({ status: 'idle' });
-  const controller = useRef<AbortController | null>(null);
-  const resultsRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!submitted) return;
-    const abort = new AbortController();
-    controller.current = abort;
-    setResult({ status: 'loading' });
-    api
-      .search(submitted.query, submitted.page, abort.signal)
-      .then((data) => {
-        if (!abort.signal.aborted) setResult({ status: 'success', data });
-      })
-      .catch((error: Error) => {
-        if (!abort.signal.aborted) setResult({ status: 'error', message: error.message });
-      });
-    return () => abort.abort();
-  }, [submitted]);
-
-  function search(value: string, page = 1) {
-    if (!value.trim()) return;
-    controller.current?.abort();
-    if (page === 1) onSearch?.(value.trim());
-    setQuery(value);
-    setResult({ status: 'loading' });
-    setSubmitted((old) => ({ query: value.trim(), page, attempt: (old?.attempt ?? 0) + 1 }));
-  }
-  function submit(event: FormEvent) {
-    event.preventDefault();
-    search(query);
-  }
-  function select(municipality: Municipality) {
-    controller.current?.abort();
-    setSubmitted(null);
-    setQuery(municipality.name);
+  const [message, setMessage] = useState('');
+  const [attempt, setAttempt] = useState(0);
+  const chosen = useRef<Municipality | null>(null);
+  const pendingSubmit = useRef('');
+  const callback = useRef(onSelect);
+  callback.current = onSelect;
+  function select(place: Municipality) {
+    chosen.current = place;
+    pendingSubmit.current = '';
+    setQuery(place.name);
+    setMessage('');
     setResult({ status: 'idle' });
-    onSelect(municipality);
+    callback.current(place);
   }
+  useEffect(() => {
+    const value = query.trim();
+    if (!value || chosen.current?.name === query) return;
+    const abort = new AbortController();
+    const timer = setTimeout(() => {
+      api
+        .search(value, 1, abort.signal)
+        .then((data) => {
+          if (abort.signal.aborted) return;
+          setResult({ status: 'success', items: data.items });
+          if (pendingSubmit.current === value) {
+            pendingSubmit.current = '';
+            const exact = data.items.filter(
+              (place) => normalizePlace(place.name) === normalizePlace(value),
+            );
+            const candidates = exact.length ? exact : data.items;
+            if (candidates.length === 1) select(candidates[0]);
+            else
+              setMessage(
+                data.items.length
+                  ? 'Odaberite područje iz prijedloga.'
+                  : 'Nema rezultata za uneseni naziv.',
+              );
+          }
+        })
+        .catch((error: Error) => {
+          if (!abort.signal.aborted) {
+            pendingSubmit.current = '';
+            setResult({ status: 'error', message: error.message });
+          }
+        });
+    }, 200);
+    return () => {
+      clearTimeout(timer);
+      abort.abort();
+    };
+  }, [query, attempt]);
+  const options =
+    chosen.current?.name === query
+      ? [chosen.current]
+      : result.status === 'success'
+        ? result.items
+        : [];
   return (
-    <section className="search-panel panel" aria-labelledby="search-heading">
-      <div className="section-kicker" id="search-heading">
-        01 / Odaberite svoju zajednicu
-      </div>
-      <form onSubmit={submit} role="search" aria-label="Pretraga gradova i općina">
-        <div className="search-field">
-          <Icon name="search" />
-          <label htmlFor="municipality-search" className="sr-only">
-            Grad ili općina
-          </label>
-          <input
-            id="municipality-search"
-            type="search"
-            placeholder="Upišite grad ili općinu…"
-            value={query}
-            maxLength={200}
-            autoComplete="off"
-            aria-describedby="search-hint"
-            onChange={(event) => {
-              controller.current?.abort();
-              setQuery(event.target.value);
-              setSubmitted(null);
-              setResult({ status: 'idle' });
-            }}
-          />
-        </div>
-        <button className="button primary" disabled={!query.trim()} type="submit">
-          Pretraži
-          <Icon name="arrow" />
-        </button>
-      </form>
-      <p className="field-hint" id="search-hint">
-        Pretražujte po nazivu. Županija pomaže razlikovati istoimene gradove i općine.
-      </p>
-      {result.status === 'idle' && !query && (
-        <div className="suggestion">
-          Za početak{' '}
-          <button type="button" onClick={() => search('Bjelovar')}>
-            istražite Bjelovar <span aria-hidden="true">↗</span>
-          </button>
-        </div>
-      )}
-      <div className="search-announcement sr-only" role="status" aria-live="polite">
+    <section className="search-panel panel area-search" aria-label="Pretraga gradova i općina">
+      <PlaceAutocomplete
+        selectedId={chosen.current?.id}
+        value={query}
+        onChange={(value) => {
+          chosen.current = null;
+          pendingSubmit.current = '';
+          setQuery(value);
+          setMessage('');
+          setResult({ status: value.trim() ? 'loading' : 'idle' });
+        }}
+        options={options}
+        onChoose={select}
+        loading={result.status === 'loading'}
+        buttonLabel="Odaberi područje"
+        onUnresolved={() => {
+          if (result.status === 'loading') pendingSubmit.current = query.trim();
+          else if (result.status === 'error') {
+            pendingSubmit.current = query.trim();
+            setResult({ status: 'loading' });
+            setAttempt((old) => old + 1);
+          } else
+            setMessage(
+              options.length
+                ? 'Odaberite područje iz prijedloga.'
+                : 'Nema rezultata za uneseni naziv.',
+            );
+        }}
+      />
+      <p className="area-search-status" role="status" aria-live="polite">
         {result.status === 'loading'
           ? 'Pretraživanje…'
-          : result.status === 'success'
-            ? `Pronađeno rezultata: ${result.data.total}.`
-            : ''}
-      </div>
-      {result.status === 'loading' && (
-        <p className="inline-loading">
-          <span className="spinner" aria-hidden="true" />
-          Pretraživanje…
-        </p>
-      )}
+          : message ||
+            (result.status === 'success' && !result.items.length
+              ? 'Nema rezultata za uneseni naziv.'
+              : '')}
+      </p>
       {result.status === 'error' && (
         <div className="search-error" role="alert">
           <p>{result.message}</p>
-          <button className="text-button" onClick={() => search(query)}>
+          <button
+            type="button"
+            className="text-button"
+            onClick={() => {
+              setResult({ status: 'loading' });
+              setAttempt((old) => old + 1);
+            }}
+          >
             Ponovi pretragu
           </button>
-        </div>
-      )}
-      {result.status === 'success' && (
-        <div className="search-results" ref={resultsRef}>
-          <div className="results-heading">
-            <span>
-              {result.data.total ? `Rezultati za „${submitted?.query}”` : 'Nema rezultata'}
-            </span>
-            <span>{result.data.total} pronađeno</span>
-          </div>
-          {!result.data.total ? (
-            <p>Nismo pronašli grad ili općinu s tim nazivom. Pokušajte s kraćim nazivom.</p>
-          ) : (
-            <>
-              <ul>
-                {result.data.items.map((municipality) => (
-                  <li key={municipality.id}>
-                    <button
-                      type="button"
-                      onClick={() => select(municipality)}
-                      aria-label={`Otvori ${municipality.name}, ${municipality.county}`}
-                    >
-                      <span className="result-icon">
-                        <Icon name="pin" />
-                      </span>
-                      <span>
-                        <strong>{municipality.name}</strong>
-                        <small>{municipality.county}</small>
-                      </span>
-                      <Icon name="arrow" />
-                    </button>
-                  </li>
-                ))}
-              </ul>
-              {result.data.total > result.data.page_size && (
-                <div className="pagination">
-                  <button
-                    className="text-button"
-                    disabled={result.data.page === 1}
-                    onClick={() => search(submitted!.query, result.data.page - 1)}
-                  >
-                    Prethodna
-                  </button>
-                  <span>
-                    Stranica {result.data.page} /{' '}
-                    {Math.ceil(result.data.total / result.data.page_size)}
-                  </span>
-                  <button
-                    className="text-button"
-                    disabled={result.data.page * result.data.page_size >= result.data.total}
-                    onClick={() => search(submitted!.query, result.data.page + 1)}
-                  >
-                    Sljedeća
-                  </button>
-                </div>
-              )}
-            </>
-          )}
         </div>
       )}
     </section>

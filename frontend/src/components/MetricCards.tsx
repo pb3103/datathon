@@ -77,28 +77,11 @@ export function MetricCards({ observation }: { observation: Observation }) {
                 <p className="metric-reason">{explainReason(value?.reason)}</p>
               )}
               <p className="metric-hint">{card.hint}</p>
-              {card.key === 'calculated_nonmixed_share_pct' && !missing && (
-                <span className="badge neutral indicator-origin">Izračunato</span>
-              )}
-              {card.key === 'total_kg_per_covered_person' && (
-                <div className={`published-value ${mismatch ? 'mismatch' : ''}`}>
-                  <span>
-                    {observation.scope.startsWith('historical_')
-                      ? 'Objavljeno u PDF-u'
-                      : 'Objavljeno u izvoru'}
-                  </span>
-                  <strong>
-                    <Value metric={published} decimals={observation.year === 2024 ? 2 : 0} />
-                    {numeric(published) !== null && ' kg/stan.'}
-                  </strong>
-                  {numeric(published) === null && <small>{explainReason(published?.reason)}</small>}
-                  {mismatch && (
-                    <span>
-                      <Icon name="alert" />
-                      Nesklad · potrebna provjera
-                    </span>
-                  )}
-                </div>
+              {card.key === 'total_kg_per_covered_person' && mismatch && (
+                <p className="metric-reason">
+                  <Icon name="alert" />
+                  Nesklad s izvornom vrijednosti · potrebna provjera
+                </p>
               )}
               {value?.quality_status === 'review_required' &&
                 card.key !== 'total_kg_per_covered_person' && (
@@ -127,13 +110,6 @@ export function MetricCards({ observation }: { observation: Observation }) {
           </strong>
         </span>
       </div>
-      <p className="definition-note">
-        <Icon name="info" />
-        <span>
-          „Stanovnik” ovdje znači stanovnika obuhvaćenog uslugom. Stopa odvojenog sakupljanja nije
-          stopa recikliranja.
-        </span>
-      </p>
       {numeric(computed) === null && numeric(published) !== null && (
         <p className="notice warning">
           <Icon name="alert" />

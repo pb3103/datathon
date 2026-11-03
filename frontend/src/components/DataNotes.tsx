@@ -1,5 +1,5 @@
 import type { Observation } from '../api/client';
-import { explainIssue, explainReason, visibleSourceIssues } from '../domain';
+import { explainIssue, visibleSourceIssues } from '../domain';
 import { Icon } from './Icon';
 
 export function DataNotes({
@@ -12,8 +12,8 @@ export function DataNotes({
   const year = selected?.year;
   const context =
     year && year < 2021
-      ? 'Prikazani udio izračunat je iz objavljenih masa i nije službeno objavljena stopa odvojenog sakupljanja.'
-      : 'Stope su službeno objavljene. Usporedivost obuhvata među godinama nije potpuno potvrđena.';
+      ? 'Udio izvan miješanog toka izračunat je iz ukupne i miješane mase.'
+      : 'Obuhvat podataka može se razlikovati među godinama.';
   const years = [...new Set(observations.map((o) => o.year))].sort();
   const local = selected?.issues.filter((i) => i.severity !== 'info') ?? [];
   const sourceWarnings = observations.flatMap((o) =>
@@ -50,50 +50,15 @@ export function DataNotes({
             <summary>Saznaj više</summary>
             <div className="data-notes-details">
               <p>
-                Podaci dolaze iz službenih godišnjih izvješća i pripadajućih tablica. Povijesni i
-                noviji podaci mogu se razlikovati prema obuhvatu i metodologiji; ne treba ih
-                tumačiti kao potvrđen povezani trend.
+                Udio izvan miješanog toka = (ukupno − miješano) / ukupno × 100. Za 2021.–2024.
+                prikazuje se objavljena stopa odvojenog sakupljanja. Odvojeno sakupljanje ne znači
+                da je otpad recikliran.
               </p>
               <p>
-                Za 2017.–2020. prikazuje se izračunati udio izvan miješanog toka: (T−M)/T × 100,
-                gdje je T ukupna, a M miješana masa. To nije službeno objavljena stopa odvojenog
-                sakupljanja. Službene stope za 2021.–2024. ostaju zasebni podaci. Odvojeno
-                sakupljanje nije recikliranje.
+                Podaci različitih godina nisu uvijek izravno usporedivi. Ako podatak nedostaje u
+                izvoru, prikazuje se „Nije dostupno”.
               </p>
-              <p>
-                Za 2019. javna i povezana usluga zajedno čine organizaciju JLS. Prikazani udio
-                obuhvaća sve tokove osim miješanog otpada; nije uža stopa prema Uredbi. Nedostupna
-                vrijednost nije nula.
-              </p>
-              <dl>
-                <dt>Uvjetna usporedivost</dt>
-                <dd>
-                  Vrijednosti se mogu pregledavati, ali kontinuitet obuhvata i lokalnih granica nije
-                  potvrđen.
-                </dd>
-                <dt>Potrebna provjera</dt>
-                <dd>
-                  Konkretan ulaz ili pokazatelj zahtijeva provjeru. Izračuni koji ovise o njemu mogu
-                  ostati nedostupni, dok objavljena vrijednost ostaje vidljiva.
-                </dd>
-                <dt>Nije dostupno</dt>
-                <dd>
-                  Pokazatelj nedostaje ili nije opravdano izračunati ga. Nije zamijenjen nulom.
-                </dd>
-              </dl>
-              {selected?.issues
-                .filter((i) => i.severity === 'info')
-                .map((issue, i) => <p key={i}>{explainIssue(issue)}</p>)}
-              {selected && (
-                <>
-                  <h3>Napomene za {year}.</h3>
-                  <ul>
-                    {selected.comparability.reasons.map((reason) => (
-                      <li key={reason}>{explainReason(reason)}</li>
-                    ))}
-                  </ul>
-                </>
-              )}
+              {year === 2019 && <p>Podaci za 2019. uključuju javnu i povezanu uslugu.</p>}
               <div className="historical-source-links">
                 {years.map((year) => (
                   <a key={year} href={`#source-${year}`}>

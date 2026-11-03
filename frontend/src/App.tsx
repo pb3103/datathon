@@ -65,7 +65,7 @@ function Explorer() {
       navigate(selection.id, String(latest), true);
     }
     if (focusOnLoad.current && profileHeading.current) {
-      profileHeading.current.focus();
+      profileHeading.current.focus({ preventScroll: true });
       focusOnLoad.current = false;
     }
     document.title = `${data.profile.municipality.name} · Waste Explorer`;
@@ -93,22 +93,8 @@ function Explorer() {
           <div className="welcome-icon">
             <Icon name="chart" />
           </div>
-          <h2>Svaka zajednica ima svoju priču.</h2>
-          <p>
-            Odaberite grad ili općinu da biste pregledali količine otpada,
-            <br className="desktop-break" /> odvojeno sakupljanje i izvore podataka.
-          </p>
-          <div className="welcome-steps">
-            <span>
-              <b>01</b>Pronađite zajednicu
-            </span>
-            <span>
-              <b>02</b>Odaberite godinu
-            </span>
-            <span>
-              <b>03</b>Istražite podatke
-            </span>
-          </div>
+          <h2>Odaberite grad ili općinu</h2>
+          <p>Prikaz količina otpada i dostupnih godina.</p>
         </section>
       )}
       {data.status === 'loading' && <Loading message="Učitavanje profila i dostupnih godina…" />}
@@ -168,10 +154,7 @@ function Explorer() {
                     Istraži scenarij →
                   </a>
                 ) : (
-                  <span className="small-muted">
-                    Automatski Simulator dostupan je samo za provjerene zapise javne usluge
-                    2023./2024.
-                  </span>
+                  <span className="small-muted">Simulator: provjereni podaci za 2023. i 2024.</span>
                 )}
               </div>
             </>

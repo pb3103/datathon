@@ -2,10 +2,13 @@ import { test, expect, type Page, type APIRequestContext } from '@playwright/tes
 import AxeBuilder from '@axe-core/playwright';
 
 async function add(page: Page, name: string) {
-  const input = page.getByRole('searchbox', { name: 'Grad ili općina' });
+  const input = page.getByRole('combobox', { name: 'Grad ili općina' });
   await input.fill(name);
-  await input.press('Enter');
-  await page.getByRole('button', { name: new RegExp(`^Otvori ${name},`) }).click();
+  await page
+    .getByRole('option')
+    .filter({ has: page.locator('strong', { hasText: new RegExp(`^${name}$`) }) })
+    .first()
+    .click();
 }
 async function id(request: APIRequestContext, name: string) {
   const response = await request.get(`/api/v1/municipalities?q=${encodeURIComponent(name)}`);

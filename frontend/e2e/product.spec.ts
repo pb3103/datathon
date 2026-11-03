@@ -26,9 +26,8 @@ test('product: round trips clear source references and retain group', async ({ p
   await page.getByRole('link', { name: 'Simuliraj ovaj cilj' }).click();
   await expect(page.locator('.simulator-reference')).toContainText('Samobor');
   await page.getByRole('link', { name: 'Waste Explorer', exact: true }).click();
-  await page.getByRole('searchbox', { name: 'Grad ili općina' }).fill('Daruvar');
-  await page.getByRole('searchbox', { name: 'Grad ili općina' }).press('Enter');
-  await page.getByRole('button', { name: /^Otvori Daruvar,/ }).click();
+  await page.getByRole('combobox', { name: 'Grad ili općina' }).fill('Daruvar');
+  await page.getByRole('combobox', { name: 'Grad ili općina' }).press('Enter');
   await page.getByRole('heading', { name: /Daruvar/ }).waitFor();
   await page.getByRole('link', { name: 'Waste Simulator', exact: true }).click();
   await expect(page.locator('.simulator-result-grid')).toBeVisible();
@@ -61,15 +60,14 @@ test('product: home search, concise workflow, mobile accessibility and legacy pr
 }) => {
   await page.goto('/');
   await expect(
-    page.getByRole('heading', { name: 'Od podataka do pametnih odluka.', exact: true }),
+    page.getByRole('heading', { name: 'Podaci o komunalnom otpadu.', exact: true }),
   ).toBeVisible();
-  await expect(page.getByText('Za građane i jedinice lokalne samouprave.')).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Kako funkcionira?' })).toBeVisible();
   await expect(page.locator('.home-step-card')).toHaveCount(3);
   await expect(page.locator('.home-example')).toHaveCount(0);
-  await page.getByRole('searchbox', { name: 'Grad ili općina' }).fill('Bjelovar');
-  await page.getByRole('searchbox', { name: 'Grad ili općina' }).press('Enter');
-  await page.getByRole('button', { name: /^Otvori Bjelovar,/ }).click();
+  await page.getByRole('combobox', { name: 'Grad ili općina' }).fill('Bjelovar');
+  await page.getByRole('combobox', { name: 'Grad ili općina' }).press('Enter');
+  await page.getByRole('link', { name: /Podaci o otpadu za Bjelovar/ }).click();
   await expect(page).toHaveURL(/\/explorer\?/);
   await expect(page.getByLabel('Godina podataka')).toHaveValue('2024');
   const old = new URL(page.url());
@@ -78,7 +76,7 @@ test('product: home search, concise workflow, mobile accessibility and legacy pr
   await expect(page).toHaveURL(/\/explorer\?/);
   await page.getByRole('link', { name: 'WasteWise početna' }).click();
   await expect(
-    page.getByRole('heading', { name: 'Od podataka do pametnih odluka.', exact: true }),
+    page.getByRole('heading', { name: 'Podaci o komunalnom otpadu.', exact: true }),
   ).toBeVisible();
   await page.setViewportSize({ width: 390, height: 844 });
   const { default: AxeBuilder } = await import('@axe-core/playwright');
@@ -167,23 +165,15 @@ test('home: no automatic data requests, keyboard search, cards and responsive la
   });
   await page.goto('/');
   await expect(
-    page.getByRole('heading', { name: 'Od podataka do pametnih odluka.', exact: true }),
+    page.getByRole('heading', { name: 'Podaci o komunalnom otpadu.', exact: true }),
   ).toBeVisible();
   expect(requests).toEqual([]);
-  await page.getByRole('heading', { name: 'Od podataka do pametnih odluka.', exact: true }).focus();
-  for (const module of ['Waste Explorer', 'Waste Compare', 'Waste Simulator']) {
-    await page.keyboard.press('Tab');
-    await expect(page.getByRole('link', { name: `Otvori ${module}`, exact: true })).toBeFocused();
-  }
-  await page.keyboard.press('Tab');
-  await expect(page.getByRole('searchbox', { name: 'Grad ili općina' })).toBeFocused();
-  await page.keyboard.type('Bjelovar');
-  await page.keyboard.press('Enter');
-  await expect(page.getByRole('button', { name: /^Otvori Bjelovar,/ })).toBeVisible();
-  await page.keyboard.press('Tab');
-  await page.keyboard.press('Tab');
-  await expect(page.getByRole('button', { name: /^Otvori Bjelovar,/ })).toBeFocused();
-  await page.keyboard.press('Enter');
+  const search = page.getByRole('combobox', { name: 'Grad ili općina' });
+  await search.fill('Bjelovar');
+  await search.press('ArrowDown');
+  await search.press('Enter');
+  await page.getByRole('link', { name: /Podaci o otpadu za Bjelovar/ }).click();
+
   await expect(page).toHaveURL(/\/explorer\?/);
   await expect(page.getByLabel('Godina podataka')).toHaveValue('2024');
   for (const [name, path] of [
