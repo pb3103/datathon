@@ -57,7 +57,7 @@ export function WorkspaceLayout({
             href={moduleUrl('explorer', context)}
             aria-current={module === 'explorer' ? 'page' : undefined}
           >
-            <Icon name="chart" />
+            <Icon name="explore" />
             Waste Explorer{module === 'explorer' && <span className="nav-active-dot" />}
           </a>
           <a
@@ -86,7 +86,7 @@ export function WorkspaceLayout({
       <div className="main-shell">
         <header className="topbar">
           <span className="breadcrumb">
-            <strong>{title}</strong>
+            <strong>{module === 'home' ? 'Početna' : title}</strong>
           </span>
           <span className="data-period">
             <span className="status-dot" />
@@ -103,7 +103,7 @@ export function WorkspaceLayout({
                 </h1>
                 <p>
                   {module === 'compare'
-                    ? 'Usporedba pokazatelja za 2–5 gradova i općina.'
+                    ? 'Usporedba pokazatelja komunalnog otpada među gradovima i općinama.'
                     : module === 'simulator'
                       ? 'Izračun scenarija preusmjeravanja i prevencije otpada.'
                       : 'Količine i sastav komunalnog otpada po godinama.'}
@@ -114,7 +114,7 @@ export function WorkspaceLayout({
                 <span className="orbit orbit-two" />
                 <Icon
                   name={
-                    module === 'compare' ? 'compare' : module === 'simulator' ? 'flask' : 'leaf'
+                    module === 'compare' ? 'compare' : module === 'simulator' ? 'flask' : 'explore'
                   }
                 />
                 <span className="art-dot" />

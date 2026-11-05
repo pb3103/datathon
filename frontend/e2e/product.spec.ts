@@ -1,10 +1,11 @@
+import { openReferenceScenario } from './reference-link';
 import { test, expect } from '@playwright/test';
 async function pair(page: import('@playwright/test').Page) {
   const b = (await (await page.request.get('/api/v1/municipalities?q=Bjelovar')).json()).items[0]
     .id;
   const s = (await (await page.request.get('/api/v1/municipalities?q=Samobor')).json()).items[0].id;
   await page.goto(`/compare?jls=${b}&usporedi=${s}&godina=2024`);
-  await page.getByRole('link', { name: 'Simuliraj ovaj cilj' }).click();
+  await openReferenceScenario(page);
   await expect(page.locator('.simulator-result-grid')).toBeVisible();
   return { b, s };
 }
@@ -15,7 +16,9 @@ test('product: round trips clear source references and retain group', async ({ p
   await page.getByRole('link', { name: 'Waste Simulator', exact: true }).click();
   await expect(page.locator('.simulator-result-grid')).toBeVisible();
   expect(new URL(page.url()).searchParams.get('referenca')).toBeNull();
-  await page.getByLabel('Godina scenarija').selectOption('2024');
+  await page.getByRole('link', { name: 'Waste Explorer', exact: true }).click();
+  await page.getByLabel('Godina podataka').selectOption('2024');
+  await page.getByRole('link', { name: 'Waste Simulator', exact: true }).click();
   await page.getByRole('link', { name: 'Natrag na usporedbu' }).click();
   await expect(page.locator('.comparison-reference')).toHaveCount(2);
   expect(new URL(page.url()).searchParams.get('usporedi')).toContain(s);
@@ -23,7 +26,7 @@ test('product: round trips clear source references and retain group', async ({ p
   await page.getByRole('link', { name: 'Usporedi ovu zajednicu →' }).click();
   await expect(page.locator('.comparison-reference')).toHaveCount(2);
 
-  await page.getByRole('link', { name: 'Simuliraj ovaj cilj' }).click();
+  await openReferenceScenario(page);
   await expect(page.locator('.simulator-reference')).toContainText('Samobor');
   await page.getByRole('link', { name: 'Waste Explorer', exact: true }).click();
   await page.getByRole('combobox', { name: 'Grad ili općina' }).fill('Daruvar');
@@ -39,8 +42,10 @@ test('product: invalid links recover and unsupported models are disabled', async
   await expect(page.getByRole('alert')).toBeVisible();
   await page.getByRole('button', { name: 'Otvori novi scenarij za ovu JLS' }).click();
   await expect(page.locator('.simulator-result-grid')).toBeVisible();
-  await page.getByLabel('Godina scenarija').selectOption('2022');
-  await expect(page.getByLabel('Vrijednost scenarija')).toBeDisabled();
+  await page.goto(`/simulator?jls=${b}&godina=2022`);
+  await expect(page).toHaveURL(/godina=2024/);
+  await expect(page.getByLabel('Vrijednost scenarija')).toBeEnabled();
+  await expect(page.getByLabel('Godina scenarija')).toHaveCount(0);
   await page.goto(`/simulator?jls=${b}&godina=abc`);
   await expect(page.getByRole('alert')).toBeVisible();
   await page.getByRole('button', { name: 'Otvori novi scenarij za ovu JLS' }).click();
@@ -51,7 +56,7 @@ test('product: invalid links recover and unsupported models are disabled', async
   await expect(page.getByRole('alert')).toContainText('valjan zapis scenarija');
   await page.getByRole('button', { name: 'Otvori novi scenarij za ovu JLS' }).click();
 
-  await page.getByLabel('Godina scenarija').selectOption('2024');
+  await expect(page).toHaveURL(/godina=2024/);
   await expect(page.locator('.simulator-result-grid')).toBeVisible();
 });
 
@@ -60,7 +65,7 @@ test('product: home search, concise workflow, mobile accessibility and legacy pr
 }) => {
   await page.goto('/');
   await expect(
-    page.getByRole('heading', { name: 'Podaci o komunalnom otpadu.', exact: true }),
+    page.getByRole('heading', { name: 'Od podataka do pametnijih odluka.', exact: true }),
   ).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Kako funkcionira?' })).toBeVisible();
   await expect(page.locator('.home-step-card')).toHaveCount(3);
@@ -76,7 +81,7 @@ test('product: home search, concise workflow, mobile accessibility and legacy pr
   await expect(page).toHaveURL(/\/explorer\?/);
   await page.getByRole('link', { name: 'WasteWise početna' }).click();
   await expect(
-    page.getByRole('heading', { name: 'Podaci o komunalnom otpadu.', exact: true }),
+    page.getByRole('heading', { name: 'Od podataka do pametnijih odluka.', exact: true }),
   ).toBeVisible();
   await page.setViewportSize({ width: 390, height: 844 });
   const { default: AxeBuilder } = await import('@axe-core/playwright');
@@ -113,12 +118,18 @@ test('product: compact print preserves data and warnings without interactive UI'
 }) => {
   await pair(page);
   await expect(page.getByLabel('Vrijednost scenarija')).toHaveValue('38.44');
-  await expect(page).toHaveTitle('Waste Simulator · WasteWise');
-  await expect(page.locator('.formula-details')).not.toHaveAttribute('open');
+  await expect(page).toHaveTitle('Waste Simulator — WasteWise');
+  await expect(page.locator('.formula-details:not(.print-methodology)')).not.toHaveAttribute(
+    'open',
+  );
   await page.getByRole('button', { name: 'Tablica', exact: true }).click();
-  const download = page.waitForEvent('download');
-  await page.getByRole('button', { name: 'Izvezi CSV' }).click();
-  expect((await download).suggestedFilename()).toBe('wastewise-scenariji.csv');
+  await page.evaluate(() => {
+    window.print = () => {
+      document.body.dataset.printRequested = 'true';
+    };
+  });
+  await page.getByRole('button', { name: 'Ispiši izvještaj / PDF' }).click();
+  await expect(page.locator('body')).toHaveAttribute('data-print-requested', 'true');
   await page.emulateMedia({ media: 'print' });
   await expect(page.locator('.print-report')).toBeVisible();
   await expect(page.getByRole('table')).toContainText('38,44');
@@ -127,13 +138,13 @@ test('product: compact print preserves data and warnings without interactive UI'
   );
   await expect(page.locator('.print-report')).toContainText('Samobor');
   await expect(page.locator('.skip-link')).toBeHidden();
-  await expect(page.getByRole('button', { name: 'Spremi lokalno' })).toBeHidden();
+  await expect(page.getByRole('button', { name: 'Ispiši izvještaj / PDF' })).toBeHidden();
   const pdf = await page.pdf({
     path: 'test-results/product-report.pdf',
     format: 'A4',
     printBackground: true,
   });
-  expect(pdf.toString('latin1').match(/\/Type \/Page\b/g)?.length).toBe(1);
+  expect(pdf.toString('latin1').match(/\/Type \/Page\b/g)?.length).toBe(2);
   await page.emulateMedia({ media: 'screen' });
   for (let i = 0; i < 3; i++) {
     const calculated = page.waitForResponse(
@@ -165,7 +176,7 @@ test('home: no automatic data requests, keyboard search, cards and responsive la
   });
   await page.goto('/');
   await expect(
-    page.getByRole('heading', { name: 'Podaci o komunalnom otpadu.', exact: true }),
+    page.getByRole('heading', { name: 'Od podataka do pametnijih odluka.', exact: true }),
   ).toBeVisible();
   expect(requests).toEqual([]);
   const search = page.getByRole('combobox', { name: 'Grad ili općina' });

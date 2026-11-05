@@ -17,7 +17,7 @@ test('Explorer, Compare and Simulator show verified source document links', asyn
     await page.goto(route);
     const sources = page.locator('#sources');
     await expect(sources).toBeAttached();
-    await expect(sources.locator('details')).toHaveCount(0);
+    await expect(sources.locator('.source-provenance')).toHaveCount(0);
     for (let year = 2017; year <= 2024; year++) {
       const entry = sources.locator(`#source-${year}`);
       const links = entry.locator('a');

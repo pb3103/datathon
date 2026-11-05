@@ -21,7 +21,7 @@ test('history Explorer: all eight years, real API metrics and unconnected table'
   await page.goto(`/explorer?jls=${b}&godina=2017`);
   await expect(page.locator('.trend-panel h2')).toContainText('2017.–2024.');
   await expect(page.locator('.chart-description')).toContainText(
-    'obuhvat ovisi o godišnjem izvoru',
+    'Obuhvat podataka razlikuje se među godinama',
   );
   for (const o of profile.observations) {
     await page.getByLabel('Godina podataka').selectOption(String(o.year));
@@ -57,7 +57,7 @@ test('history Compare: every year, peer algorithm, missing official rate and mat
     q.append('ids', s);
     const data = await (await page.request.get(`/api/v1/comparisons?${q}`)).json();
     await page.getByLabel('Godina usporedbe').selectOption(String(y));
-    await expect(page.getByRole('heading', { name: `Ključni pokazatelji · ${y}.` })).toBeVisible();
+    await expect(page.getByLabel('Godina usporedbe')).toHaveValue(String(y));
     await expect(page.locator('.core-card').first()).toContainText(
       fmt(data.members[0].metrics.total_kg_per_covered_person.value),
     );
@@ -69,7 +69,7 @@ test('history Compare: every year, peer algorithm, missing official rate and mat
     }
   }
   await page.getByLabel('Godina usporedbe').selectOption('2017');
-  await page.getByRole('button', { name: 'Predloži slične JLS' }).click();
+  await page.getByRole('button', { name: 'Predloži slične lokacije' }).click();
   await expect(page.locator('.peer-card')).toHaveCount(5);
   await page.getByLabel('Pokazatelj usporedbe').selectOption('material_paper');
   await page.getByRole('button', { name: 'Tablica', exact: true }).click();
@@ -97,20 +97,25 @@ test('history identity and sources: Sveta Nedelja counties, PDF correction and u
   }
   const jan = await id(page, 'Janjina');
   await page.goto(`/explorer?jls=${jan}&godina=2017`);
-  await expect(page.locator('.published-value')).toContainText('1.361');
-  await page.locator('#source-2017 summary').click();
-  await expect(page.locator('#source-2017')).toContainText('CSV iz PDF-a');
-  await expect(page.locator('#source-2017')).toContainText('Izvorni PDF');
+  const original = await (
+    await page.request.get(`/api/v1/municipalities/${jan}/observations?from_year=2017&to_year=2017`)
+  ).json();
+  expect(Number(original.observations[0].metrics.published_kg_per_covered_person.value)).toBe(1361);
+  expect(original.observations[0].source.path).toContain('.csv');
+  expect(original.observations[0].raw_values.historical.pdf_path).toContain('.pdf');
+  await expect(page.locator('#source-2017 a')).toHaveCount(1);
   const b = await id(page, 'Bjelovar');
   await page.goto(`/simulator?jls=${b}&godina=2017`);
-  await expect(page.getByText('Automatski izračun nije dostupan')).toBeVisible();
-  await expect(page.getByLabel('Vrijednost scenarija')).toBeDisabled();
-  await page.getByLabel('Godina scenarija').selectOption('2020');
-  await expect(page.getByLabel('Vrijednost scenarija')).toBeDisabled();
-  await page.getByLabel('Godina scenarija').selectOption('2023');
+  await expect(page).toHaveURL(/godina=2024/);
+  await expect(page.getByLabel('Godina scenarija')).toHaveCount(0);
   await expect(page.locator('.simulator-result-grid')).toBeVisible();
-  await page.getByLabel('Godina scenarija').selectOption('2024');
+  await expect(page.locator('.simulator-base-note')).toContainText('2024. godina');
+  await page.goto(`/simulator?jls=${b}&godina=2020`);
+  await expect(page).toHaveURL(/godina=2024/);
   await expect(page.locator('.simulator-result-grid')).toBeVisible();
+  await page.goto(`/simulator?jls=${b}&godina=2023`);
+  await expect(page.locator('.simulator-result-grid')).toBeVisible();
+  await expect(page.locator('.simulator-base-note')).toContainText('2023. godina');
   await page.screenshot({
     path: 'test-results/historical-simulator-regression.png',
     fullPage: true,
@@ -124,21 +129,23 @@ test('source presentation: one compact note, keyboard details and original prove
   await page.goto(`/explorer?jls=${b}&godina=2017`);
   const note = page.locator('.data-notes-card');
   await expect(note).toHaveCount(1);
-  await expect(note).toContainText('službenih godišnjih izvješća');
+  await expect(note).toContainText('Udio izvan miješanog toka');
   const more = note.getByText('Saznaj više', { exact: true });
   await more.focus();
   await page.keyboard.press('Enter');
   await expect(note.locator('details')).toHaveAttribute('open');
-  await expect(note).toContainText('nije službeno objavljena stopa');
+  await expect(note).toContainText('objavljena stopa odvojenog sakupljanja');
   await expect(note.getByRole('link')).toHaveCount(8);
   await note.getByRole('link', { name: 'Izvor za 2017.' }).click();
   await expect(page).toHaveURL(/#source-2017$/);
-  await page.locator('#source-2017 summary').click();
-  await expect(page.locator('#source-2017')).toContainText('wastewise_2017_ZUPANIJE_DOPUNJENE.csv');
+  await expect(page.locator('#sources details')).toHaveCount(0);
+  const provenance = await (
+    await page.request.get(`/api/v1/municipalities/${b}/observations?from_year=2017&to_year=2017`)
+  ).json();
+  expect(provenance.observations[0].source.path).toContain('wastewise_2017_ZUPANIJE_DOPUNJENE.csv');
   for (let year = 2017; year <= 2024; year++) {
-    await expect(page.locator(`#source-${year} summary`)).toContainText(
-      `Prikaz odabranih podataka_JLS za ${year}.${year < 2021 ? 'csv' : 'xlsx'}`,
-    );
+    await expect(page.locator(`#source-${year}`)).toContainText(`${year}.`);
+    await expect(page.locator(`#source-${year} a`).first()).toHaveAttribute('href', /^https:\/\//);
   }
   await expect(page.getByText('Razlika između XLSX-a i PDF-a', { exact: false })).toHaveCount(0);
   await page.setViewportSize({ width: 390, height: 844 });
@@ -166,8 +173,8 @@ test('historical shares: separate origins, all historical years and same-year Co
   ).toBeVisible();
   await page.getByRole('button', { name: 'Tablica', exact: true }).click();
   const table = page.getByRole('table');
-  await expect(table).toContainText('Službeno objavljeno');
-  await expect(table).toContainText('Izračunato');
+  await expect(table).toContainText('objavljena stopa');
+  await expect(table).toContainText('izračunato');
   for (const year of [2017, 2018, 2020]) {
     const o = profile.observations.find((o: { year: number }) => o.year === year);
     await expect(
@@ -221,17 +228,19 @@ test('refined UX: Zagreb and Split show the available indicator with one context
   await page.goto(`/explorer?jls=${z}&godina=2018`);
   const card = page.getByRole('article', { name: 'Udio izvan miješanog toka', exact: true });
   await expect(card).toContainText('13,38');
-  await expect(card.getByText('Izračunato', { exact: true })).toBeVisible();
-  await expect(page.getByText('Kontrolni omjer razlike tokova', { exact: false })).toBeHidden();
+  await expect(card.getByText('Izračunato iz objavljenih masa', { exact: true })).toBeVisible();
+  await expect(
+    page.locator('.metric-grid').getByText('Kontrolni omjer razlike tokova', { exact: false }),
+  ).toHaveCount(0);
   await expect(page.locator('.data-notes-card')).toHaveCount(1);
   await page.getByLabel('Godina podataka').selectOption('2019');
   await expect(card).toContainText('22,26');
-  await expect(card.getByText('Izračunato', { exact: true })).toBeVisible();
+  await expect(card.getByText('Izračunato iz objavljenih masa', { exact: true })).toBeVisible();
   await page.getByLabel('Godina podataka').selectOption('2021');
   await expect(
     page.getByRole('article', { name: 'Odvojeno sakupljanje', exact: true }),
   ).toContainText('31,40');
-  await expect(page.locator('.data-notes-card > div > p')).toContainText('službeno objavljene');
+  await expect(page.locator('.data-notes-card > div > p')).toContainText('Obuhvat podataka');
   await page.goto(`/compare?jls=${z}&usporedi=${s}&godina=2018`);
   await expect(
     page.getByRole('article', { name: 'Referentni rezultat Zagreb' }).locator('.reference-rate'),
@@ -245,7 +254,7 @@ test('refined UX: Zagreb and Split show the available indicator with one context
   ]);
   await expect(page.locator('.data-notes-card')).toHaveCount(1);
   await expect(
-    page.getByText('Omjer obuhvaćene populacije izvan je raspona 0,5–2.', { exact: false }),
+    page.getByText('Broj stanovnika obuhvaćenih uslugom znatno se razlikuje', { exact: false }),
   ).toBeVisible();
   for (const width of [1440, 820, 390]) {
     await page.setViewportSize({ width, height: 900 });

@@ -1,3 +1,4 @@
+import { chartPalette } from '../chartPalette';
 import { RateEvidence } from '../components/RateEvidence';
 import { rateMetricKey } from '../domain';
 import { useId } from 'react';
@@ -19,7 +20,7 @@ import { formatMetric, formatNumber, mayConnect, numeric } from '../domain';
 import { compareReason, historyMetric, unitLabel } from './helpers';
 import { Icon } from '../components/Icon';
 
-const colors = ['#226446', '#375f85', '#935b24', '#725882', '#436c64'];
+const colors = chartPalette.communities;
 export default function CompareCharts({
   data,
   selectedMetric,
@@ -79,7 +80,7 @@ export default function CompareCharts({
       <div className="trend-heading">
         <div>
           <div className="section-kicker">03 / Vrijednosti u kontekstu</div>
-          <h2 id={title}>Kako se razlikujete?</h2>
+          <h2 id={title}>Razlike među zajednicama</h2>
         </div>
         <div className="view-switch" aria-label="Prikaz usporedbe">
           <button aria-pressed={view === 'chart'} onClick={() => onView('chart')}>
@@ -151,23 +152,75 @@ export default function CompareCharts({
         <>
           <div
             className="compare-plot"
-            style={{ height: mode === 'snapshot' ? Math.max(220, data.members.length * 62) : 320 }}
+            style={{
+              height: mode === 'snapshot' ? Math.max(316, data.members.length * 62 + 121) : 360,
+            }}
           >
             <ResponsiveContainer width="100%" height="100%">
               {mode === 'snapshot' ? (
                 <BarChart
                   data={snapshot}
                   layout="vertical"
-                  margin={{ left: 0, right: 25, top: 10, bottom: 10 }}
+                  margin={{ left: 16, right: 20, top: 10, bottom: 25 }}
                   accessibilityLayer
                 >
                   <CartesianGrid horizontal={false} strokeDasharray="3 5" stroke="#e0e7db" />
                   <XAxis
                     type="number"
+                    height={50}
+                    label={{
+                      value: unit,
+                      position: 'insideBottom',
+                      offset: 0,
+                      fontSize: 12,
+                      fill: '#52665a',
+                    }}
                     tickFormatter={(v) => formatNumber(Number(v), 0)}
                     tick={{ fontSize: 11 }}
                   />
-                  <YAxis type="category" dataKey="name" width={125} tick={{ fontSize: 12 }} />
+                  <YAxis
+                    type="category"
+                    dataKey="name"
+                    width={145}
+                    tick={{ fontSize: 12 }}
+                    label={{
+                      content: ({ viewBox }) => {
+                        if (!viewBox || !('x' in viewBox)) return null;
+                        const x = Number(viewBox.x) - 10;
+                        const y = Number(viewBox.y) + Number(viewBox.height) / 2;
+                        return (
+                          <text
+                            className="recharts-label"
+                            x={x}
+                            y={y}
+                            transform={`rotate(-90, ${x}, ${y})`}
+                            textAnchor="middle"
+                            dominantBaseline="central"
+                            fontSize={12}
+                            fill="#52665a"
+                          >
+                            Grad / općina
+                          </text>
+                        );
+                      },
+                    }}
+                  />
+                  <Legend
+                    content={() => (
+                      <ul
+                        className="chart-series-legend"
+                        aria-label="Legenda zajednica"
+                        style={{ paddingLeft: 145, paddingTop: 50, boxSizing: 'border-box' }}
+                      >
+                        {snapshot.map((row, i) => (
+                          <li key={row.id}>
+                            <span aria-hidden="true" style={{ backgroundColor: colors[i] }} />
+                            {row.name}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  />
                   <Tooltip
                     formatter={(value) => [
                       `${formatNumber(Number(value))} ${unit}`,
@@ -193,13 +246,32 @@ export default function CompareCharts({
               ) : (
                 <ComposedChart
                   data={history}
-                  margin={{ left: 0, right: 15, top: 10, bottom: 10 }}
+                  margin={{ left: 18, right: 15, top: 10, bottom: 20 }}
                   accessibilityLayer
                 >
                   <CartesianGrid vertical={false} strokeDasharray="3 5" stroke="#e0e7db" />
-                  <XAxis dataKey="year" tick={{ fontSize: 11 }} />
+                  <XAxis
+                    dataKey="year"
+                    tick={{ fontSize: 11 }}
+                    height={48}
+                    label={{
+                      value: 'Godina',
+                      position: 'insideBottom',
+                      offset: 0,
+                      fontSize: 12,
+                      fill: '#52665a',
+                    }}
+                  />
                   <YAxis
-                    width={65}
+                    width={75}
+                    label={{
+                      value: unit,
+                      angle: -90,
+                      position: 'insideLeft',
+                      offset: -10,
+                      fontSize: 12,
+                      fill: '#52665a',
+                    }}
                     tickFormatter={(v) => formatNumber(Number(v), 0)}
                     tick={{ fontSize: 11 }}
                   />
@@ -214,6 +286,7 @@ export default function CompareCharts({
                     }
                   />
                   <Legend
+                    wrapperStyle={{ paddingTop: 16, fontSize: 13 }}
                     formatter={(value) =>
                       data.members.find((m) => m.municipality.id === value)?.municipality.name ??
                       value

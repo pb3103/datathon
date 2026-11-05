@@ -40,9 +40,9 @@ test('Compare real API: Explorer context, manual group, differences, years and s
   await expect(page.getByRole('table')).toContainText('32,27');
   await expect(page.getByRole('table')).toContainText('35,56');
   await expect(page.getByRole('table')).toContainText('3,29');
-  await expect(page.getByRole('table')).toContainText('Razlika · pb');
+  await expect(page.getByRole('table')).toContainText(/Razlika u odnosu na Bjelovar · pb/);
   await expect(page.getByText('2023. · Razlika između XLSX-a i PDF-a')).toHaveCount(0);
-  await expect(page.locator('.insight-card').first()).toContainText('Dostupno 2 od 2');
+  await expect(page.locator('.insight-card').first()).toBeVisible();
   await page.getByLabel('Godina usporedbe').selectOption('2022');
   await expect(page.getByRole('table')).toContainText('16,00');
   await page.getByLabel('Godina usporedbe').selectOption('2023');
@@ -52,16 +52,10 @@ test('Compare real API: Explorer context, manual group, differences, years and s
   await expect(page.getByLabel('Pokazatelj usporedbe')).toHaveValue('separate_collection_pct');
   await page.goBack();
   await expect(page.getByLabel('Godina usporedbe')).toHaveValue('2022');
-  await expect(
-    page.getByText('Automatska simulacija nije dostupna za ovaj zapis.', { exact: false }),
-  ).toBeVisible();
-  await page.getByRole('button', { name: 'Odaberi 2024. za provjeru dostupnosti' }).click();
-  const link = page.getByRole('link', { name: 'Simuliraj ovaj cilj' });
-  await expect(link).toHaveAttribute('href', /referenca=.*sha256=/);
-  await link.click();
-  await expect(page.getByRole('heading', { name: 'Oblikujte scenarij' })).toBeVisible();
-  await expect(page.locator('.simulator-result-grid')).toBeVisible();
-  await expect(page).toHaveURL(/\/simulator\?.*pokazatelj=separate_collection_pct/);
+  await page.getByLabel('Godina usporedbe').selectOption('2024');
+  await expect(page.getByRole('link', { name: 'Simuliraj ovaj cilj' })).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'Ključni pokazatelji' })).toHaveCount(0);
+  await expect(page.getByLabel('Godina usporedbe')).toHaveValue('2024');
   expect(errors).toEqual([]);
 });
 
@@ -70,9 +64,11 @@ test('Compare real API: peer cards, county expansion, maximum five and removal',
 }) => {
   await page.goto('/compare');
   await add(page, 'Bjelovar');
-  await page.getByRole('button', { name: 'Predloži slične JLS' }).click();
+  await page.getByRole('button', { name: 'Predloži slične lokacije' }).click();
   await expect(page.locator('.peer-card')).toHaveCount(5);
-  await expect(page.locator('.peer-card').filter({ hasText: 'U rasponu 0,5–2' })).toHaveCount(5);
+  await expect(
+    page.locator('.peer-card-top .badge').filter({ hasText: /0,5–<0,8×|0,8–1,2×|>1,2–2×/ }),
+  ).toHaveCount(5);
   for (let i = 0; i < 4; i++) {
     await page.getByRole('button', { name: 'Dodaj u usporedbu', exact: true }).first().click();
     await expect(page.locator('.selected-municipality')).toHaveCount(i + 2);
@@ -82,8 +78,10 @@ test('Compare real API: peer cards, county expansion, maximum five and removal',
   await add(page, 'Daruvar');
   await expect(page.getByText(/Moguće je odabrati najviše pet/)).toBeVisible();
   await expect(page.locator('.selected-municipality')).toHaveCount(5);
-  await page.getByLabel('Filtar prijedloga').selectOption('same_county');
-  await expect(page.getByText(/Nema dovoljno kandidata u rasponu 0,5–2/)).toBeVisible();
+  await page
+    .getByLabel('Filtar područja za prijedloge', { exact: true })
+    .selectOption('same_county');
+  await expect(page.getByText(/Nema dovoljno mjesta s brojem stanovnika/)).toBeVisible();
   await expect(page.locator('.peer-card')).toHaveCount(5);
   await expect(page.locator('.selected-municipality')).toHaveCount(5);
   await page
@@ -109,9 +107,14 @@ test('Compare real API: seven materials, discrete histories and traceable source
   await expect(page.getByRole('table')).toContainText('2024.');
   await page.getByRole('button', { name: 'Grafikon', exact: true }).click();
   await expect(page.locator('.recharts-line')).toHaveCount(0);
-  await page.locator('#source-2023 summary').click();
-  await expect(page.locator('#source-2023')).toContainText('Prilog 2. KO 2023.');
-  await expect(page.locator('#source-2023')).toContainText('SHA-256');
+  await expect(page.locator('#source-2023 a')).toHaveCount(2);
+  await page.locator('.comparison-reference .quality-details').first().locator('summary').click();
+  await expect(page.locator('.comparison-reference .quality-details').first()).toContainText(
+    'Prilog 2._KO_2024.',
+  );
+  await expect(page.locator('.comparison-reference .quality-details').first()).toContainText(
+    'SHA-256',
+  );
 });
 
 test('Compare real API: questionable population excludes peers and per-person results', async ({
@@ -122,7 +125,7 @@ test('Compare real API: questionable population excludes peers and per-person re
   const b = await id(request, 'Bjelovar');
   await page.goto(`/compare?jls=${a}&usporedi=${b}&godina=2024`);
   await expect(page.getByRole('heading', { name: 'Gdje su najveće razlike?' })).toBeVisible();
-  await page.getByRole('button', { name: 'Predloži slične JLS' }).click();
+  await page.getByRole('button', { name: 'Predloži slične lokacije' }).click();
   await expect(page.locator('.peer-card')).toHaveCount(0);
   await page.getByRole('button', { name: 'Tablica', exact: true }).click();
   await expect(page.getByRole('table')).toContainText('Nema podatka');
@@ -150,7 +153,7 @@ test('Compare real API: network failure does not retain stale results and retry 
 
 test('Compare real API: desktop/mobile accessibility and responsive charts', async ({ page }) => {
   await pair(page);
-  await page.getByRole('button', { name: 'Predloži slične JLS' }).click();
+  await page.getByRole('button', { name: 'Predloži slične lokacije' }).click();
   await expect(page.locator('.peer-card')).toHaveCount(5);
   const desktop = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])

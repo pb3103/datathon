@@ -155,7 +155,29 @@ export default function Compare() {
       <Search onSelect={choose} />
       <section className="panel compare-selection" aria-labelledby="selection-title">
         <div className="section-title">
-          <h2 id="selection-title">Vaša skupina za usporedbu</h2>
+          <div className="compare-heading-context">
+            <h2 id="selection-title">Vaša skupina za usporedbu</h2>
+            {baseId && (
+              <div className="year-select compare-global-year">
+                <label htmlFor="compare-year">Godina podataka</label>
+                <select
+                  id="compare-year"
+                  aria-label="Godina usporedbe"
+                  value={years.includes(Number(selection.year)) ? selection.year : ''}
+                  onChange={(e) => update({ year: e.target.value })}
+                >
+                  <option value="" disabled>
+                    Odaberite godinu
+                  </option>
+                  {years.map((year) => (
+                    <option key={year} value={year}>
+                      {year}.
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+          </div>
           <span className="badge neutral">{selection.ids.length} / 5 lokacija</span>
         </div>
         <p className="small-muted">
@@ -188,7 +210,7 @@ export default function Compare() {
           </p>
         )}
         {baseId && (
-          <div className="compare-filters" aria-label="Filtar prijedloga sličnih područja">
+          <div className="compare-filters" aria-label="Postavke usporedbe">
             <div className="year-select county-select">
               <label htmlFor="peer-county">Filtar područja za prijedloge</label>
               <select
@@ -210,7 +232,7 @@ export default function Compare() {
           <ErrorState message={baseline.message} onRetry={() => setAttempt((a) => a + 1)} />
         )}
       </section>
-      {peers.status === 'loading' && <Loading message="Traženje potencijalnih vršnjaka…" />}
+      {peers.status === 'loading' && <Loading message="Traženje prijedloga za usporedbu…" />}
       {peers.status === 'error' && (
         <ErrorState message={peers.message} onRetry={() => setPeerAttempt((a) => a + 1)} />
       )}
@@ -218,7 +240,7 @@ export default function Compare() {
         <section className="peer-section" aria-labelledby="peers-title">
           <div className="section-title">
             <div>
-              <h2 id="peers-title">Potencijalni vršnjaci</h2>
+              <h2 id="peers-title">Prijedlozi za usporedbu</h2>
             </div>
             <span className="badge neutral">{peers.value.items.length} prijedloga</span>
           </div>
@@ -256,7 +278,13 @@ export default function Compare() {
                     <span
                       className={`badge ${peer.within_preferred_range ? 'neutral' : 'warning'}`}
                     >
-                      {peer.within_preferred_range ? 'U rasponu 0,5–2' : 'Prošireni raspon'}
+                      {!peer.within_preferred_range
+                        ? 'Prošireni raspon'
+                        : Number(peer.population_ratio) < 0.8
+                          ? '0,5–<0,8× · manje stanovnika'
+                          : Number(peer.population_ratio) <= 1.2
+                            ? '0,8–1,2× · sličan broj stanovnika'
+                            : '>1,2–2× · više stanovnika'}
                     </span>
                     <Icon name="pin" />
                   </div>
@@ -295,6 +323,12 @@ export default function Compare() {
                 se više razlikuju po veličini. Slična veličina ne znači i jednake uvjete
                 gospodarenja otpadom.
               </p>
+              <p>
+                Prednost imaju omjeri obuhvaćenih stanovnika od 0,5 do 2 u odnosu na početnu
+                lokaciju. Oznake na karticama dijele taj raspon na manje od 0,8×, od 0,8 do 1,2× i
+                više od 1,2×. To je opis veličine zajednice, a ne ocjena njezina gospodarenja
+                otpadom.
+              </p>
               {peers.value.items.length < 5 && <p>{compareReason('fewer_candidates_available')}</p>}
             </div>
           </details>
@@ -321,38 +355,13 @@ export default function Compare() {
           </span>
         </div>
       )}
-      {baseId && (
-        <div className="section-title compare-core-heading">
-          <div className="compare-year-heading">
-            <h2 id="core-title">
-              <label htmlFor="compare-year">Ključni pokazatelji:</label>
-            </h2>
-            <select
-              id="compare-year"
-              aria-label="Godina usporedbe"
-              value={years.includes(Number(selection.year)) ? selection.year : ''}
-              onChange={(e) => update({ year: e.target.value })}
-            >
-              <option value="" disabled>
-                Odaberite godinu
-              </option>
-              {years.map((year) => (
-                <option key={year} value={year}>
-                  {year}.
-                </option>
-              ))}
-            </select>
-          </div>
-          {comparison && <a href="#reference-results">Odaberi referentni cilj ↓</a>}
-        </div>
-      )}
       {data.status === 'loading' && <Loading message="Učitavanje usporedbe, razlika i izvora…" />}
       {data.status === 'error' && (
         <ErrorState message={data.message} onRetry={() => setAttempt((a) => a + 1)} />
       )}
       {comparison && (
         <>
-          <section className="compare-core" aria-labelledby="core-title">
+          <section className="compare-core" aria-label="Pokazatelji odabranih zajednica">
             <p className="small-muted">
               {comparison.year < 2021
                 ? 'Udio izvan miješanog toka izračunat je iz ukupne i miješane količine otpada.'
@@ -539,8 +548,10 @@ export default function Compare() {
                     member.population_ratio !== null && (
                       <>
                         {' '}
-                        To je oko {formatNumber(Number(member.population_ratio) * 100, 0)} % u
-                        odnosu na {resolveName(comparison.baseline_id)}.
+                        {Math.round(Math.abs(Number(member.population_ratio) - 1) * 100) === 0
+                          ? 'To je približno jednak broj kao za početnu zajednicu'
+                          : `To je oko ${formatNumber(Math.abs(Number(member.population_ratio) - 1) * 100, 0)} % ${Number(member.population_ratio) > 1 ? 'više' : 'manje'} u odnosu na ${resolveName(comparison.baseline_id)}`}
+                        .
                       </>
                     )}
                 </p>
@@ -568,6 +579,27 @@ export default function Compare() {
                 >
                   Otvori profil u Exploreru ↗
                 </a>
+                <details className="quality-details">
+                  <summary>Izvori i detalji</summary>
+                  <div>
+                    {member.observation && (
+                      <>
+                        <p>
+                          {member.observation.source.path} · {member.observation.source.sheet} ·
+                          redak {member.observation.source_row}
+                        </p>
+                        <p className="checksum">SHA-256: {member.observation.source.sha256}</p>
+                      </>
+                    )}
+                    {member.materials.map((m) => (
+                      <p key={m.material}>
+                        {m.label}: {formatMetric(m.published)} kg/stan. · {m.source.sheet}, redak{' '}
+                        {m.source_row}.{' '}
+                        {m.comparable.value === null && compareReason(m.comparable.reason)}
+                      </p>
+                    ))}
+                  </div>
+                </details>
                 <div className="reference-warnings">
                   {member.warnings.includes('population_outside_preferred_range') && (
                     <p className="source-warning">

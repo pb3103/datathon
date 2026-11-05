@@ -1,4 +1,6 @@
 export type IconName =
+  | 'explore'
+  | 'community'
   | 'search'
   | 'leaf'
   | 'chart'
@@ -12,6 +14,17 @@ export type IconName =
   | 'refresh'
   | 'external';
 const paths: Record<IconName, React.ReactNode> = {
+  explore: (
+    <>
+      <circle cx="10" cy="10" r="7" />
+      <path d="m15 15 5.5 5.5M17 15l4.5 4.5a1.4 1.4 0 0 1-2 2L15 17" />
+    </>
+  ),
+  community: (
+    <>
+      <path d="M3 21V10h6V3h7v10h5v8H3ZM9 10v11m7-8v8M12 7h1m-1 4h1m-1 4h1M5 14h1m-1 3h1m12 0h1" />
+    </>
+  ),
   search: (
     <>
       <circle cx="10.5" cy="10.5" r="6.5" />

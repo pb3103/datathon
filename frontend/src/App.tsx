@@ -91,10 +91,10 @@ function Explorer() {
       {data.status === 'idle' && (
         <section className="welcome-state">
           <div className="welcome-icon">
-            <Icon name="chart" />
+            <Icon name="explore" />
           </div>
           <h2>Odaberite grad ili općinu</h2>
-          <p>Prikaz količina otpada i dostupnih godina.</p>
+          <p>Prikažite količine otpada po dostupnim godinama.</p>
         </section>
       )}
       {data.status === 'loading' && <Loading message="Učitavanje profila i dostupnih godina…" />}
@@ -149,12 +149,10 @@ function Explorer() {
                 <a className="button primary" href={moduleUrl('compare')}>
                   Usporedi ovu zajednicu →
                 </a>
-                {selected.target_rate_available ? (
+                {selected.target_rate_available && (
                   <a className="button secondary" href={moduleUrl('simulator')}>
                     Istraži scenarij →
                   </a>
-                ) : (
-                  <span className="small-muted">Simulator: provjereni podaci za 2023. i 2024.</span>
                 )}
               </div>
             </>
@@ -173,15 +171,17 @@ function Explorer() {
           )}
           {observations.length > 0 ? (
             <>
-              <Quality compact selected={selected} observations={observations} />
-              <Suspense fallback={<Loading message="Učitavanje godišnjeg pregleda…" />}>
-                <Trends
-                  municipalityName={data.profile.municipality.name}
-                  observations={observations}
-                  selectedYear={selected?.year ?? null}
-                  onYear={chooseYear}
-                />
-              </Suspense>
+              <div className="explorer-history">
+                <Quality compact selected={selected} observations={observations} />
+                <Suspense fallback={<Loading message="Učitavanje godišnjeg pregleda…" />}>
+                  <Trends
+                    municipalityName={data.profile.municipality.name}
+                    observations={observations}
+                    selectedYear={selected?.year ?? null}
+                    onYear={chooseYear}
+                  />
+                </Suspense>
+              </div>
               <Sources observations={observations} selectedYear={selected?.year ?? null} />
             </>
           ) : (

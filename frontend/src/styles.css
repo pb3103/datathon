@@ -2742,9 +2742,12 @@ select {
   line-height: 1.65;
   margin: 12px 0;
 }
-.simulator-toolbar label:focus-within {
-  outline: 3px solid #207c57;
-  outline-offset: 3px;
+.simulator-comparison .simulator-toolbar select:hover {
+  border-color: #759581;
+}
+.simulator-comparison .simulator-toolbar select:focus-visible {
+  outline: 2px solid #207c57;
+  outline-offset: 2px;
 }
 .simulator-intro {
   display: block;
@@ -4350,7 +4353,7 @@ fieldset.simulator-workbench:disabled .simulator-controls {
 .comparison-reference {
   display: grid;
   grid-template-rows: subgrid;
-  grid-row: span 7;
+  grid-row: span 8;
   align-items: start;
 }
 .comparison-reference > p,
@@ -4587,6 +4590,7 @@ fieldset.simulator-workbench:disabled .simulator-controls {
 }
 .formula-symbols dl > div {
   display: grid;
+  align-items: baseline;
   grid-template-columns: 28px 1fr;
   gap: 10px;
 }
@@ -4623,7 +4627,7 @@ fieldset.simulator-workbench:disabled .simulator-controls {
   padding: 14px 18px;
   margin: 10px 0;
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: 21px;
+  font-size: 20px;
   line-height: 1.8;
   color: #214e38;
   overflow-wrap: anywhere;
@@ -4729,4 +4733,612 @@ fieldset.simulator-workbench:disabled .simulator-controls {
     break-inside: avoid;
     font-size: 8pt;
   }
+}
+
+.reference-actions {
+  min-height: 48px;
+  margin: 12px 0;
+}
+.source-provenance {
+  margin: 12px 0 8px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.source-provenance summary {
+  cursor: pointer;
+  color: #205c40;
+}
+.observation-provenance {
+  padding: 10px 0;
+  overflow-wrap: anywhere;
+}
+.observation-provenance dl {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 4px 12px;
+}
+.observation-provenance dd {
+  margin: 0;
+}
+@media print {
+  .source-provenance {
+    display: none;
+  }
+}
+.simple-source-list > li > .source-provenance {
+  grid-column: 2;
+  min-width: 0;
+}
+
+.simulator-controls #scenario-heading,
+.simulator-result #result-heading {
+  margin-top: 10px;
+}
+#scenario-comparison {
+  scroll-margin-top: 20px;
+}
+
+/* Keep the simulator's assumptions readable without competing with the results. */
+.simulator-formulas {
+  font-family: inherit;
+  padding: 22px 24px;
+}
+.simulator-formulas > h2 {
+  font-size: 1.15rem;
+  margin: 0 0 12px;
+}
+.simulator-formulas > p,
+.simulator-formulas .formula-details {
+  font-family: inherit;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+.simulator-formulas > p {
+  color: var(--muted, #647568);
+  margin: 8px 0;
+}
+.simulator-formulas .formula-details > summary {
+  font-size: 0.9375rem;
+}
+@media (max-width: 600px) {
+  .simulator-formulas {
+    padding: 18px;
+  }
+}
+
+/* Scenario editor and result: one clear hierarchy from input to outcome. */
+.simulator-controls .draft-status {
+  background: transparent;
+  border-radius: 0;
+  padding: 0;
+  margin: -6px 0 22px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.simulator-controls fieldset {
+  padding: 20px 0 14px;
+  margin: 20px 0;
+  border-top: 1px solid #e1e8e0;
+  border-bottom: 1px solid #e1e8e0;
+}
+.simulator-controls .simulator-model {
+  padding: 12px 14px;
+}
+.simulator-controls .simulator-model small {
+  line-height: 1.55;
+}
+.simulator-result .simulator-change {
+  padding: 14px 0 20px;
+}
+.simulator-change .result-caption {
+  font-size: 15px;
+  font-weight: 600;
+  color: #315a43;
+}
+.simulator-change > .small-muted {
+  display: block;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.simulator-result .result-explanation {
+  font-size: 14px;
+  line-height: 1.65;
+  margin: 18px 0 0;
+}
+.simulator-result-grid .result-rate-transition {
+  grid-row: auto;
+  grid-template-rows: auto;
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 18px;
+  align-items: center;
+}
+.result-rate-transition > div {
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+}
+.result-rate-transition .rate-arrow {
+  font-size: 24px;
+  color: #6b876f;
+}
+.result-rate-transition strong {
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 600px) {
+  .simulator-result-grid .result-rate-transition {
+    gap: 10px;
+    padding: 16px;
+  }
+  .result-rate-transition strong {
+    font-size: 20px;
+  }
+}
+.simulator-controls #scenario-heading {
+  margin-bottom: 18px;
+}
+
+/* Align rate values on a shared row, including when their labels wrap. */
+.simulator-result-grid .result-rate-transition {
+  grid-template-rows: auto auto;
+  align-items: baseline;
+  row-gap: 10px;
+}
+.result-rate-transition > div {
+  grid-row: 1 / span 2;
+  grid-template-rows: subgrid;
+  row-gap: 10px;
+}
+.result-rate-transition > div:first-child {
+  grid-column: 1;
+}
+.result-rate-transition > div:last-child {
+  grid-column: 3;
+}
+.result-rate-transition .rate-arrow {
+  grid-column: 2;
+  grid-row: 2;
+  align-self: baseline;
+  line-height: 1.4;
+}
+.simulator-controls .scenario-input-note {
+  margin: 14px 0 0;
+  font-size: 13px;
+  line-height: 1.65;
+}
+.scenario-add-action {
+  display: grid;
+  justify-items: start;
+  gap: 10px;
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid #e1e8e0;
+}
+.scenario-add-action > .button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.scenario-add-action > .button::before {
+  content: '+';
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1;
+}
+.scenario-add-action > .small-muted {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+@media (max-width: 600px) {
+  .scenario-add-action > .button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+.result-rate-transition .rate-arrow {
+  align-self: center;
+  justify-self: center;
+}
+.simulator-result-grid .result-rate-transition {
+  position: relative;
+}
+.result-rate-transition .rate-arrow {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  grid-area: auto;
+}
+/* Shared label and value rows keep both rates aligned. */
+.simulator-result-grid .result-rate-transition {
+  grid-template-columns: minmax(0, 1fr) 32px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: 16px;
+  row-gap: 12px;
+  align-items: center;
+}
+.result-rate-transition > div {
+  display: contents;
+}
+.result-rate-transition > div:first-child > span {
+  grid-column: 1;
+  grid-row: 1;
+}
+.result-rate-transition > div:last-child > span {
+  grid-column: 3;
+  grid-row: 1;
+}
+.result-rate-transition > div:first-child > strong {
+  grid-column: 1;
+  grid-row: 2;
+}
+.result-rate-transition > div:last-child > strong {
+  grid-column: 3;
+  grid-row: 2;
+}
+.result-rate-transition > div > span,
+.result-rate-transition > div > strong {
+  text-align: center;
+}
+.result-rate-transition > div > span {
+  align-self: start;
+}
+.result-rate-transition .rate-arrow {
+  position: static;
+  inset: auto;
+  transform: none;
+  grid-column: 2;
+  grid-row: 2;
+  justify-self: center;
+  align-self: center;
+}
+@media (max-width: 600px) {
+  .simulator-result-grid .result-rate-transition {
+    column-gap: 8px;
+    grid-template-columns: minmax(0, 1fr) 24px minmax(0, 1fr);
+  }
+}
+
+.result-rate-transition > .rate-calculation-note {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* Explicit cells prevent labels and values from changing rows. */
+.simulator-result-grid .result-rate-transition {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 32px minmax(0, 1fr);
+  grid-template-rows: auto auto auto;
+  gap: 12px;
+  align-items: center;
+  text-align: center;
+}
+.result-rate-transition > .rate-label-start {
+  grid-area: 1 / 1;
+}
+.result-rate-transition > .rate-label-end {
+  grid-area: 1 / 3;
+}
+.result-rate-transition > .rate-value-start {
+  grid-area: 2 / 1;
+}
+.result-rate-transition > .rate-value-end {
+  grid-area: 2 / 3;
+}
+.result-rate-transition > .rate-arrow {
+  grid-area: 2 / 2;
+  position: static;
+  transform: none;
+  align-self: center;
+  justify-self: center;
+}
+.result-rate-transition > .rate-value-start,
+.result-rate-transition > .rate-value-end {
+  align-self: center;
+  white-space: nowrap;
+}
+.result-rate-transition > .rate-calculation-note {
+  grid-area: 3 / 1 / 4 / -1;
+}
+
+.module-home .home-data-sources {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+  max-width: 88ch;
+}
+.module-home .home-data-source h3 {
+  margin: 0 0 3px;
+  font-size: 13px;
+  font-weight: 550;
+  line-height: 1.5;
+  color: #31543e;
+}
+.module-home .home-data-source p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.module-home .home-data-note h2 {
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+.module-home .home-data-period {
+  font-size: 14px;
+}
+.module-home .home-data-icon {
+  width: 32px;
+  height: 32px;
+}
+
+/* Explorer overview: compact indicators and a contextual methodology note. */
+.module-explorer .metric-grid {
+  gap: 16px;
+}
+.module-explorer .metric-card {
+  padding: 22px;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 3;
+  align-content: start;
+  row-gap: 12px;
+}
+.module-explorer .metric-card h3 {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.module-explorer .metric-card .metric-value {
+  margin: 0;
+  font-size: clamp(24px, 2.4vw, 36px);
+  align-self: start;
+}
+.module-explorer .metric-card .metric-hint {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.module-explorer .metric-card:has(.metric-reason),
+.module-explorer .metric-card:has(.published-value) {
+  grid-template-rows: auto;
+}
+.module-explorer .coverage-strip {
+  margin-top: 14px;
+  padding: 12px 16px;
+  gap: 12px 24px;
+  flex-wrap: wrap;
+  font-size: 13px;
+}
+.module-explorer .context-actions {
+  margin: 18px 0 22px;
+}
+.explorer-history {
+  background: #fff;
+  border: 1px solid #dce5db;
+  border-radius: 16px;
+  margin: 0 0 24px;
+  overflow: clip;
+}
+.explorer-history .data-notes {
+  margin: 0;
+  padding: 16px 24px;
+  border-bottom: 1px solid #e3e9e0;
+  background: #f6f8f3;
+}
+.explorer-history .data-notes-card {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  border-radius: 0;
+  gap: 12px;
+  font-size: 13px;
+}
+.explorer-history .data-notes-card > .icon {
+  width: 18px;
+  height: 18px;
+}
+.explorer-history .data-notes-card strong {
+  font-size: 13px;
+}
+.explorer-history .data-notes-card p {
+  font-size: 13px;
+  line-height: 1.6;
+}
+.explorer-history .data-notes-card summary {
+  font-size: 13px;
+  margin-top: 4px;
+}
+.explorer-history .trend-panel {
+  border: 0;
+  border-radius: 0;
+  margin: 0;
+  box-shadow: none;
+}
+@media (max-width: 600px) {
+  .module-explorer .metric-card {
+    padding: 16px;
+  }
+  .explorer-history .data-notes {
+    padding: 14px 16px;
+  }
+}
+
+/* Links styled as buttons use their shape and color as the affordance. */
+a.button,
+a.button:hover,
+a.button:focus-visible {
+  text-decoration: none;
+}
+.peer-card-top > .badge {
+  white-space: normal;
+  line-height: 1.5;
+}
+.peer-card-top > .icon {
+  flex-shrink: 0;
+}
+
+.compare-selection-tools {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.compare-selection .compare-global-year {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.compare-global-year label {
+  font-size: 13px;
+  color: #60715e;
+  white-space: nowrap;
+}
+.compare-global-year select {
+  background-color: white;
+  min-height: 42px;
+  width: 110px;
+  font-size: 15px;
+  font-weight: 500;
+  border: 1px solid #c5d0c7;
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+@media (max-width: 700px) {
+  .compare-selection > .section-title {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .compare-selection-tools {
+    flex-wrap: wrap;
+    gap: 12px;
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+.compare-heading-context {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+}
+.compare-heading-context > h2 {
+  margin: 0;
+}
+@media (max-width: 700px) {
+  .compare-heading-context {
+    gap: 12px;
+  }
+}
+.compare-heading-context .compare-global-year select {
+  width: 92px;
+  min-height: 36px;
+  padding: 6px 10px;
+  font-size: 14px;
+}
+.simulator-result .simulator-change strong {
+  font-size: clamp(28px, 3vw, 42px);
+  letter-spacing: -1px;
+}
+.simulator-result .simulator-change strong small {
+  font-size: 18px;
+}
+
+/* One product signature in the sidebar; the home hero introduces its purpose. */
+.sidebar .brand {
+  font-size: 26px;
+  gap: 12px;
+}
+.sidebar .brand-mark {
+  width: 44px;
+  height: 47px;
+  flex-shrink: 0;
+}
+.module-home .home-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  padding: 36px 0;
+}
+.module-home .home-hero-copy {
+  flex: 1;
+  min-width: 0;
+}
+.module-home .home-heading-art {
+  flex-shrink: 0;
+}
+@media (max-width: 900px) {
+  .module-home .home-heading-art {
+    display: none;
+  }
+}
+@media (max-width: 600px) {
+  .sidebar .brand {
+    font-size: 24px;
+  }
+  .sidebar .brand-mark {
+    width: 38px;
+    height: 40px;
+  }
+  .module-home .home-hero {
+    padding: 26px 0;
+  }
+}
+
+.module-home .home-hero-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0;
+}
+.home-hero-facts li {
+  padding: 5px 12px;
+  border-radius: 20px;
+  background: #eaf0e4;
+  color: #526b48;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.chart-series-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 18px;
+  list-style: none;
+  margin: 0;
+  padding: 14px 0 0;
+  font-size: 13px;
+  color: #52665a;
+}
+.chart-series-legend li {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.chart-series-legend li > span {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+#simulator-context-title .simulator-context-year {
+  display: inline-block;
+  margin-left: 12px;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: #66756b;
+  vertical-align: baseline;
 }

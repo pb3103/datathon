@@ -99,3 +99,11 @@ Završna provjera ove UX dorade: **64 backend/podatkovna testa, 5 frontend unit 
 TypeScript, produkcijski build, Ruff, Prettier i `git diff --check` prolaze. Ponovljeni cjeloviti live API audit daje **identičan rezultat prethodnom izvještaju**: 4.448 opažanja i 31.192 ćelije metrika, uz iste brojke dostupnih izračunatih udjela i objavljenih stopa. Time je dodatno provjereno da UX nije promijenio rezultate.
 
 Vizualno su pregledane snimke referentnih kartica pri 1440, 820 i 390 px te sažetih metodoloških napomena za 2018., 2019. i 2021. Postoci ostaju poravnani; konkretno upozorenje o populaciji nalazi se ispod glavnog pokazatelja. Snimke `refined-compare-*.png` i `refined-note-*.png` su u ignoriranom `frontend/test-results/`. Nisu pronađeni novi blokirajući UX problemi u provjerenim tokovima. Ostaje namjerna metodološka nedostupnost za 2019.; nisu testirani fizički mobilni uređaji ni Safari/Firefox.
+
+## Popravci regresija nakon spajanja — 4. studenoga 2026.
+
+Vraćeni su prijelaz Compare → Simulator, lokalno spremanje/učitavanje scenarija, dijeljiva poveznica i JSON izvoz/uvoz, uz prethodne provjere izvora i modela. Ispravljeno je preklapanje gumba s upozorenjem u referentnim karticama. Ponovno su dostupni objavljeni kg/stanovniku kod nesklada i zatvoreni detalji izvora, bez uklanjanja novih provjerenih poveznica ili promjene novog izvještaja. Prolaze 72 backend testa, 5 frontend unit testova i svih 41 browser test. Detaljan popis stvarnih popravaka i ažuriranih testnih očekivanja: [izvještaj popravka](regression_repair_20261104.md).
+
+### Pojednostavljenje popisa izvora nakon popravaka
+
+Prema zahtjevu korisnice uklonjen je proširivi blok „Detalji podataka za godinu” iz zajedničkog popisa izvora (Explorer, Compare i Simulator). Ostaju godine, nazivi dokumenata te provjerene poveznice na XLSX/PDF. Izvorne datoteke, API sljedivost, validacije i oznake kvalitete nisu mijenjani. Ciljane provjere podrijetla sada potvrđuju tehničku evidenciju preko API-ja, a poveznice i odsutnost dodatnih blokova preko sučelja. Prethodni opis vraćenih godišnjih detalja odnosi se na raniju verziju prikaza; ova je izmjena izričito traženo pojednostavljenje.

@@ -1,3 +1,4 @@
+import { chartPalette } from '../chartPalette';
 import { RateEvidence } from './RateEvidence';
 import { visibleSourceIssues } from '../domain';
 import { useId, useState } from 'react';
@@ -29,16 +30,24 @@ const configurations = {
     title: 'Količine otpada',
     unit: 't',
     series: [
-      { key: 'total_t', title: 'Ukupno sakupljeno', color: '#226446' },
-      { key: 'mixed_t', title: 'Miješani otpad', color: '#8292a5' },
+      { key: 'total_t', title: 'Ukupno sakupljeno', color: chartPalette.green },
+      { key: 'mixed_t', title: 'Miješani otpad', color: chartPalette.blueGray },
     ],
   },
   per_person: {
     title: 'Po obuhvaćenom stanovniku',
     unit: 'kg/obuhv. stan.',
     series: [
-      { key: 'total_kg_per_covered_person', title: 'Ukupno · izračunato', color: '#226446' },
-      { key: 'mixed_kg_per_covered_person', title: 'Miješano · izračunato', color: '#8292a5' },
+      {
+        key: 'total_kg_per_covered_person',
+        title: 'Ukupno · izračunato',
+        color: chartPalette.green,
+      },
+      {
+        key: 'mixed_kg_per_covered_person',
+        title: 'Miješano · izračunato',
+        color: chartPalette.blueGray,
+      },
     ],
   },
   rate: {
@@ -48,12 +57,12 @@ const configurations = {
       {
         key: 'separate_collection_pct',
         title: 'Odvojeno sakupljanje · objavljena stopa',
-        color: '#226446',
+        color: chartPalette.green,
       },
       {
         key: 'calculated_nonmixed_share_pct',
         title: 'Izvan miješanog toka · izračunati udio',
-        color: '#8292a5',
+        color: chartPalette.blueGray,
       },
     ],
   },
@@ -146,21 +155,29 @@ export function Trends({
         <figure className="chart-figure" aria-labelledby={titleId} aria-describedby={descId}>
           {hasValues ? (
             <div className="chart-container">
-              <ResponsiveContainer width="100%" height={290}>
+              <ResponsiveContainer width="100%" height={330}>
                 <ComposedChart
                   data={data}
-                  margin={{ top: 15, right: 12, bottom: 8, left: 15 }}
+                  margin={{ top: 15, right: 12, bottom: 20, left: 20 }}
                   accessibilityLayer
                 >
                   <defs>
                     <pattern id={patternId} width="6" height="6" patternUnits="userSpaceOnUse">
-                      <rect width="6" height="6" fill="#8292a5" />
+                      <rect width="6" height="6" fill={chartPalette.blueGray} />
                       <path d="M0 6 6 0" stroke="#fff" strokeWidth="1" />
                     </pattern>
                   </defs>
                   <CartesianGrid vertical={false} stroke="#e7ebe5" strokeDasharray="3 5" />
                   <XAxis
                     dataKey="year"
+                    height={50}
+                    label={{
+                      value: 'Godina',
+                      position: 'insideBottom',
+                      offset: 0,
+                      fontSize: 12,
+                      fill: '#52665a',
+                    }}
                     tickLine={false}
                     axisLine={false}
                     tick={{ fontSize: 12, fill: '#59675e' }}
@@ -172,7 +189,15 @@ export function Trends({
                     tickLine={false}
                     axisLine={false}
                     tick={{ fontSize: 11, fill: '#59675e' }}
-                    width={62}
+                    width={75}
+                    label={{
+                      value: config.unit,
+                      angle: -90,
+                      position: 'insideLeft',
+                      offset: -12,
+                      fontSize: 12,
+                      fill: '#52665a',
+                    }}
                   />
                   <Tooltip
                     labelFormatter={(label) => `${label}. godina`}
@@ -231,11 +256,6 @@ export function Trends({
               <p>Nema podataka za ovaj pokazatelj. Razlozi su dostupni u tablici.</p>
             </div>
           )}
-          <figcaption>
-            {!connected &&
-              config.series.some((series) => series.key.startsWith('mixed_')) &&
-              'Miješani otpad označen je prugastim stupcima. '}
-          </figcaption>
         </figure>
       ) : (
         <div
@@ -266,11 +286,11 @@ export function Trends({
                 ) : (
                   config.series.map((series) => (
                     <th key={series.key} scope="col">
-                      {series.title}
-                      <small>{config.unit}</small>
+                      {series.title} ({config.unit})
                     </th>
                   ))
                 )}
+                {mode === 'per_person' && <th scope="col">Ukupno · objavljeno ({config.unit})</th>}
               </tr>
             </thead>
             <tbody>
@@ -338,6 +358,14 @@ export function Trends({
                           ) && <small className="warning-text">Nesklad · potrebna provjera</small>}
                       </td>
                     ))
+                  )}
+                  {mode === 'per_person' && (
+                    <td>
+                      {formatMetric(
+                        observation.metrics.published_kg_per_covered_person,
+                        observation.year === 2024 ? 2 : 0,
+                      )}
+                    </td>
                   )}
                 </tr>
               ))}

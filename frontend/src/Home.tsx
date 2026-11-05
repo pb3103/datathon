@@ -10,7 +10,7 @@ const steps = [
     path: 'explorer',
     name: 'Waste Explorer',
     verb: 'Istražite',
-    icon: 'chart' as const,
+    icon: 'explore' as const,
     text: 'Odaberite grad ili općinu i pregledajte dostupne podatke o komunalnom otpadu.',
   },
   {
@@ -34,19 +34,25 @@ export default function Home() {
   const hero = (
     <section className="home-hero" aria-labelledby="page-title">
       <div className="home-hero-copy">
-        <p className="home-product">
-          <span aria-hidden="true" className="home-product-mark">
-            <Icon name="leaf" />
-          </span>
-          WasteWise<span className="home-product-dot">.</span>
-        </p>
         <p className="home-eyebrow">KOMUNALNI OTPAD · HRVATSKA</p>
         <h1 id="page-title" tabIndex={-1}>
-          Podaci o <span>komunalnom otpadu.</span>
+          Od podataka do <span>pametnijih odluka.</span>
         </h1>
         <p className="home-lead">
-          Godišnji pokazatelji po gradovima i općinama, usporedbe i scenariji promjena.
+          Istražite gospodarenje otpadom u hrvatskim gradovima i općinama, usporedite rezultate i
+          simulirajte moguće promjene.
         </p>
+        <ul className="home-hero-facts" aria-label="Obuhvat podataka">
+          <li>556 gradova i općina</li>
+          <li>2017.–2024.</li>
+          <li>Otvoreni podaci</li>
+        </ul>
+      </div>
+      <div className="heading-art home-heading-art" aria-hidden="true">
+        <span className="orbit orbit-one" />
+        <span className="orbit orbit-two" />
+        <Icon name="leaf" />
+        <span className="art-dot" />
       </div>
     </section>
   );
@@ -116,32 +122,41 @@ export default function Home() {
         </div>
         <div>
           <h2 id="home-data-title">Odakle dolaze podaci?</h2>
-          <p>
-            WasteWise se temelji na javno dostupnim izvješćima o komunalnom otpadu i pripadajućim
-            XLSX podacima po gradovima i općinama za <strong>2017.–2024.</strong> Izvori i
-            metodološka ograničenja dostupni su uz pokazatelje u modulima.
-          </p>
-          <p>
-            Podaci o reciklažnim dvorištima i zelenim otocima preuzeti su iz dostavljenih skupova s{' '}
-            <a
-              href="https://data.gov.hr/ckan/hr/dataset/reciklazna-dvorista-grada-zagreba1/resource/36ca7d0d-4e86-42a1-88e3-826acf4ce8a7?inner_span=True"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Portala otvorenih podataka Republike Hrvatske — data.gov.hr
-            </a>{' '}
-            (poveznica na zagrebački skup). Karta obuhvaća Zagreb i dodatne gradove i općine prema
-            dostupnim izvorima; popis nije potpun.
-          </p>
-          <p>
-            Dodatne lokacije diljem Hrvatske:{' '}
-            <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">
-              © OpenStreetMap suradnici, ODbL
-            </a>
-            . Preuzeto 1. studenoga 2026. Ovaj zajednički uređivani sloj odvojen je od podataka s
-            data.gov.hr. Prikaz ne predstavlja potpun službeni registar niti potvrdu aktualnosti
-            lokacija.
-          </p>
+          <div className="home-data-sources">
+            <div className="home-data-source">
+              <h3>Komunalni otpad · 2017.–2024.</h3>
+              <p>
+                Službena godišnja izvješća i pripadajuće XLSX tablice s podacima po gradovima i
+                općinama. Izvori i metodološka ograničenja navedeni su uz pokazatelje u modulima.
+              </p>
+            </div>
+            <div className="home-data-source">
+              <h3>Reciklažna dvorišta i zeleni otoci</h3>
+              <p>
+                Dostavljeni skupovi s Portala otvorenih podataka Republike Hrvatske —{' '}
+                <a
+                  href="https://data.gov.hr/ckan/hr/dataset/reciklazna-dvorista-grada-zagreba1/resource/36ca7d0d-4e86-42a1-88e3-826acf4ce8a7?inner_span=True"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  data.gov.hr (zagrebački skup)
+                </a>
+                . Karta obuhvaća Zagreb i druge gradove i općine prema dostupnim izvorima. Popis
+                nije potpun.
+              </p>
+            </div>
+            <div className="home-data-source">
+              <h3>Dodatne lokacije · OpenStreetMap</h3>
+              <p>
+                <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">
+                  © OpenStreetMap suradnici, ODbL
+                </a>
+                . Podaci su preuzeti 1. studenoga 2026. i prikazani kao zaseban, zajednički
+                uređivani sloj, odvojen od podataka s data.gov.hr. Nisu potpun službeni registar
+                niti potvrda aktualnosti lokacija.
+              </p>
+            </div>
+          </div>
         </div>
         <span className="home-data-period">
           2017<span aria-hidden="true">—</span>2024

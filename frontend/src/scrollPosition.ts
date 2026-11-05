@@ -49,7 +49,12 @@ export function beginPageUpdate() {
 export function installScrollPositionPreservation() {
   const control = (event: Event) => {
     const target = event.target;
-    if (!(target instanceof Element) || target.closest('a')) return;
+    if (!(target instanceof Element)) return;
+    if (target.closest('a')) {
+      // Explicit navigation takes priority over a pending control update.
+      userScrolled = true;
+      return;
+    }
     if (!target.closest('button, select, input, textarea')) return;
     capture();
     settle();

@@ -71,7 +71,7 @@ test('real API: Seget discrepancy keeps published value and withholds derived kg
 }) => {
   await page.goto('/explorer');
   await selectMunicipality(page, 'Seget');
-  const card = page.getByRole('article', { name: 'Po obuhvaćenom stanovniku' });
+  const card = page.getByRole('article', { name: 'Ukupni otpad po stanovniku' });
   await expect(card).toContainText('Nema podatka');
   await expect(card).toContainText('363,99');
   await expect(card).toContainText('Nesklad');
@@ -81,11 +81,16 @@ test('real API: Seget discrepancy keeps published value and withholds derived kg
   await expect(page.getByRole('table')).toContainText('Ukupno · izračunato');
   await expect(page.getByRole('table')).toContainText('Ukupno · objavljeno');
   await expect(page.getByRole('table')).toContainText('Nema podatka');
-  await page.locator('#source-2024 summary').click();
-  await expect(page.locator('#source-2024')).toContainText('redak 375');
-  await expect(page.locator('#source-2024')).toContainText(
+  const profile = await (
+    await page.request.get(
+      `/api/v1/municipalities/${new URL(page.url()).searchParams.get('jls')}/observations?from_year=2024`,
+    )
+  ).json();
+  expect(profile.observations[0].source_row).toBe(375);
+  expect(profile.observations[0].source.sha256).toBe(
     '11c98568f49d18f4a6592e3a1f1efdfdc81fabb31e2d3fdc8ad9ab8d07ed4f72',
   );
+  await expect(page.locator('#source-2024 a').first()).toHaveAttribute('href', /\.xlsx$/);
 });
 
 test('real API: keyboard search and mobile single-column layout', async ({ page }) => {
@@ -171,7 +176,7 @@ test('real API: an explicit zero rate stays zero and trends remain unconnected',
   const rate = page.getByRole('article', { name: 'Odvojeno sakupljanje' });
   await expect(rate).toContainText('0,00');
   await expect(rate).not.toContainText('Nema podatka');
-  await expect(page.locator('.trend-panel')).toContainText('nema povezujuće linije');
+  await expect(page.locator('.trend-panel')).toContainText('vrijednosti prikazane zasebno');
   await expect(page.locator('.recharts-line')).toHaveCount(0);
 });
 

@@ -65,7 +65,7 @@ test('incomplete insight keeps a meaningful availability note', async ({ page, r
   ).toBeVisible();
 });
 
-test('simulator year keeps the viewport during context and result replacement', async ({
+test('simulator scenario editing keeps the viewport without a year selector', async ({
   page,
   request,
 }) => {
@@ -73,13 +73,14 @@ test('simulator year keeps the viewport during context and result replacement', 
   const id = body.items.find((item: { name: string }) => item.name === 'Bjelovar').id;
   await page.goto(`/simulator?jls=${id}&godina=2024`);
   await expect(page.locator('.simulator-result-grid')).toBeVisible();
-  await page.locator('.simulator-context-bar').scrollIntoViewIfNeeded();
+  await page.getByLabel('Vrijednost scenarija').scrollIntoViewIfNeeded();
   const before = await page.evaluate(() => window.scrollY);
-  await page.route('**/simulation-context?**', async (route) => {
+  await page.route('**/simulations', async (route) => {
     await new Promise((resolve) => setTimeout(resolve, 600));
     await route.continue();
   });
-  await page.getByRole('combobox', { name: 'Godina scenarija' }).selectOption('2023');
+  await expect(page.getByRole('combobox', { name: 'Godina scenarija' })).toHaveCount(0);
+  await page.getByLabel('Vrijednost scenarija').fill('20');
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBeCloseTo(before, 0);
   await expect(page.locator('.simulator-result-grid')).toBeVisible();
   await page.waitForTimeout(150);
@@ -99,8 +100,10 @@ test('location cards align shared fields and show plain-language population cont
   await page.goto(`/compare?jls=${ids[0]}&usporedi=${ids[1]}&godina=2023`);
   const cards = page.locator('.comparison-reference');
   await expect(cards).toHaveCount(2);
-  await expect(cards.nth(1)).toContainText('To je oko 21 % u odnosu na Zagreb.');
-  await expect(cards.getByText('Simuliraj ovaj cilj', { exact: true })).toHaveCount(0);
+  await expect(cards.nth(1)).toContainText('To je oko 79 % manje u odnosu na Zagreb.');
+  await expect(cards.getByRole('link', { name: 'Simuliraj ovaj cilj', exact: true })).toHaveCount(
+    0,
+  );
   for (const selector of ['.reference-rate', '.profile-link', '.quality-details']) {
     const first = await cards.nth(0).locator(selector).boundingBox();
     const second = await cards.nth(1).locator(selector).boundingBox();
@@ -109,4 +112,37 @@ test('location cards align shared fields and show plain-language population cont
   const details = await cards.nth(1).locator('.quality-details').boundingBox();
   const warning = await cards.nth(1).locator('.reference-warnings').boundingBox();
   expect(warning!.y).toBeGreaterThan(details!.y + details!.height);
+});
+
+test('simulator comparison link scrolls to results without reloading the scenario', async ({
+  page,
+  request,
+}) => {
+  const body = await (await request.get('/api/v1/municipalities?q=Bjelovar')).json();
+  const id = body.items.find((item: { name: string }) => item.name === 'Bjelovar').id;
+  await page.goto(`/simulator?jls=${id}&godina=2024`);
+  await expect(page.locator('.simulator-result-grid')).toBeVisible();
+  await page.getByLabel('Vrijednost scenarija').fill('20');
+  await expect(page.locator('.simulator-change')).toContainText('20,00 %');
+  let contextRequests = 0;
+  page.on('request', (r) => {
+    if (r.url().includes('/simulation-context?')) contextRequests++;
+  });
+  await page.getByRole('link', { name: 'Usporedi na grafikonu i u tablici ↓' }).click();
+  await expect(page).toHaveURL(/#scenario-comparison$/);
+  await expect(
+    page.getByRole('heading', { name: 'Početno stanje i scenariji', exact: true }),
+  ).toBeFocused();
+  await expect
+    .poll(() =>
+      page
+        .locator('#scenario-comparison')
+        .evaluate((el) => Math.abs(el.getBoundingClientRect().top - 20)),
+    )
+    .toBeLessThan(5);
+  await expect(page.getByLabel('Vrijednost scenarija')).toHaveValue('20');
+  await page.goBack();
+  await expect(page).not.toHaveURL(/#scenario-comparison$/);
+  await expect(page.locator('.simulator-result-grid')).toBeVisible();
+  expect(contextRequests).toBe(0);
 });

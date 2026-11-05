@@ -1,5 +1,4 @@
 import type { Observation, Source } from '../api/client';
-import { sourceDisplayName } from '../domain';
 import verifiedLinks from '../data/source-links.json';
 
 const links: Record<
@@ -46,7 +45,9 @@ export function SourceList({
                   const catalog = safeLink(source.catalog_url);
                   return (
                     <li key={source.id}>
-                      <span>{verified?.title || source.title || sourceDisplayName(source)}</span>
+                      <span>
+                        Podaci o komunalnom otpadu po gradovima i općinama za {year}. godinu
+                      </span>
                       {resource ? (
                         <span className="source-document-links">
                           <a href={resource} target="_blank" rel="noreferrer">

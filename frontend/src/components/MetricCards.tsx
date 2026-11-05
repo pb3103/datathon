@@ -19,7 +19,6 @@ export function MetricCards({ observation }: { observation: Observation }) {
       hint: observation.scope.startsWith('historical_')
         ? 'Komunalni otpad prema povijesnom obuhvatu izvora'
         : 'Komunalni otpad u javnoj usluzi',
-      index: '01',
       className: '',
     },
     {
@@ -27,15 +26,13 @@ export function MetricCards({ observation }: { observation: Observation }) {
       label: 'Miješani otpad',
       unit: 't',
       hint: 'Miješani komunalni otpad',
-      index: '02',
       className: '',
     },
     {
       key: 'total_kg_per_covered_person',
-      label: 'Po obuhvaćenom stanovniku',
+      label: 'Ukupni otpad po stanovniku',
       unit: 'kg/stan.',
-      hint: 'Izračunato iz ukupne mase i obuhvaćene populacije',
-      index: '03',
+      hint: 'Ukupna masa podijeljena brojem stanovnika obuhvaćenih uslugom',
       className: '',
     },
     {
@@ -44,7 +41,6 @@ export function MetricCards({ observation }: { observation: Observation }) {
       unit: '%',
       hint:
         observation.year < 2021 ? 'Izračunato iz objavljenih masa' : 'Službeno objavljena stopa',
-      index: '04',
       className: 'accent-card',
     },
   ];
@@ -60,10 +56,6 @@ export function MetricCards({ observation }: { observation: Observation }) {
               key={card.key}
               aria-labelledby={`metric-${card.key}`}
             >
-              <div className="metric-top">
-                <span className="metric-index">{card.index}</span>
-                <span className="metric-year">{observation.year}.</span>
-              </div>
               <h3 id={`metric-${card.key}`}>{card.label}</h3>
               <p className={`metric-value ${missing ? 'missing-value' : ''}`}>
                 {missing && card.key === 'calculated_nonmixed_share_pct' ? (
@@ -77,6 +69,11 @@ export function MetricCards({ observation }: { observation: Observation }) {
                 <p className="metric-reason">{explainReason(value?.reason)}</p>
               )}
               <p className="metric-hint">{card.hint}</p>
+              {card.key === 'total_kg_per_covered_person' && mismatch && (
+                <p className="published-value">
+                  Objavljeno u izvoru: {formatMetric(published)} kg/stan.
+                </p>
+              )}
               {card.key === 'total_kg_per_covered_person' && mismatch && (
                 <p className="metric-reason">
                   <Icon name="alert" />
@@ -103,7 +100,7 @@ export function MetricCards({ observation }: { observation: Observation }) {
           )}
         </span>
         <span>
-          Miješano po obuhvaćenom stanovniku{' '}
+          Miješani otpad po stanovniku{' '}
           <strong>
             {formatMetric(m.mixed_kg_per_covered_person)}
             {numeric(m.mixed_kg_per_covered_person) !== null && ' kg/stan.'}

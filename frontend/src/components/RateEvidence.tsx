@@ -1,3 +1,4 @@
+import { formatMetric } from '../domain';
 import type { Observation } from '../api/client';
 
 export function RateEvidence({
@@ -18,6 +19,19 @@ export function RateEvidence({
           Za sve godine s izračunatim udjelom koristi se ista formula: ((ukupno − miješano) /
           ukupno) × 100. Taj udio nije službeno objavljena stopa odvojenog sakupljanja.
         </p>
+        <ul>
+          {historical.map(({ name, observation: o }) => (
+            <li key={`${o.id}-${name}`}>
+              <strong>
+                {name} · {o.year}.
+              </strong>{' '}
+              Ukupno: {formatMetric(o.metrics.total_t)} t; miješano:{' '}
+              {formatMetric(o.metrics.mixed_t)} t; izračunato:{' '}
+              {formatMetric(o.metrics.calculated_nonmixed_share_pct)} %. Izvor: {o.source.path},{' '}
+              {o.source.sheet}, redak {o.source_row}.
+            </li>
+          ))}
+        </ul>
       </details>
     </div>
   );

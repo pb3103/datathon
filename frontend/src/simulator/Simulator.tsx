@@ -1,3 +1,4 @@
+import { chartPalette } from '../chartPalette';
 import { Methodology } from './Methodology';
 import { PrintReport } from './PrintReport';
 import { changedSelection, moduleUrl } from '../navigation';
@@ -11,6 +12,7 @@ import {
   type Observation,
 } from '../api/client';
 import { WorkspaceLayout } from '../components/Layout';
+import { Icon } from '../components/Icon';
 import { Search } from '../components/Search';
 import { Quality } from '../components/Quality';
 import { Sources } from '../components/Sources';
@@ -53,7 +55,20 @@ const labels: Record<string, string> = {
 };
 const modelName = (model: string) => (model === 'diversion' ? 'Preusmjeravanje' : 'Prevencija');
 function read() {
-  return new URLSearchParams(window.location.search);
+  const params = new URLSearchParams(window.location.search);
+  const historicalYear = Number(params.get('godina'));
+  const hasScenario = ['referenca', 'scenariji', 'pocetni_zapis', 'zapis_baze'].some((key) =>
+    params.has(key),
+  );
+  if (params.has('jls') && historicalYear >= 2017 && historicalYear <= 2022 && !hasScenario) {
+    params.set('godina', '2024');
+    window.history.replaceState(
+      null,
+      '',
+      `${window.location.pathname}?${params}${window.location.hash}`,
+    );
+  }
+  return params;
 }
 function decode(params: URLSearchParams): ScenarioInput[] {
   if (!params.has('scenariji')) return [];
@@ -93,14 +108,6 @@ function decode(params: URLSearchParams): ScenarioInput[] {
     throw new Error('Nevaljan zapis scenarija.');
   return list as ScenarioInput[]; // The API validates every field and reference before calculation.
 }
-function download(name: string, text: string, type: string) {
-  const url = URL.createObjectURL(new Blob([text], { type }));
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = name;
-  a.click();
-  URL.revokeObjectURL(url);
-}
 export default function Simulator() {
   const focusContext = useRef(false);
   const [params, setParams] = useState(read);
@@ -115,6 +122,7 @@ export default function Simulator() {
   const [savedSignature, setSavedSignature] = useState('');
   const [validSignature, setValidSignature] = useState('');
   const signature = JSON.stringify([...saved, draft]);
+  const dirty = savedSignature !== '' && signature !== savedSignature;
   const [data, setData] = useState<SimulationOutput | null>(null);
   const [loadError, setLoadError] = useState('');
   const [calcError, setCalcError] = useState('');
@@ -126,7 +134,12 @@ export default function Simulator() {
   const [unit, setUnit] = useState<'t' | 'kg'>('t');
   const [table, setTable] = useState(false);
   useEffect(() => {
-    const pop = () => setParams(read());
+    const pop = () =>
+      setParams((current) => {
+        const next = read();
+        // A section anchor changes the hash, not the scenario context.
+        return next.toString() === current.toString() ? current : next;
+      });
     window.addEventListener('popstate', pop);
     return () => window.removeEventListener('popstate', pop);
   }, []);
@@ -166,7 +179,7 @@ export default function Simulator() {
           params.get('pocetni_sha256') !== ctx.observation.source.sha256)
       )
         throw new Error(
-          'Promijenjen početni izvor iz poveznice. Otvorite novi radni skup odabirom godine.',
+          'Promijenjen početni izvor iz poveznice. Otvorite novi scenarij za ovu JLS.',
         );
       let list = decode(params);
       if (
@@ -307,7 +320,7 @@ export default function Simulator() {
         }),
       );
     } catch {
-      /* Explicit exports remain available without browser storage. */
+      /* The report remains available without browser storage. */
     }
   }, [context, data, signature, validSignature, savedSignature, id, year, saved, draft, params]);
   useEffect(() => {
@@ -335,29 +348,21 @@ export default function Simulator() {
   return (
     <WorkspaceLayout module="simulator">
       <Search onSelect={(m) => navigate(m.id, '2024')} />
+      {!id && (
+        <section className="welcome-state">
+          <div className="welcome-icon">
+            <Icon name="flask" />
+          </div>
+          <h2>Odaberite grad ili općinu za simulaciju</h2>
+          <p>Istražite hipotetske promjene u količinama otpada.</p>
+        </section>
+      )}
       {id && (
         <div className="simulator-context-bar panel">
           <h2 id="simulator-context-title" tabIndex={-1}>
             {context?.municipality.name || 'Početno stanje'}
+            {context && <span className="simulator-context-year">{context.observation.year}.</span>}
           </h2>
-          <label>
-            Godina{' '}
-            <select
-              aria-label="Godina scenarija"
-              value={Number.isFinite(Number(year)) ? year : ''}
-              onChange={(e) => navigate(id, e.target.value)}
-            >
-              <option value="" disabled>
-                Odaberite dostupnu godinu
-              </option>
-              {[...new Set([...years, Number(year)])]
-                .filter(Number.isFinite)
-                .sort((a, b) => b - a)
-                .map((y) => (
-                  <option key={y}>{y}</option>
-                ))}
-            </select>
-          </label>
           <a className="button primary" href={moduleUrl('compare')}>
             Natrag na usporedbu →
           </a>
@@ -420,9 +425,6 @@ export default function Simulator() {
             <section className="panel simulator-controls" aria-labelledby="scenario-heading">
               <div className="section-kicker">01 / Postavite pretpostavku</div>
               <h2 id="scenario-heading">Oblikujte scenarij</h2>
-              <p className="draft-status">
-                Za preuzimanje rezultata koristite izvoz u CSV ili PDF izvještaj.
-              </p>
               <label>
                 Naziv scenarija
                 <input
@@ -431,6 +433,11 @@ export default function Simulator() {
                   onChange={(e) => update({ name: e.target.value })}
                 />
               </label>
+              <p className="draft-status" role="status">
+                {dirty
+                  ? 'Nespremljene promjene · valjani nacrt obnavlja se u ovoj kartici preglednika.'
+                  : 'Radni scenarij · izvještaj možete spremiti kao PDF.'}
+              </p>
               <fieldset>
                 <legend>Što se događa s masom?</legend>
                 {(['diversion', 'prevention'] as const).map((m) => (
@@ -537,22 +544,26 @@ export default function Simulator() {
                   }
                 />
               )}
-              <p className="small-muted">
+              <p className="small-muted scenario-input-note">
                 Promjena cilja stvara vlastiti cilj. Račun koristi nezaokruženu početnu stopu iz
                 masa. Scenariji su neovisne alternative, ne uzastopni koraci.
               </p>
-              <button
-                className="button primary"
-                disabled={!data || saved.length >= 3}
-                onClick={() => {
-                  setSaved((old) => [...old, draft]);
-                  setDraft({ ...defaultScenario(), name: `Scenarij ${saved.length + 2}` });
-                  setReference(null);
-                }}
-              >
-                Zadrži i dodaj scenarij
-              </button>
-              <p className="small-muted">Do četiri scenarija uz zajedničko početno stanje.</p>
+              <div className="scenario-add-action">
+                <button
+                  className="button secondary"
+                  disabled={!data || saved.length >= 3}
+                  onClick={() => {
+                    setSaved((old) => [...old, draft]);
+                    setDraft({ ...defaultScenario(), name: `Scenarij ${saved.length + 2}` });
+                    setReference(null);
+                  }}
+                >
+                  Zadrži i dodaj scenarij
+                </button>
+                <p className="small-muted">
+                  Usporedite do četiri scenarija s istim početnim stanjem.
+                </p>
+              </div>
             </section>
             <section className="panel simulator-result" aria-labelledby="result-heading">
               <div className="section-kicker">02 / Matematički rezultat</div>
@@ -564,23 +575,12 @@ export default function Simulator() {
               {latest && (
                 <>
                   <div className="simulator-change">
-                    <span>
-                      {draft.kind === 'tonnes' ? (
-                        draft.model === 'diversion' ? (
-                          `Za preusmjeravanje ${number(latest.change_t)} t u odvojeno sakupljanje potrebno je izdvojiti sljedeći postotak početnog miješanog otpada:`
-                        ) : (
-                          `Za smanjenje otpada za ${number(latest.change_t)} t potrebno je spriječiti nastanak sljedećeg postotka početnog miješanog otpada:`
-                        )
-                      ) : (
-                        <>
-                          {draft.kind === 'target'
-                            ? `Za postotak odvojenog sakupljanja od ${number(draft.value)} % potrebno je `
-                            : `Za smanjenje početnog miješanog otpada za ${number(latest.mixed_reduction_pct)} % potrebno je `}
-                          {draft.model === 'diversion'
-                            ? 'preusmjeriti u odvojeno sakupljanje:'
-                            : 'spriječiti nastanak sljedeće količine otpada:'}
-                        </>
-                      )}
+                    <span className="result-caption">
+                      {draft.kind === 'tonnes'
+                        ? 'Smanjenje početnog miješanog otpada'
+                        : draft.model === 'diversion'
+                          ? 'Potrebno preusmjeriti'
+                          : 'Potrebno spriječiti nastanak otpada'}
                     </span>
                     <strong>
                       {number(
@@ -588,28 +588,33 @@ export default function Simulator() {
                       )}
                       <small>{draft.kind === 'tonnes' ? '%' : 't'}</small>
                     </strong>
+                    <span className="small-muted">
+                      {draft.kind === 'target'
+                        ? `Za ciljnu stopu odvojenog sakupljanja od ${number(draft.value)} %.`
+                        : draft.kind === 'fraction'
+                          ? `Za smanjenje početnog miješanog otpada za ${number(latest.mixed_reduction_pct)} %.`
+                          : `Za promjenu mase od ${number(latest.change_t)} t.`}
+                    </span>
                   </div>
                   <p className="result-explanation">
                     {draft.model === 'diversion'
                       ? `Model preusmjerava ${number(latest.change_t)} t iz miješanog u odvojeno sakupljeni tok, uz nepromijenjenu ukupnu masu.`
                       : `Model sprječava nastanak ${number(latest.change_t)} t miješanog otpada. Ukupna masa smanjuje se za isti iznos, a odvojeno sakupljena masa ostaje ista.`}
                   </p>
-                  <p>
-                    Početna stopa iz masa: <strong>{number(latest.initial.rate_pct)} %</strong>
-                    {draft.kind === 'target' && (
-                      <>
-                        {' '}
-                        · Željeni cilj: <strong>{number(draft.value)} %</strong>
-                      </>
-                    )}
-                    .
-                  </p>
                   <div className="simulator-result-grid">
-                    <div>
-                      <span>Odvojeno sakupljanje · prije → poslije</span>
-                      <strong>
-                        {number(latest.initial.rate_pct)} % → {number(latest.result.rate_pct)} %
+                    <div className="result-rate-transition">
+                      <span className="rate-label-start">Početna stopa</span>
+                      <span className="rate-label-end">Nova stopa</span>
+                      <strong className="rate-value-start">
+                        {number(latest.initial.rate_pct)} %
                       </strong>
+                      <span className="rate-arrow" aria-hidden="true">
+                        →
+                      </span>
+                      <strong className="rate-value-end">{number(latest.result.rate_pct)} %</strong>
+                      <span className="rate-calculation-note">
+                        Stope odvojenog sakupljanja izračunate iz masa otpada.
+                      </span>
                     </div>
                     <div>
                       <span>Promjena ukupnog</span>
@@ -656,7 +661,19 @@ export default function Simulator() {
                 </aside>
               )}
               {latest && (
-                <a className="button primary simulator-compare-link" href="#scenario-comparison">
+                <a
+                  className="button primary simulator-compare-link"
+                  href="#scenario-comparison"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    if (window.location.hash !== '#scenario-comparison')
+                      window.history.pushState(null, '', '#scenario-comparison');
+                    document.getElementById('comparison-heading')?.focus({ preventScroll: true });
+                    document
+                      .getElementById('scenario-comparison')
+                      ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }}
+                >
                   Usporedi na grafikonu i u tablici ↓
                 </a>
               )}
@@ -687,7 +704,9 @@ export default function Simulator() {
               aria-labelledby="comparison-heading"
             >
               <div className="section-kicker">03 / Usporedite alternative</div>
-              <h2 id="comparison-heading">Početno stanje i scenariji</h2>
+              <h2 id="comparison-heading" tabIndex={-1}>
+                Početno stanje i scenariji
+              </h2>
               <div className="simulator-toolbar">
                 <button
                   className="button secondary"
@@ -716,7 +735,7 @@ export default function Simulator() {
               {!table ? (
                 <>
                   <p className="small-muted">
-                    Masa otpada ({unit === 't' ? 't' : 'kg po obuhvaćenom stanovniku'}).
+                    Masa otpada ({unit === 't' ? 'tone' : 'kg po obuhvaćenom stanovniku'}).
                     Preusmjeravanje mijenja sastav, prevencija smanjuje visinu stupca.
                   </p>
                   <div
@@ -724,19 +743,87 @@ export default function Simulator() {
                     role="region"
                     aria-label="Usporedni graf masa otpada"
                   >
-                    <ResponsiveContainer width="100%" height={340}>
+                    <ResponsiveContainer width="100%" height={400}>
                       <BarChart
                         data={chartData}
                         accessibilityLayer
-                        margin={{ left: 0, right: 12, bottom: 35, top: 12 }}
+                        margin={{ left: 20, right: 12, bottom: 20, top: 12 }}
                       >
                         <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                        <XAxis dataKey="name" tick={{ fontSize: 12 }} interval={0} height={65} />
-                        <YAxis tick={{ fontSize: 12 }} />
-                        <Tooltip formatter={(value) => number(value)} />
-                        <Legend />
-                        <Bar dataKey="Miješano" stackId="mass" fill="#66786c" />
-                        <Bar dataKey="Odvojeno sakupljeno" stackId="mass" fill="#207c57" />
+                        <XAxis
+                          dataKey="name"
+                          tick={{ fontSize: 12 }}
+                          interval={0}
+                          height={75}
+                          label={{
+                            value: 'Početno stanje / scenarij',
+                            position: 'insideBottom',
+                            offset: 0,
+                            fontSize: 12,
+                            fill: '#52665a',
+                          }}
+                        />
+                        <YAxis
+                          width={75}
+                          tick={{ fontSize: 12 }}
+                          tickFormatter={(value) => number(value, 0)}
+                          label={{
+                            content: ({ viewBox }) => {
+                              if (!viewBox || !('x' in viewBox)) return null;
+                              const x = Number(viewBox.x) - 12;
+                              const y = Number(viewBox.y) + Number(viewBox.height) / 2;
+                              return (
+                                <text
+                                  className="recharts-label"
+                                  x={x}
+                                  y={y}
+                                  transform={`rotate(-90, ${x}, ${y})`}
+                                  textAnchor="middle"
+                                  dominantBaseline="central"
+                                  fontSize={12}
+                                  fill="#52665a"
+                                >
+                                  {unit === 't' ? 'tone' : 'kg/obuhv. stan.'}
+                                </text>
+                              );
+                            },
+                          }}
+                        />
+                        <Tooltip
+                          formatter={(value) =>
+                            `${number(value)} ${unit === 't' ? 't' : 'kg/obuhv. stan.'}`
+                          }
+                        />
+                        <Legend
+                          content={() => (
+                            <ul
+                              className="chart-series-legend"
+                              aria-label="Legenda tokova otpada"
+                              style={{ paddingLeft: 75, paddingTop: 50, boxSizing: 'border-box' }}
+                            >
+                              <li>
+                                <span
+                                  aria-hidden="true"
+                                  style={{ backgroundColor: chartPalette.blueGray }}
+                                />
+                                Miješano
+                              </li>
+                              <li>
+                                <span
+                                  aria-hidden="true"
+                                  style={{ backgroundColor: chartPalette.green }}
+                                />
+                                Odvojeno sakupljeno
+                              </li>
+                            </ul>
+                          )}
+                        />
+                        <Bar dataKey="Miješano" stackId="mass" fill={chartPalette.blueGray} />
+                        <Bar
+                          dataKey="Odvojeno sakupljeno"
+                          stackId="mass"
+                          fill={chartPalette.green}
+                        />
                       </BarChart>
                     </ResponsiveContainer>
                   </div>
@@ -847,67 +934,6 @@ export default function Simulator() {
                 ))}
               </div>
               <div className="simulator-toolbar no-print">
-                <button
-                  className="button secondary"
-                  onClick={() => {
-                    const quote = (x: unknown) => {
-                      let text = String(x ?? 'Nema podatka');
-                      if (/^[=+@\-\t\r]/.test(text) && !/^-?\d+(\.\d+)?([eE][+-]?\d+)?$/.test(text))
-                        text = "'" + text;
-                      return '"' + text.replaceAll('"', '""') + '"';
-                    };
-                    const rows = [
-                      [
-                        'JLS',
-                        'Godina',
-                        'Scenarij',
-                        'Model',
-                        'Pokazatelj',
-                        'Jedinica',
-                        'Početno',
-                        'Rezultat',
-                        'Razlika',
-                        'Izvor SHA256',
-                        'Verzija modela',
-                        'Način unosa',
-                        'Vrijednost unosa',
-                        'Referentna JLS',
-                        'Referentni izvor SHA256',
-                      ],
-                      ...data.scenarios.flatMap((s) =>
-                        Object.keys(labels).map((k) => [
-                          context.municipality.name,
-                          year,
-                          s.input.name,
-                          s.input.model,
-                          labels[k],
-                          k === 'rate_pct'
-                            ? '% (razlika pb)'
-                            : k.includes('kg')
-                              ? 'kg/obuhvaćeni stan.'
-                              : 't',
-                          s.initial[k as keyof ScenarioState],
-                          s.result[k as keyof ScenarioState],
-                          s.difference[k],
-                          context.observation.source.sha256,
-                          VERSION,
-                          s.input.kind,
-                          s.input.value,
-                          s.reference?.municipality.name ?? '',
-                          s.reference?.observation.source.sha256 ?? '',
-                        ]),
-                      ),
-                      ...data.assumptions.map((a) => ['Pretpostavka', a]),
-                    ];
-                    download(
-                      'wastewise-scenariji.csv',
-                      '\uFEFF' + rows.map((r) => r.map(quote).join(';')).join('\r\n'),
-                      'text/csv;charset=utf-8',
-                    );
-                  }}
-                >
-                  Izvezi CSV
-                </button>
                 <button className="button secondary" onClick={() => window.print()}>
                   Ispiši izvještaj / PDF
                 </button>
@@ -919,6 +945,11 @@ export default function Simulator() {
           </p>
           <section className="panel simulator-formulas">
             <h2>Ključne pretpostavke</h2>
+            <p className="simulator-base-note">
+              Početno stanje: {context.observation.year}. godina. Model je metodološki provjeren za
+              podatke iz 2023. i 2024.; novi scenariji koriste 2024., najnoviju podržanu godinu.
+              Godina označava izvor podataka, a ne godinu ostvarenja scenarija.
+            </p>
             <p>
               Hipotetski matematički scenarij, ne prognoza učinka javne politike. Obuhvat i pouzdana
               obuhvaćena populacija ostaju isti.

@@ -1,3 +1,4 @@
+import { openReferenceScenario } from './reference-link';
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
@@ -9,7 +10,7 @@ async function open(page: import('@playwright/test').Page, name = 'Bjelovar', ye
   return mid;
 }
 
-test('Simulator real API: both target models, scenarios, table, local storage and share', async ({
+test('Simulator real API: both target models, scenarios, table, draft recovery and PDF action', async ({
   page,
 }) => {
   const errors: string[] = [];
@@ -27,25 +28,14 @@ test('Simulator real API: both target models, scenarios, table, local storage an
   expect(await page.locator('.simulator-change strong').innerText()).not.toBe(diversion);
   await page.getByRole('button', { name: 'Tablica', exact: true }).click();
   await expect(page.getByRole('table')).toContainText('Scenarij 2');
-  await page.getByRole('button', { name: 'Spremi lokalno' }).click();
+  await expect(page.getByRole('button', { name: 'Ispiši izvještaj / PDF' })).toBeVisible();
   await expect(
-    page.getByText('Scenariji su spremljeni u ovom pregledniku.', { exact: true }),
-  ).toBeVisible();
-  await page.getByRole('button', { name: 'Kopiraj poveznicu' }).click();
-  await expect(page).toHaveURL(/scenariji=/);
+    page.getByRole('button', { name: /Spremi lokalno|Učitaj spremljeno|Kopiraj poveznicu|Izvezi/ }),
+  ).toHaveCount(0);
+  await expect(page.getByLabel('Uvezi scenarije iz JSON-a')).toHaveCount(0);
   await page.reload();
   await expect(page.locator('.simulator-result-grid')).toContainText('50,00 %');
-  await page.getByRole('button', { name: 'Učitaj spremljeno' }).click();
   await expect(page.locator('.simulator-saved')).toContainText('Moj scenarij');
-  await page.getByRole('button', { name: 'Tablica', exact: true }).click();
-  const download = page.waitForEvent('download');
-  await page.getByRole('button', { name: 'Izvezi JSON' }).click();
-  const exported = await download;
-  expect(exported.suggestedFilename()).toBe('wastewise-scenariji.json');
-  await page.getByLabel('Uvezi scenarije iz JSON-a').setInputFiles((await exported.path())!);
-  await expect(
-    page.getByText('Uvezeni parametri ponovno se provjeravaju na API-ju.'),
-  ).toBeVisible();
   await page.getByRole('button', { name: 'Zadrži i dodaj scenarij' }).click();
   await expect(page.locator('.simulator-result-grid')).toBeVisible();
   await page.getByRole('button', { name: 'Zadrži i dodaj scenarij' }).click();
@@ -65,7 +55,7 @@ test('Simulator real API: Compare handoff revalidated and reference remains visi
     .id;
   const d = (await (await page.request.get('/api/v1/municipalities?q=Daruvar')).json()).items[0].id;
   await page.goto(`/compare?jls=${b}&usporedi=${d}&godina=2024`);
-  await page.getByRole('link', { name: 'Simuliraj ovaj cilj' }).click();
+  await openReferenceScenario(page);
   await expect(page.locator('.simulator-reference')).toContainText('Daruvar');
   await expect(page.locator('.simulator-result-grid')).toContainText('35,56 %');
   await page.getByRole('radio', { name: /Prevencija/ }).check();
@@ -80,9 +70,9 @@ test('Simulator real API: unavailable years, population quality, invalid targets
   page,
 }) => {
   const id = await open(page, 'Bjelovar', '2022');
-  await expect(page.getByText('Automatski izračun nije dostupan')).toBeVisible();
-  await expect(page.locator('.simulator-result-grid')).toHaveCount(0);
-  await page.getByLabel('Godina scenarija').selectOption('2023');
+  await expect(page).toHaveURL(/godina=2024/);
+  await expect(page.getByLabel('Godina scenarija')).toHaveCount(0);
+  await page.goto(`/simulator?jls=${id}&godina=2023`);
   await expect(page.locator('.simulator-result-grid')).toBeVisible();
   await expect(
     page.getByText('2023. · Razlika između XLSX-a i PDF-a', { exact: true }),
