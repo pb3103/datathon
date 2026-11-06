@@ -46,7 +46,7 @@ docker compose build frontend
 docker compose up -d frontend
 ```
 
-Otvorite **http://localhost:5173** (početna stranica). Explorer je na `/explorer`, Compare na `/compare`, a Simulator na `/simulator`. Upišite `Bjelovar`, pritisnite Enter ili „Pretraži”, otvorite rezultat i promijenite godinu. Upute koriste postojeći checkout; ne izrađuju dodatni worktree. Frontend servis automatski pokreće API i bazu, ali ne izvršava migracije ni uvoz.
+Otvorite **http://localhost:5173** (početna stranica). Explorer je na `/explorer`, Compare na `/compare`, Simulator na `/simulator`, a planirani Waste Guide na `/guide`. Karta je na početnoj stranici. Upišite `Bjelovar`, pritisnite Enter ili „Pretraži”, otvorite rezultat i promijenite godinu. Upute koriste postojeći checkout; ne izrađuju dodatni worktree. Frontend servis automatski pokreće API i bazu, ali ne izvršava migracije ni uvoz.
 
 React 18, TypeScript, Vite i Recharts koriste zaključane verzije u `frontend/package-lock.json`. Lokalni Docker image koristi Node 22.16.0; nije potrebno instalirati Node na računalo. Izmjene u `frontend/` vide se kroz Vite hot reload. Nakon promjene ovisnosti ponovno izgradite image i osvježite volumen ovisnosti naredbom `docker compose run --rm --no-deps frontend npm ci`, zatim ponovno pokrenite frontend.
 
@@ -227,7 +227,7 @@ Rezultati: [audit po retku](docs/simulator_data_audit.json) i [provjera Simulato
 
 ## Dovršeni korisnički tok i navigacija
 
-Početna stranica `/` ima istaknutu pretragu koja otvara profil u `/explorer` te tri ravnopravne kartice u sekciji „Kako funkcionira?”. Bjelovar je kratki primjer pretrage; Home ne prikazuje njegove podatke unaprijed niti automatski računa scenarije. Podaci i hipotetski izračuni ostaju dostupni unutar postojećih modula. Stare poveznice `/?jls=…` preusmjeravaju se na Explorer uz očuvanje odabira.
+Početna stranica `/` prikazuje četiri kartice (Explorer, Compare, Simulator i planirani Guide), a ispod postojeću kartu s pretragom, filtrima i izvorima. Waste Guide (`/guide`) zasad je prazna stranica s oznakom „U pripremi”. Karta nema zasebnu stavku u navigaciji. Stare poveznice `/?jls=…` vode na Explorer uz očuvanje odabira.
 
 Navigacija prenosi samo odabir JLS-a, godine i usporedne skupine. Compare može zadržati vlastite filtre; reference izvora i scenarijski parametri ne kopiraju se u druge module. Promjena početnog odabira čisti stare reference, a usporednu skupinu zadržava do postojećeg ograničenja od pet JLS-ova. Nevaljana poveznica ima odabir dostupnih godina i akciju za novi scenarij; nepoznatu JLS moguće je zamijeniti pretragom. Za 2017.–2022. automatski model ostaje nedostupan.
 
@@ -287,7 +287,7 @@ Nakon dodavanja audita prvo obnovite API image (`docker compose build api`). Svi
 
 ## Karta reciklažnih dvorišta i zelenih otoka
 
-Početna stranica prikazuje 283 lokacije u 160 područja: 59 iz dostavljenih
+Karta na početnoj stranici prikazuje 283 lokacije u 160 područja: 59 iz dostavljenih
 CSV/GeoJSON/PDF datoteka s data.gov.hr i 224 dodatne lokacije iz OpenStreetMapa.
 Pretraga obuhvaća svih 556 JLS iz registra aplikacije; ne tvrdi se da su sve
 pokrivene lokacijama. Postojećih 8 zapisa bez koordinata sačuvano je u podatkovnim datotekama i ne prikazuje se u sučelju.
@@ -346,7 +346,7 @@ docker compose restart frontend
 
 ## Ujednačene pretrage i napomene
 
-Sve četiri stranice koriste zajednički `PlaceAutocomplete`: prijedloge pri tipkanju,
+Četiri funkcionalna modula koriste zajednički `PlaceAutocomplete`: prijedloge pri tipkanju,
 županiju uz naziv, klik, strelice, Enter i Escape. Početna stranica pretražuje lokalni
 registar za kartu; Explorer, Compare i Simulator traže prijedloge od API-ja nakon
 200 ms mirovanja unosa i otkazuju zastarjele zahtjeve. Enter odabire jednoznačan

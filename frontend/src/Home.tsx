@@ -27,6 +27,13 @@ const steps = [
     icon: 'flask' as const,
     text: 'Izračunajte promjene količina otpada za odabrani scenarij.',
   },
+  {
+    path: 'guide',
+    name: 'Waste Guide',
+    verb: 'Saznajte',
+    icon: 'book' as const,
+    text: 'Savjeti o pravilnom odvajanju otpada, ciljevi i provjera znanja. Sadržaj je u pripremi.',
+  },
 ];
 
 export default function Home() {
@@ -86,7 +93,7 @@ export default function Home() {
                 <h3>{step.name}</h3>
                 <p>{step.text}</p>
                 <span className="home-step-link">
-                  Otvori {step.name}
+                  {step.path === 'guide' ? 'U pripremi' : `Otvori ${step.name}`}
                   <span aria-hidden="true">↗</span>
                 </span>
               </a>

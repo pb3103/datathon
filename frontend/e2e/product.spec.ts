@@ -68,7 +68,7 @@ test('product: home search, concise workflow, mobile accessibility and legacy pr
     page.getByRole('heading', { name: 'Od podataka do pametnijih odluka.', exact: true }),
   ).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Kako funkcionira?' })).toBeVisible();
-  await expect(page.locator('.home-step-card')).toHaveCount(3);
+  await expect(page.locator('.home-step-card')).toHaveCount(4);
   await expect(page.locator('.home-example')).toHaveCount(0);
   await page.getByRole('combobox', { name: 'Grad ili općina' }).fill('Bjelovar');
   await page.getByRole('combobox', { name: 'Grad ili općina' }).press('Enter');
@@ -191,6 +191,7 @@ test('home: no automatic data requests, keyboard search, cards and responsive la
     ['Waste Explorer', 'explorer'],
     ['Waste Compare', 'compare'],
     ['Waste Simulator', 'simulator'],
+    ['Waste Guide', 'guide'],
   ]) {
     await page.goto('/');
     await page.getByRole('link', { name: `Otvori ${name}`, exact: true }).click();
@@ -215,4 +216,22 @@ test('home: no automatic data requests, keyboard search, cards and responsive la
     ).toEqual([]);
     await page.screenshot({ path: `test-results/home-redesign-${width}.png`, fullPage: true });
   }
+});
+
+test('home: four aligned cards, restored map, full sources and no navigation dots', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto('/');
+  const cards = page.locator('.home-step-card');
+  await expect(cards).toHaveCount(4);
+  const tops = await cards.evaluateAll((els) => els.map((el) => el.getBoundingClientRect().top));
+  expect(Math.max(...tops) - Math.min(...tops)).toBeLessThan(2);
+  await expect(page.locator('.recycling-map')).toBeVisible();
+  await expect(page.locator('.home-data-source')).toHaveCount(3);
+  await expect(page.locator('.nav-active-dot')).toHaveCount(0);
+  await expect(page.getByRole('link', { name: 'Waste Map', exact: true })).toHaveCount(0);
+  await page.getByRole('link', { name: 'Otvori Waste Guide', exact: true }).click();
+  await expect(page).toHaveURL(/\/guide$/);
+  await expect(page.getByText('Sadržaj je u pripremi.', { exact: true })).toBeVisible();
 });

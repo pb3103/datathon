@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { Icon } from './Icon';
 
-type Module = 'home' | 'explorer' | 'compare' | 'simulator';
+type Module = 'home' | 'explorer' | 'compare' | 'simulator' | 'guide';
 export function WorkspaceLayout({
   module,
   children,
@@ -20,7 +20,9 @@ export function WorkspaceLayout({
         ? 'Waste Explorer'
         : module === 'compare'
           ? 'Waste Compare'
-          : 'Waste Simulator';
+          : module === 'guide'
+            ? 'Waste Guide'
+            : 'Waste Simulator';
   const context = window.location.search;
   useEffect(() => {
     document.title = `${title} — ${module === 'home' ? 'Otvoreni podaci o otpadu' : 'WasteWise'}`;
@@ -58,7 +60,7 @@ export function WorkspaceLayout({
             aria-current={module === 'explorer' ? 'page' : undefined}
           >
             <Icon name="explore" />
-            Waste Explorer{module === 'explorer' && <span className="nav-active-dot" />}
+            Waste Explorer
           </a>
           <a
             className={`nav-link ${module === 'compare' ? 'active' : ''}`}
@@ -66,7 +68,7 @@ export function WorkspaceLayout({
             aria-current={module === 'compare' ? 'page' : undefined}
           >
             <Icon name="compare" />
-            Waste Compare{module === 'compare' && <span className="nav-active-dot" />}
+            Waste Compare
           </a>
           <a
             className={`nav-link ${module === 'simulator' ? 'active' : ''}`}
@@ -75,6 +77,14 @@ export function WorkspaceLayout({
           >
             <Icon name="flask" />
             Waste Simulator
+          </a>
+          <a
+            className={`nav-link ${module === 'guide' ? 'active' : ''}`}
+            href="/guide"
+            aria-current={module === 'guide' ? 'page' : undefined}
+          >
+            <Icon name="book" />
+            Waste Guide
           </a>
         </nav>
         <div className="sidebar-bottom">
@@ -102,11 +112,13 @@ export function WorkspaceLayout({
                   <span className="heading-dot">.</span>
                 </h1>
                 <p>
-                  {module === 'compare'
-                    ? 'Usporedba pokazatelja komunalnog otpada među gradovima i općinama.'
-                    : module === 'simulator'
-                      ? 'Izračun scenarija preusmjeravanja i prevencije otpada.'
-                      : 'Količine i sastav komunalnog otpada po godinama.'}
+                  {module === 'guide'
+                    ? 'Sadržaj je u pripremi.'
+                    : module === 'compare'
+                      ? 'Usporedba pokazatelja komunalnog otpada među gradovima i općinama.'
+                      : module === 'simulator'
+                        ? 'Izračun scenarija preusmjeravanja i prevencije otpada.'
+                        : 'Količine i sastav komunalnog otpada po godinama.'}
                 </p>
               </div>
               <div className="heading-art" aria-hidden="true">
@@ -114,7 +126,13 @@ export function WorkspaceLayout({
                 <span className="orbit orbit-two" />
                 <Icon
                   name={
-                    module === 'compare' ? 'compare' : module === 'simulator' ? 'flask' : 'explore'
+                    module === 'guide'
+                      ? 'book'
+                      : module === 'compare'
+                        ? 'compare'
+                        : module === 'simulator'
+                          ? 'flask'
+                          : 'explore'
                   }
                 />
                 <span className="art-dot" />

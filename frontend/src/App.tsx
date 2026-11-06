@@ -210,6 +210,12 @@ export default function App() {
         <Home />
       </Suspense>
     );
+  if (window.location.pathname === '/guide')
+    return (
+      <WorkspaceLayout module="guide">
+        <span className="sr-only">Waste Guide — u pripremi</span>
+      </WorkspaceLayout>
+    );
   if (window.location.pathname === '/compare')
     return (
       <Suspense fallback={<Loading />}>

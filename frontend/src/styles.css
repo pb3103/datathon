@@ -5342,3 +5342,17 @@ a.button:focus-visible {
   color: #66756b;
   vertical-align: baseline;
 }
+
+/* Four equal module cards on desktop, responsive rows on smaller screens. */
+@media (min-width: 1100px) {
+  .module-home .home-steps {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .module-home .home-step-card {
+    padding: 22px 20px;
+  }
+  .module-home .home-step-card h3 {
+    font-size: 22px;
+  }
+}
