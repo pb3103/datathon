@@ -371,3 +371,11 @@ KPI i referentne kartice ističu raspoloživi pokazatelj: izračunati udio za 20
 
 
 Završna metodološka provjera 2019., svih 556 PDF redaka, primjeri iz 12 županija i kontrola agregata (20,8391%, uz dokumentiranu razliku masa među tablicama): [izvještaj 2019.](docs/2019_share_methodology.md). Prethodni auditni izvještaji ostaju datirane snimke tadašnje procjene; sada je široki udio dostupan za sve četiri povijesne godine.
+
+## Objavljivanje na Renderu
+
+Projekt sadrži `render.yaml` za besplatni Docker Web Service i internu PostgreSQL bazu.
+Frontend i API dijele jednu HTTPS adresu; izgradnja, migracije i uvoz provjerenih podataka
+uključeni su u deploy. Kasnije izmjene objavljuju se pushom na povezanu GitHub granu.
+Koraci i sigurnosne postavke: [Render deployment](docs/render-deployment.md).
+**Besplatna Render baza istječe nakon 30 dana**; provjerite dostupnost prije predaje.

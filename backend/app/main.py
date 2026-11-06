@@ -39,6 +39,9 @@ from backend.app.observations import (
 app = FastAPI(
     title="WasteWise API",
     version="0.1.0",
+    docs_url=None if get_settings().environment == "production" else "/docs",
+    redoc_url=None if get_settings().environment == "production" else "/redoc",
+    openapi_url=None if get_settings().environment == "production" else "/openapi.json",
     description="Podaci o sakupljanju u javnoj usluzi. Stopa odvojenog sakupljanja nije stopa recikliranja. Decimalne vrijednosti u JSON-u su stringovi radi očuvanja preciznosti.",
 )
 app.add_middleware(
@@ -83,6 +86,8 @@ def ready(session: Session = Depends(get_session)):
             .group_by(WasteObservation.year)
         ).all()
     )
+    if get_settings().environment == "production" and any(counts.get(year) != 556 for year in range(2017, 2025)):
+        raise HTTPException(503, detail={"code": "data_initialization_required"})
     return {
         "status": "ready",
         "database": "available",

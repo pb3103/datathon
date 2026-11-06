@@ -1,0 +1,42 @@
+# Disposable local replica of Render. Does not use the development database/volumes.
+# docker compose -p wastewise-render-qa -f compose.render-qa.yaml up -d
+services:
+  database:
+    image: postgres:16.9-bookworm
+    environment:
+      POSTGRES_USER: wastewise
+      POSTGRES_PASSWORD: qa_only_local
+      POSTGRES_DB: wastewise
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U wastewise -d wastewise"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+  web:
+    image: wastewise-render:local
+    init: true
+    mem_limit: 512m
+    environment:
+      DATABASE_URL: postgresql://wastewise:qa_only_local@database:5432/wastewise
+      RENDER_EXTERNAL_HOSTNAME: web
+      CORS_ORIGINS: "[]"
+      API_REQUESTS_PER_MINUTE: "600"
+      SIMULATIONS_PER_MINUTE: "120"
+    ports:
+      - "127.0.0.1:10100:10000"
+    depends_on:
+      database:
+        condition: service_healthy
+  checks:
+    image: datathon-frontend-e2e
+    profiles: [test]
+    environment:
+      E2E_BASE_URL: http://web:10000
+    volumes:
+      - ./frontend/e2e:/app/e2e:ro
+      - ./frontend/src:/app/src:ro
+      - ./frontend/test-results:/app/test-results
+    depends_on:
+      - web

@@ -1,0 +1,35 @@
+# One origin serves the built React application and FastAPI.
+FROM node:22.16.0-alpine AS frontend-build
+WORKDIR /build
+COPY frontend/package.json frontend/package-lock.json ./
+RUN npm ci
+COPY frontend/ ./
+ENV VITE_API_BASE_URL=/api/v1
+RUN npm run build
+
+FROM python:3.12.11-slim-bookworm AS source-files
+WORKDIR /workspace
+COPY deploy/ deploy/
+COPY data/manifests/ data/manifests/
+COPY podaci/ podaci/
+RUN python -m deploy.prepare_sources --output /prepared-podaci
+
+FROM python:3.12.11-slim-bookworm
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PYTHONPATH=/workspace DATA_DIR=/workspace/podaci STATIC_DIR=/workspace/static \
+    ENVIRONMENT=production DATABASE_READ_ONLY=true
+WORKDIR /workspace
+COPY backend/requirements.lock.txt /tmp/requirements.lock.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.lock.txt \
+    && groupadd --gid 10001 wastewise \
+    && useradd --uid 10001 --gid wastewise --no-create-home wastewise
+COPY --chown=wastewise:wastewise backend/ backend/
+COPY --chown=wastewise:wastewise pipeline/ pipeline/
+COPY --chown=wastewise:wastewise deploy/ deploy/
+COPY --chown=wastewise:wastewise data/manifests/ data/manifests/
+COPY --from=source-files --chown=wastewise:wastewise /prepared-podaci/ podaci/
+COPY --from=frontend-build --chown=wastewise:wastewise /build/dist/ static/
+RUN mkdir -p /workspace/data/staging && chown wastewise:wastewise /workspace/data/staging
+USER wastewise
+EXPOSE 10000
+CMD ["python", "-m", "deploy.start"]

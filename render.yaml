@@ -1,0 +1,38 @@
+# Free trial. Free Postgres expires after 30 days; upgrade before final submission.
+services:
+  - type: web
+    name: wastewise
+    runtime: docker
+    plan: free
+    region: frankfurt
+    dockerfilePath: ./deploy/Dockerfile.render
+    dockerContext: .
+    autoDeployTrigger: commit
+    healthCheckPath: /api/v1/health/ready
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: wastewise-db
+          property: connectionString
+      - key: DATABASE_READ_ONLY
+        value: "true"
+      - key: CORS_ORIGINS
+        value: "[]"
+      - key: API_REQUESTS_PER_MINUTE
+        value: "600"
+      - key: SIMULATIONS_PER_MINUTE
+        value: "120"
+      - key: MAX_REQUEST_BODY_BYTES
+        value: "32768"
+      - key: DB_STATEMENT_TIMEOUT_MS
+        value: "15000"
+databases:
+  - name: wastewise-db
+    plan: free
+    region: frankfurt
+    postgresMajorVersion: "16"
+    databaseName: wastewise
+    user: wastewise
+    ipAllowList: []
