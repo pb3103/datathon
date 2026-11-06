@@ -1,3 +1,11 @@
+import {
+  ChartLegend,
+  chartTooltipStyle,
+  useDismissibleChartTooltip,
+  ChartCategoryTick,
+  useCompactChart,
+  compactTick,
+} from '../components/ChartPresentation';
 import { chartPalette } from '../chartPalette';
 import { Methodology } from './Methodology';
 import { PrintReport } from './PrintReport';
@@ -17,16 +25,7 @@ import { Search } from '../components/Search';
 import { Quality } from '../components/Quality';
 import { Sources } from '../components/Sources';
 import { ErrorState, Loading } from '../components/State';
-import {
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Legend,
-  CartesianGrid,
-} from 'recharts';
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 import type { components } from '../api/schema';
 
 type ScenarioState = components['schemas']['ScenarioState'];
@@ -109,6 +108,8 @@ function decode(params: URLSearchParams): ScenarioInput[] {
   return list as ScenarioInput[]; // The API validates every field and reference before calculation.
 }
 export default function Simulator() {
+  const compact = useCompactChart();
+  const { chartRef, tooltipInteraction } = useDismissibleChartTooltip();
   const focusContext = useRef(false);
   const [params, setParams] = useState(read);
   const id = params.get('jls');
@@ -739,38 +740,51 @@ export default function Simulator() {
                     Preusmjeravanje mijenja sastav, prevencija smanjuje visinu stupca.
                   </p>
                   <div
+                    ref={chartRef}
                     className="simulator-chart"
+                    tabIndex={0}
                     role="region"
                     aria-label="Usporedni graf masa otpada"
                   >
-                    <ResponsiveContainer width="100%" height={400}>
+                    <ResponsiveContainer
+                      width="100%"
+                      minWidth={compact ? chartData.length * 76 + 58 : undefined}
+                      height={compact ? 290 : 350}
+                    >
                       <BarChart
                         data={chartData}
                         accessibilityLayer
-                        margin={{ left: 20, right: 12, bottom: 20, top: 12 }}
+                        margin={{
+                          left: compact ? 14 : 20,
+                          right: 12,
+                          bottom: compact ? 4 : 16,
+                          top: 12,
+                        }}
                       >
                         <CartesianGrid strokeDasharray="3 3" vertical={false} />
                         <XAxis
                           dataKey="name"
-                          tick={{ fontSize: 12 }}
+                          tick={compact ? <ChartCategoryTick /> : { fontSize: 12 }}
                           interval={0}
-                          height={75}
+                          height={82}
                           label={{
                             value: 'Početno stanje / scenarij',
                             position: 'insideBottom',
                             offset: 0,
-                            fontSize: 12,
+                            fontSize: compact ? 9 : 12,
                             fill: '#52665a',
                           }}
                         />
                         <YAxis
-                          width={75}
-                          tick={{ fontSize: 12 }}
-                          tickFormatter={(value) => number(value, 0)}
+                          width={compact ? 48 : 75}
+                          tick={{ fontSize: compact ? 10 : 12 }}
+                          tickFormatter={(value) =>
+                            compact ? compactTick(Number(value)) : number(value, 0)
+                          }
                           label={{
                             content: ({ viewBox }) => {
                               if (!viewBox || !('x' in viewBox)) return null;
-                              const x = Number(viewBox.x) - 12;
+                              const x = 8;
                               const y = Number(viewBox.y) + Number(viewBox.height) / 2;
                               return (
                                 <text
@@ -780,7 +794,7 @@ export default function Simulator() {
                                   transform={`rotate(-90, ${x}, ${y})`}
                                   textAnchor="middle"
                                   dominantBaseline="central"
-                                  fontSize={12}
+                                  fontSize={compact ? 9 : 12}
                                   fill="#52665a"
                                 >
                                   {unit === 't' ? 'tone' : 'kg/obuhv. stan.'}
@@ -790,35 +804,21 @@ export default function Simulator() {
                           }}
                         />
                         <Tooltip
+                          {...tooltipInteraction}
+                          position={compact ? { x: 0, y: 0 } : undefined}
+                          contentStyle={chartTooltipStyle}
+                          wrapperStyle={{ maxWidth: 'calc(100vw - 64px)', pointerEvents: 'none' }}
+                          itemStyle={{
+                            whiteSpace: 'normal',
+                            overflowWrap: 'anywhere',
+                            padding: '3px 0',
+                          }}
+                          labelStyle={{ fontSize: 'inherit', marginBottom: 4 }}
                           formatter={(value) =>
                             `${number(value)} ${unit === 't' ? 't' : 'kg/obuhv. stan.'}`
                           }
                         />
-                        <Legend
-                          content={() => (
-                            <ul
-                              className="chart-series-legend"
-                              aria-label="Legenda tokova otpada"
-                              style={{ paddingLeft: 75, paddingTop: 50, boxSizing: 'border-box' }}
-                            >
-                              <li>
-                                <span
-                                  aria-hidden="true"
-                                  style={{ backgroundColor: chartPalette.blueGray }}
-                                />
-                                Miješano
-                              </li>
-                              <li>
-                                <span
-                                  aria-hidden="true"
-                                  style={{ backgroundColor: chartPalette.green }}
-                                />
-                                Odvojeno sakupljeno
-                              </li>
-                            </ul>
-                          )}
-                        />
-                        <Bar dataKey="Miješano" stackId="mass" fill={chartPalette.blueGray} />
+                        <Bar dataKey="Miješano" stackId="mass" fill={chartPalette.mixed} />
                         <Bar
                           dataKey="Odvojeno sakupljeno"
                           stackId="mass"
@@ -827,6 +827,15 @@ export default function Simulator() {
                       </BarChart>
                     </ResponsiveContainer>
                   </div>
+                  <ChartLegend
+                    items={[
+                      { label: 'Miješano', color: chartPalette.mixed },
+                      { label: 'Odvojeno sakupljeno', color: chartPalette.green },
+                    ]}
+                  />
+                  {compact && chartData.length > 3 && (
+                    <p className="chart-scroll-hint">Pomaknite graf vodoravno za sve scenarije.</p>
+                  )}
                   <div className="simulator-rates">
                     {data.scenarios.map((s, i) => (
                       <article key={i}>

@@ -16,6 +16,14 @@ function safeLink(value?: string | null): string | null {
   }
 }
 
+export function datasetLink(source: Source) {
+  return (
+    safeLink(links[source.sha256]?.url) ??
+    safeLink(source.resource_url) ??
+    safeLink(source.catalog_url)
+  );
+}
+
 export function SourceList({
   sources,
   selectedYear,

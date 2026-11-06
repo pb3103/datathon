@@ -185,8 +185,18 @@ export default function RecyclingMap({ selection }: { selection?: AreaSelection 
           <option value="collection">Ostale lokacije</option>
         </select>
         <span className="yard-legend">
-          <i /> Stalno <i className="mobile" /> Mobilno <i className="island" /> Zeleni otok{' '}
-          <i className="collection" /> Ostalo
+          <span className="yard-legend-item">
+            <i /> Stalno
+          </span>
+          <span className="yard-legend-item">
+            <i className="mobile" /> Mobilno
+          </span>
+          <span className="yard-legend-item">
+            <i className="island" /> Zeleni otok
+          </span>
+          <span className="yard-legend-item">
+            <i className="collection" /> Ostalo
+          </span>
         </span>
       </div>
       <div className="recycling-sources" role="group" aria-label="Izvor lokacija">

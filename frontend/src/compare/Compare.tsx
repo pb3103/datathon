@@ -1,3 +1,4 @@
+import { datasetLink } from '../components/Sources';
 import { changedSelection } from '../navigation';
 import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import {
@@ -579,27 +580,18 @@ export default function Compare() {
                 >
                   Otvori profil u Exploreru ↗
                 </a>
-                <details className="quality-details">
-                  <summary>Izvori i detalji</summary>
-                  <div>
-                    {member.observation && (
-                      <>
-                        <p>
-                          {member.observation.source.path} · {member.observation.source.sheet} ·
-                          redak {member.observation.source_row}
-                        </p>
-                        <p className="checksum">SHA-256: {member.observation.source.sha256}</p>
-                      </>
-                    )}
-                    {member.materials.map((m) => (
-                      <p key={m.material}>
-                        {m.label}: {formatMetric(m.published)} kg/stan. · {m.source.sheet}, redak{' '}
-                        {m.source_row}.{' '}
-                        {m.comparable.value === null && compareReason(m.comparable.reason)}
-                      </p>
-                    ))}
-                  </div>
-                </details>
+                <div className="reference-dataset">
+                  {member.observation && datasetLink(member.observation.source) && (
+                    <a
+                      className="text-button"
+                      href={datasetLink(member.observation.source)!}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Korišteni skup podataka ↗
+                    </a>
+                  )}
+                </div>
                 <div className="reference-warnings">
                   {member.warnings.includes('population_outside_preferred_range') && (
                     <p className="source-warning">

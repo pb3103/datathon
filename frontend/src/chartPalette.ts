@@ -1,6 +1,7 @@
-/** Shared chart colors; community colors identify locations, not waste streams. */
+/** The same waste streams retain the same contrasting colors in every module. */
 export const chartPalette = {
-  green: '#62967c',
-  blueGray: '#b8c5cc',
-  communities: ['#62967c', '#b8c5cc', '#8b9e78', '#8e91ad', '#c0a389'],
+  green: '#227054',
+  mixed: '#b56a32',
+  blue: '#356d9c',
+  communities: ['#227054', '#356d9c', '#bc7135', '#82618e', '#b04f67'],
 } as const;

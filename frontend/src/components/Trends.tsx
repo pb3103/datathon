@@ -1,3 +1,10 @@
+import {
+  ChartLegend,
+  chartTooltipStyle,
+  useDismissibleChartTooltip,
+  useCompactChart,
+  compactTick,
+} from './ChartPresentation';
 import { chartPalette } from '../chartPalette';
 import { RateEvidence } from './RateEvidence';
 import { visibleSourceIssues } from '../domain';
@@ -6,7 +13,6 @@ import {
   Bar,
   CartesianGrid,
   ComposedChart,
-  Legend,
   Line,
   ResponsiveContainer,
   Tooltip,
@@ -31,7 +37,7 @@ const configurations = {
     unit: 't',
     series: [
       { key: 'total_t', title: 'Ukupno sakupljeno', color: chartPalette.green },
-      { key: 'mixed_t', title: 'Miješani otpad', color: chartPalette.blueGray },
+      { key: 'mixed_t', title: 'Miješani otpad', color: chartPalette.mixed },
     ],
   },
   per_person: {
@@ -46,7 +52,7 @@ const configurations = {
       {
         key: 'mixed_kg_per_covered_person',
         title: 'Miješano · izračunato',
-        color: chartPalette.blueGray,
+        color: chartPalette.mixed,
       },
     ],
   },
@@ -62,7 +68,7 @@ const configurations = {
       {
         key: 'calculated_nonmixed_share_pct',
         title: 'Izvan miješanog toka · izračunati udio',
-        color: chartPalette.blueGray,
+        color: chartPalette.blue,
       },
     ],
   },
@@ -79,6 +85,8 @@ export function Trends({
   selectedYear: number | null;
   onYear: (year: number) => void;
 }) {
+  const compact = useCompactChart();
+  const { chartRef, tooltipInteraction } = useDismissibleChartTooltip();
   const [mode, setMode] = useState<Mode>('mass');
   const [view, setView] = useState<'chart' | 'table'>('chart');
   const descId = useId();
@@ -139,31 +147,23 @@ export function Trends({
           {connected ? 'Usporedivi podaci' : 'Uvjetna usporedivost'}
         </span>
       </div>
-      <p className="chart-description" id={descId}>
-        {connected
-          ? 'Povezane su samo uzastopne godine s potvrđenom usporedivošću.'
-          : 'Obuhvat podataka razlikuje se među godinama, pa su vrijednosti prikazane zasebno.'}{' '}
-        Jedinica: {config.unit}.
-      </p>
-      {mode === 'rate' && (
-        <p className="small-muted">
-          2017.–2020.: izračunati udio izvan miješanog toka. Od 2021.: objavljena stopa odvojenog
-          sakupljanja. To nije postotak recikliranog otpada.
-        </p>
-      )}
       {view === 'chart' ? (
         <figure className="chart-figure" aria-labelledby={titleId} aria-describedby={descId}>
           {hasValues ? (
-            <div className="chart-container">
-              <ResponsiveContainer width="100%" height={330}>
+            <div ref={chartRef} className="chart-container responsive-chart">
+              <ResponsiveContainer width="100%" height={compact ? 245 : 310}>
                 <ComposedChart
                   data={data}
-                  margin={{ top: 15, right: 12, bottom: 20, left: 20 }}
+                  margin={{ top: 12, right: 10, bottom: compact ? 4 : 14, left: compact ? 14 : 20 }}
                   accessibilityLayer
                 >
                   <defs>
                     <pattern id={patternId} width="6" height="6" patternUnits="userSpaceOnUse">
-                      <rect width="6" height="6" fill={chartPalette.blueGray} />
+                      <rect
+                        width="6"
+                        height="6"
+                        fill={mode === 'rate' ? chartPalette.blue : chartPalette.mixed}
+                      />
                       <path d="M0 6 6 0" stroke="#fff" strokeWidth="1" />
                     </pattern>
                   </defs>
@@ -171,51 +171,50 @@ export function Trends({
                   <XAxis
                     dataKey="year"
                     height={50}
+                    interval={compact ? 0 : 'preserveStartEnd'}
                     label={{
                       value: 'Godina',
                       position: 'insideBottom',
                       offset: 0,
-                      fontSize: 12,
+                      fontSize: compact ? 9 : 12,
                       fill: '#52665a',
                     }}
                     tickLine={false}
                     axisLine={false}
-                    tick={{ fontSize: 12, fill: '#59675e' }}
+                    tick={{ fontSize: compact ? 10 : 12, fill: '#59675e' }}
                     dy={8}
                   />
                   <YAxis
-                    tickFormatter={(value) => formatNumber(Number(value), 0)}
+                    tickFormatter={(value) =>
+                      compact ? compactTick(Number(value)) : formatNumber(Number(value), 0)
+                    }
                     domain={mode === 'rate' ? [0, 100] : [0, 'auto']}
                     tickLine={false}
                     axisLine={false}
                     tick={{ fontSize: 11, fill: '#59675e' }}
-                    width={75}
+                    width={compact ? 48 : 75}
                     label={{
                       value: config.unit,
                       angle: -90,
                       position: 'insideLeft',
-                      offset: -12,
-                      fontSize: 12,
+                      offset: -10,
+                      fontSize: compact ? 9 : 12,
                       fill: '#52665a',
                     }}
                   />
                   <Tooltip
+                    {...tooltipInteraction}
+                    position={compact ? { x: 0, y: 0 } : undefined}
+                    contentStyle={chartTooltipStyle}
+                    wrapperStyle={{ maxWidth: 'calc(100vw - 64px)', pointerEvents: 'none' }}
+                    itemStyle={{ whiteSpace: 'normal', overflowWrap: 'anywhere', padding: '3px 0' }}
+                    labelStyle={{ fontSize: 'inherit', marginBottom: 4 }}
                     labelFormatter={(label) => `${label}. godina`}
                     formatter={(value, name) => [
                       `${formatNumber(Number(value))} ${config.unit}`,
                       config.series.find((series) => series.key === name)?.title ?? name,
                     ]}
                     cursor={{ fill: '#edf2e9', opacity: 0.55 }}
-                    contentStyle={{ borderRadius: 10, border: '1px solid #dce3d9', fontSize: 13 }}
-                  />
-                  <Legend
-                    formatter={(value) => (
-                      <span className="legend-label">
-                        {config.series.find((series) => series.key === value)?.title ?? value}
-                      </span>
-                    )}
-                    iconType={connected ? 'line' : 'rect'}
-                    wrapperStyle={{ paddingTop: 18 }}
                   />
                   {config.series.map((series) =>
                     connected ? (
@@ -249,6 +248,16 @@ export function Trends({
                   )}
                 </ComposedChart>
               </ResponsiveContainer>
+              <ChartLegend
+                items={config.series.map((series) => ({
+                  label: series.title,
+                  color: series.color,
+                  patterned:
+                    !connected &&
+                    (series.key.startsWith('mixed_') ||
+                      series.key === 'calculated_nonmixed_share_pct'),
+                }))}
+              />
             </div>
           ) : (
             <div className="state-box">
@@ -372,6 +381,18 @@ export function Trends({
             </tbody>
           </table>
         </div>
+      )}
+      <p className="chart-description" id={descId}>
+        {connected
+          ? 'Povezane su samo uzastopne godine s potvrđenom usporedivošću.'
+          : 'Obuhvat podataka razlikuje se među godinama, pa su vrijednosti prikazane zasebno.'}{' '}
+        Jedinica: {config.unit}.
+      </p>
+      {mode === 'rate' && (
+        <p className="small-muted">
+          2017.–2020.: izračunati udio izvan miješanog toka. Od 2021.: objavljena stopa odvojenog
+          sakupljanja. To nije postotak recikliranog otpada.
+        </p>
       )}
       {mode === 'rate' && (
         <RateEvidence

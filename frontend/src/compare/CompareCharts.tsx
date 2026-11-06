@@ -1,3 +1,11 @@
+import {
+  ChartLegend,
+  ChartPlaceTick,
+  chartTooltipStyle,
+  useDismissibleChartTooltip,
+  useCompactChart,
+  compactTick,
+} from '../components/ChartPresentation';
 import { chartPalette } from '../chartPalette';
 import { RateEvidence } from '../components/RateEvidence';
 import { rateMetricKey } from '../domain';
@@ -7,7 +15,6 @@ import {
   BarChart,
   CartesianGrid,
   Cell,
-  Legend,
   Line,
   ComposedChart,
   ResponsiveContainer,
@@ -39,6 +46,8 @@ export default function CompareCharts({
   onView: (view: 'chart' | 'table') => void;
 }) {
   const title = useId();
+  const compact = useCompactChart();
+  const { chartRef, tooltipInteraction } = useDismissibleChartTooltip();
   const definition = data.metrics.find((m) => m.key === selectedMetric) ?? data.metrics[0];
   const key = definition.key;
   const isRate = key === 'separate_collection_pct';
@@ -151,42 +160,56 @@ export default function CompareCharts({
       {view === 'chart' ? (
         <>
           <div
+            ref={chartRef}
             className="compare-plot"
-            style={{
-              height: mode === 'snapshot' ? Math.max(316, data.members.length * 62 + 121) : 360,
-            }}
+            role="region"
+            aria-label="Graf usporedbe lokacija"
+            tabIndex={0}
           >
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer
+              width="100%"
+              height={
+                mode === 'snapshot'
+                  ? Math.max(220, data.members.length * 48 + 70)
+                  : compact
+                    ? 260
+                    : 320
+              }
+              minWidth={compact && mode === 'history' && data.members.length > 2 ? 520 : undefined}
+            >
               {mode === 'snapshot' ? (
                 <BarChart
                   data={snapshot}
                   layout="vertical"
-                  margin={{ left: 16, right: 20, top: 10, bottom: 25 }}
+                  margin={{ left: compact ? 16 : 16, right: 16, top: 10, bottom: compact ? 4 : 18 }}
                   accessibilityLayer
                 >
                   <CartesianGrid horizontal={false} strokeDasharray="3 5" stroke="#e0e7db" />
                   <XAxis
                     type="number"
                     height={50}
+                    tickCount={compact ? 4 : 5}
                     label={{
                       value: unit,
                       position: 'insideBottom',
                       offset: 0,
-                      fontSize: 12,
+                      fontSize: compact ? 9 : 12,
                       fill: '#52665a',
                     }}
-                    tickFormatter={(v) => formatNumber(Number(v), 0)}
+                    tickFormatter={(v) =>
+                      compact ? compactTick(Number(v)) : formatNumber(Number(v), 0)
+                    }
                     tick={{ fontSize: 11 }}
                   />
                   <YAxis
                     type="category"
                     dataKey="name"
-                    width={145}
-                    tick={{ fontSize: 12 }}
+                    width={compact ? 88 : 145}
+                    tick={compact ? <ChartPlaceTick /> : { fontSize: 12 }}
                     label={{
                       content: ({ viewBox }) => {
                         if (!viewBox || !('x' in viewBox)) return null;
-                        const x = Number(viewBox.x) - 10;
+                        const x = 8;
                         const y = Number(viewBox.y) + Number(viewBox.height) / 2;
                         return (
                           <text
@@ -196,7 +219,7 @@ export default function CompareCharts({
                             transform={`rotate(-90, ${x}, ${y})`}
                             textAnchor="middle"
                             dominantBaseline="central"
-                            fontSize={12}
+                            fontSize={compact ? 9 : 12}
                             fill="#52665a"
                           >
                             Grad / općina
@@ -205,23 +228,13 @@ export default function CompareCharts({
                       },
                     }}
                   />
-                  <Legend
-                    content={() => (
-                      <ul
-                        className="chart-series-legend"
-                        aria-label="Legenda zajednica"
-                        style={{ paddingLeft: 145, paddingTop: 50, boxSizing: 'border-box' }}
-                      >
-                        {snapshot.map((row, i) => (
-                          <li key={row.id}>
-                            <span aria-hidden="true" style={{ backgroundColor: colors[i] }} />
-                            {row.name}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  />
                   <Tooltip
+                    {...tooltipInteraction}
+                    position={compact ? { x: 0, y: 0 } : undefined}
+                    contentStyle={chartTooltipStyle}
+                    wrapperStyle={{ maxWidth: 'calc(100vw - 64px)', pointerEvents: 'none' }}
+                    itemStyle={{ whiteSpace: 'normal', overflowWrap: 'anywhere', padding: '3px 0' }}
+                    labelStyle={{ fontSize: 'inherit', marginBottom: 4 }}
                     formatter={(value) => [
                       `${formatNumber(Number(value))} ${unit}`,
                       isRate
@@ -246,36 +259,45 @@ export default function CompareCharts({
               ) : (
                 <ComposedChart
                   data={history}
-                  margin={{ left: 18, right: 15, top: 10, bottom: 20 }}
+                  margin={{ left: compact ? 14 : 18, right: 12, top: 10, bottom: compact ? 4 : 20 }}
                   accessibilityLayer
                 >
                   <CartesianGrid vertical={false} strokeDasharray="3 5" stroke="#e0e7db" />
                   <XAxis
                     dataKey="year"
-                    tick={{ fontSize: 11 }}
+                    tick={{ fontSize: compact ? 10 : 11 }}
+                    interval={compact ? 0 : 'preserveStartEnd'}
                     height={48}
                     label={{
                       value: 'Godina',
                       position: 'insideBottom',
                       offset: 0,
-                      fontSize: 12,
+                      fontSize: compact ? 9 : 12,
                       fill: '#52665a',
                     }}
                   />
                   <YAxis
-                    width={75}
+                    width={compact ? 48 : 75}
                     label={{
                       value: unit,
                       angle: -90,
                       position: 'insideLeft',
                       offset: -10,
-                      fontSize: 12,
+                      fontSize: compact ? 9 : 12,
                       fill: '#52665a',
                     }}
-                    tickFormatter={(v) => formatNumber(Number(v), 0)}
+                    tickFormatter={(v) =>
+                      compact ? compactTick(Number(v)) : formatNumber(Number(v), 0)
+                    }
                     tick={{ fontSize: 11 }}
                   />
                   <Tooltip
+                    {...tooltipInteraction}
+                    position={compact ? { x: 0, y: 0 } : undefined}
+                    contentStyle={chartTooltipStyle}
+                    wrapperStyle={{ maxWidth: 'calc(100vw - 64px)', pointerEvents: 'none' }}
+                    itemStyle={{ whiteSpace: 'normal', overflowWrap: 'anywhere', padding: '3px 0' }}
+                    labelStyle={{ fontSize: 'inherit', marginBottom: 4 }}
                     formatter={(value, name) => [
                       `${formatNumber(Number(value))} ${unit}`,
                       data.members.find((m) => m.municipality.id === name)?.municipality.name ??
@@ -283,13 +305,6 @@ export default function CompareCharts({
                     ]}
                     labelFormatter={(label) =>
                       `${label}. godina${isRate ? (Number(label) < 2021 ? ' · Izračunato' : ' · Službeno objavljeno') : ''}`
-                    }
-                  />
-                  <Legend
-                    wrapperStyle={{ paddingTop: 16, fontSize: 13 }}
-                    formatter={(value) =>
-                      data.members.find((m) => m.municipality.id === value)?.municipality.name ??
-                      value
                     }
                   />
                   {data.members.map((member, i) =>
@@ -318,6 +333,12 @@ export default function CompareCharts({
               )}
             </ResponsiveContainer>
           </div>
+          <ChartLegend
+            items={data.members.map((member, index) => ({
+              label: member.municipality.name,
+              color: colors[index],
+            }))}
+          />
           <ul className="missing-metric-list">
             {data.members
               .filter(
