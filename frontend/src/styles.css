@@ -5363,7 +5363,9 @@ a.button:focus-visible {
 }
 @media screen and (max-width: 760px) {
   .sidebar {
-    position: relative;
+    position: sticky;
+    top: 0;
+    bottom: auto;
     z-index: 1100;
     display: grid;
     grid-template-columns: minmax(0, 1fr) 44px;
