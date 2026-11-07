@@ -72,17 +72,6 @@ export function WorkspaceLayout({
           if (!event.currentTarget.contains(event.relatedTarget)) setMenuOpen(false);
         }}
       >
-        <a className="brand" href="/" aria-label="WasteWise početna">
-          <span className="brand-mark">
-            <svg viewBox="0 0 40 40" aria-hidden="true">
-              <path d="m8 12 5 17 7-11 7 11 5-17" />
-            </svg>
-          </span>
-          <span>
-            Waste<span className="brand-light">Wise</span>
-            <small>PODACI O KOMUNALNOM OTPADU</small>
-          </span>
-        </a>
         <button
           ref={menuButtonRef}
           className="mobile-menu-toggle"
@@ -105,6 +94,17 @@ export function WorkspaceLayout({
             <path d={menuOpen ? 'M6 6l12 12M18 6 6 18' : 'M4 6h16M4 12h16M4 18h16'} />
           </svg>
         </button>
+        <a className="brand" href="/" aria-label="WasteWise početna">
+          <span className="brand-mark">
+            <svg viewBox="0 0 40 40" aria-hidden="true">
+              <path d="m8 12 5 17 7-11 7 11 5-17" />
+            </svg>
+          </span>
+          <span>
+            Waste<span className="brand-light">Wise</span>
+            <small>PODACI O KOMUNALNOM OTPADU</small>
+          </span>
+        </a>
         <nav
           id="workspace-navigation"
           aria-label="Moduli"

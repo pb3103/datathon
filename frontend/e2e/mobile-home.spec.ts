@@ -8,6 +8,13 @@ test('mobile home has compact cards and an accessible hamburger menu', async ({ 
     const button = page.getByRole('button', { name: 'Otvori izbornik' });
     const navigation = page.getByRole('navigation', { name: 'Moduli' });
     await expect(button).toBeVisible();
+    const toggleBox = (await button.boundingBox())!;
+    const brandBox = (await page.locator('.brand').boundingBox())!;
+    expect(toggleBox.x + toggleBox.width).toBeLessThanOrEqual(brandBox.x);
+    const mapShortcut = page.getByRole('link', { name: 'Pronađi lokacije na karti' });
+    await expect(mapShortcut).toBeVisible();
+    const shortcutBox = (await mapShortcut.boundingBox())!;
+    expect(shortcutBox.y + shortcutBox.height).toBeLessThan(844);
     await expect(navigation).toBeHidden();
     expect((await page.locator('.sidebar').boundingBox())!.height).toBeLessThan(90);
     const cards = page.locator('.home-step-card');
@@ -24,6 +31,7 @@ test('mobile home has compact cards and an accessible hamburger menu', async ({ 
       'true',
     );
     await expect(navigation).toBeVisible();
+    expect((await navigation.boundingBox())!.x).toBeLessThan(24);
     await expect(navigation.getByRole('link')).toHaveCount(5);
     await page.keyboard.press('Escape');
     await expect(navigation).toBeHidden();
@@ -63,4 +71,25 @@ test('desktop retains the visible sidebar and four aligned feature cards', async
     .locator('.home-step-card')
     .evaluateAll((elements) => elements.map((element) => element.getBoundingClientRect().top));
   expect(Math.max(...tops) - Math.min(...tops)).toBeLessThan(2);
+});
+
+test('mobile home map shortcut scrolls to the existing map and moves keyboard focus', async ({
+  page,
+}) => {
+  for (const width of [320, 390, 760]) {
+    await page.setViewportSize({ width, height: 844 });
+    await page.goto('/');
+    const link = page.getByRole('link', { name: 'Pronađi lokacije na karti' });
+    await link.focus();
+    await page.keyboard.press('Enter');
+    await expect(page).toHaveURL(/#waste-map$/);
+    await expect(page.locator('#map-search-title')).toBeFocused();
+    await expect
+      .poll(async () =>
+        page.locator('#waste-map').evaluate((el) => Math.abs(el.getBoundingClientRect().top - 90)),
+      )
+      .toBeLessThan(3);
+    await expect(page.locator('.recycling-map')).toBeVisible();
+    await page.screenshot({ path: `test-results/mobile-map-shortcut-${width}.png` });
+  }
 });

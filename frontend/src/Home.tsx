@@ -54,6 +54,21 @@ export default function Home() {
           <li>2017.–2024.</li>
           <li>Otvoreni podaci</li>
         </ul>
+        <a
+          className="mobile-map-shortcut"
+          href="#waste-map"
+          onClick={(event) => {
+            event.preventDefault();
+            if (window.location.hash !== '#waste-map')
+              window.history.pushState(null, '', '#waste-map');
+            document.getElementById('map-search-title')?.focus({ preventScroll: true });
+            document.getElementById('waste-map')?.scrollIntoView({ block: 'start' });
+          }}
+        >
+          <Icon name="pin" />
+          <span>Pronađi lokacije na karti</span>
+          <span aria-hidden="true">↓</span>
+        </a>
       </div>
       <div className="heading-art home-heading-art" aria-hidden="true">
         <span className="orbit orbit-one" />
@@ -103,6 +118,7 @@ export default function Home() {
       </section>
       <section
         className="home-discovery"
+        id="waste-map"
         aria-label="Istražite svoju zajednicu i reciklažna dvorišta"
       >
         <div className="home-start">
@@ -112,7 +128,9 @@ export default function Home() {
             </span>
             <div>
               <p>Započnite ovdje</p>
-              <h2>Pronađite svoj grad ili općinu</h2>
+              <h2 id="map-search-title" tabIndex={-1}>
+                Pronađite svoj grad ili općinu
+              </h2>
             </div>
           </div>
           <AreaSearch

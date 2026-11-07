@@ -5800,3 +5800,42 @@ a.button:focus-visible {
     margin-top: 6px;
   }
 }
+
+/* Mobile: left-aligned menu and an early route to the map on Home. */
+.mobile-map-shortcut {
+  display: none;
+}
+#waste-map {
+  scroll-margin-top: 90px;
+}
+@media screen and (max-width: 760px) {
+  .sidebar {
+    grid-template-columns: 44px minmax(0, 1fr);
+  }
+  .sidebar nav {
+    left: 16px;
+    right: auto;
+    width: min(310px, calc(100vw - 32px));
+    box-sizing: border-box;
+  }
+  .module-home .mobile-map-shortcut {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    margin-top: 18px;
+    padding: 9px 13px;
+    border: 1px solid #ccdcc4;
+    border-radius: 10px;
+    background: #edf3e8;
+    color: #285c40;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.5;
+    text-decoration: none;
+  }
+  .mobile-map-shortcut .icon {
+    width: 18px;
+    height: 18px;
+  }
+}
