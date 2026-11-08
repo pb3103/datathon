@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { WorkspaceLayout } from '../components/Layout';
 import { Icon } from '../components/Icon';
-import { checkedDate, items, sources, type SourceId, type Item } from './data';
+import { items, sources, type SourceId, type Item } from './data';
 import { relatedItems, searchItems } from './domain';
 import { Source } from './GuideSources';
 import { FoodStatistic, GreenDeal, PackagingRegulation } from './GuideUpdates';
@@ -346,12 +346,6 @@ export default function Guide() {
                   </ul>
                 </div>
               )}
-              {!selected && (
-                <p className="guide-small">
-                  Katalog sadrži {items.length} čestih predmeta. Uvjeti predaje i prihvaćene vrste
-                  otpada razlikuju se među mjestima.
-                </p>
-              )}
             </div>
             <article
               className={`guide-item ${selected ? 'has-selection' : 'is-empty'}`}
@@ -391,11 +385,6 @@ export default function Guide() {
                     </dt>
                     <dd>{selected.warning}</dd>
                   </dl>
-                  {selected.local && (
-                    <p className="guide-local">
-                      Način predaje i boju spremnika provjerite kod svojeg davatelja usluge.
-                    </p>
-                  )}
                   {selected.map && (
                     <>
                       <a className="guide-map-link" href="/#waste-map">
@@ -408,16 +397,6 @@ export default function Guide() {
                       </p>
                     </>
                   )}
-                  <p className="guide-small">
-                    Izvor:{' '}
-                    {selected.sources.map((id) => (
-                      <span key={id}>
-                        <Source id={id} />{' '}
-                      </span>
-                    ))}
-                    <br />
-                    Provjereno: {selected.checkedDate.split('-').reverse().join('. ')}.
-                  </p>
                 </>
               ) : (
                 <>
@@ -454,9 +433,6 @@ export default function Guide() {
         >
           <p className="guide-eyebrow">02 / Prije nego bacite</p>
           <h2 id="prevention-title">Najbolji otpad je onaj koji ne nastane.</h2>
-          <p>
-            Odgovornijom kupnjom, popravcima i ponovnom uporabom smanjujemo otpad prije odvajanja.
-          </p>
           <p className="guide-hierarchy-intro">
             Pet razina postupanja s otpadom, poredanih prema njihovoj poželjnosti.
           </p>
@@ -475,11 +451,18 @@ export default function Guide() {
               ))}
             </div>
             <div id="hierarchy-detail" aria-live="polite">
-              <h3>{hierarchy[level][0]}</h3>
-              <p>{hierarchy[level][1]}</p>
-              <strong>Primjer</strong>
-              <p>{hierarchy[level][2]}</p>
-              <Source id="hierarchy" />
+              {hierarchy.map(([title, description, example], index) => (
+                <div
+                  key={title}
+                  className={`guide-hierarchy-copy ${level === index ? 'is-active' : ''}`}
+                  aria-hidden={level !== index}
+                >
+                  <h3>{title}</h3>
+                  <p>{description}</p>
+                  <strong>Primjer</strong>
+                  <p>{example}</p>
+                </div>
+              ))}
             </div>
           </div>
           <div className="guide-topic-grid">
@@ -630,12 +613,6 @@ export default function Guide() {
           <Quiz />
         </section>
         <footer className="guide-maintenance">
-          <h2>O vodiču i izvorima</h2>
-          <p>
-            Vodič je sažetak edukativnih materijala mentora i provjerenih javnih uputa. Ne
-            zamjenjuje aktualne upute lokalnog davatelja usluge. Provjera izvora:{' '}
-            {checkedDate.split('-').reverse().join('. ')}.
-          </p>
           <details>
             <summary>Pregled svih izvora</summary>
             <ul>

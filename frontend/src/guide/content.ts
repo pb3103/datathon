@@ -2,28 +2,28 @@ import type { SourceId } from './data';
 export const hierarchy = [
   [
     'Sprječavanje nastanka otpada',
-    'Spriječiti da proizvod ili materijal uopće postane otpad.',
-    'Prije kupnje provjerite što već imate i kupite samo potrebnu količinu.',
+    'Sprječavanje znači da proizvod ili materijal uopće ne postane otpad. To postižemo promišljenom kupnjom, pravilnim čuvanjem i duljim korištenjem stvari koje već imamo. Ova razina ima prednost jer smanjuje potrebu za obradom otpada i potrošnju novih resursa.',
+    'Prije kupnje hrane provjerite hladnjak i napravite popis potrebnih namirnica. Kupite količinu koju možete potrošiti, a višak zamrznite kako se hrana ne bi pokvarila i završila u otpadu.',
   ],
   [
     'Priprema za ponovnu uporabu',
-    'Provjera, čišćenje ili popravak predmeta koji je već postao otpad. Darivanje uporabljivog proizvoda koji nije postao otpad jest ponovna uporaba, a ne ovaj postupak.',
-    'Centar provjerava i popravlja odbačeni stolac kako bi se ponovno koristio.',
+    'Predmet koji je već odbačen pregledava se, čisti ili popravlja kako bi se mogao ponovno koristiti za istu namjenu. Time se uporabljivim predmetima produljuje život. Darivanje predmeta koji još nije postao otpad jest ponovna uporaba, bez prethodne obrade otpada.',
+    'Centar preuzima odbačeni stolac, provjerava njegovu sigurnost i popravlja oštećene dijelove. Nakon čišćenja i provjere stolac je ponovno spreman za uporabu, umjesto da završi na odlagalištu.',
   ],
   [
     'Recikliranje',
-    'Prerada otpadnih materijala u nove proizvode ili materijale.',
-    'Odvojeno sakupljena staklena ambalaža može postati sirovina za novo staklo.',
+    'Recikliranje je prerada otpadnih materijala u nove proizvode ili materijale. Otpad se prikuplja, razvrstava i obrađuje kako bi ponovno postao korisna sirovina. Pravilno odvajanje olakšava taj postupak, ali samo odvojeno sakupljanje još ne znači da je otpad recikliran.',
+    'Odvojeno sakupljene staklenke i boce razvrstavaju se, čiste i usitnjavaju. Dobiveno staklo zatim se tali i koristi kao sirovina za izradu nove staklene ambalaže, čime zamjenjuje dio novih sirovina.',
   ],
   [
     'Ostali postupci oporabe',
-    'Iskorištavanje otpada na druge načine, uključujući energetsku oporabu.',
-    'Otpad se može koristiti za dobivanje energije u odgovarajućem postrojenju.',
+    'Otpad se iskorištava za korisnu svrhu, primjerice za dobivanje topline ili električne energije. Za razliku od recikliranja, pritom se ne prerađuje u novi proizvod ili materijal. U hijerarhiji otpada ovi postupci dolaze nakon ponovne uporabe i recikliranja.',
+    'Otpad prikladan za energetsku oporabu koristi se kao gorivo u za to predviđenom postrojenju. Dobivena toplina služi za grijanje ili proizvodnju električne energije, uz propisani nadzor emisija.',
   ],
   [
     'Zbrinjavanje',
-    'Zbrinjavanje uključuje postupke poput odlaganja otpada. U hijerarhiji je iza postupaka oporabe.',
-    'Odlaganje na uređeno odlagalište.',
+    'Zbrinjavanje obuhvaća postupke poput odlaganja otpada, pri kojima se otpad ne iskorištava za korisnu svrhu. To je posljednja razina u hijerarhiji otpada. Prednost imaju sprječavanje nastanka, ponovna uporaba, recikliranje i drugi postupci oporabe jer bolje čuvaju vrijednost materijala.',
+    'Preostali otpad odlaže se na uređeno odlagalište uz propisane mjere zaštite tla, vode i zraka. Materijali se time ne vraćaju u uporabu, pa je cilj smanjiti odložene količine.',
   ],
 ] as const;
 export const topics = [

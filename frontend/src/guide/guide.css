@@ -8,7 +8,7 @@
 }
 .module-guide .guide-hero h1 {
   /* Same final heading scale as Home; no changes to the shared stylesheet. */
-  font-size: clamp(28px, 2.7vw, 40px);
+  font-size: clamp(29px, 2.7vw, 41px);
   font-weight: 650;
   line-height: 1.15;
   letter-spacing: -1.3px;
@@ -21,13 +21,13 @@
 }
 .guide-hero-copy > p:last-of-type {
   max-width: 620px;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.75;
   color: #586e61;
   margin: 0;
 }
 .guide-eyebrow {
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 1.7px;
   text-transform: uppercase;
   font-weight: 650;
@@ -38,7 +38,7 @@
   display: inline-flex;
   align-items: center;
   gap: 14px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   text-decoration: none;
   margin-top: 24px;
@@ -73,7 +73,7 @@
   border: 1px solid #dce5d5;
   border-radius: 10px;
   color: #365e43;
-  font-size: 11px;
+  font-size: 12px;
   box-shadow: 0 5px 18px #263f2b0a;
 }
 .guide-hero-photo-label svg {
@@ -101,13 +101,13 @@
   border: 1px solid transparent;
   border-radius: 8px;
   text-decoration: none;
-  font-size: 12px;
+  font-size: 13px;
   transition:
     background 0.15s,
     border-color 0.15s;
 }
 .guide-nav a > span {
-  font-size: 10px;
+  font-size: 11px;
   color: #526b48;
 }
 .guide-nav a:hover {
@@ -124,14 +124,14 @@
 }
 .guide-section h2 {
   margin: 0 0 14px;
-  font-size: clamp(22px, 2vw, 28px);
+  font-size: clamp(23px, 2vw, 29px);
   letter-spacing: -0.7px;
   font-weight: 600;
   line-height: 1.25;
   text-wrap: balance;
 }
 .guide-section h3 {
-  font-size: 18px;
+  font-size: 19px;
   line-height: 1.35;
   letter-spacing: -0.35px;
   font-weight: 600;
@@ -142,7 +142,7 @@
 }
 .guide-section > p:not(.guide-eyebrow) {
   color: #586e61;
-  font-size: 14px;
+  font-size: 15px;
   max-width: 780px;
 }
 .guide-search-grid {
@@ -154,7 +154,7 @@
 }
 .guide-search-grid label {
   display: block;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   margin-bottom: 8px;
 }
@@ -184,13 +184,13 @@
   padding: 10px 4px;
   background: transparent;
   font: inherit;
-  font-size: 14px;
+  font-size: 15px;
 }
 .guide-search-input button {
   padding: 8px;
   border: 0;
   background: transparent;
-  font-size: 12px;
+  font-size: 13px;
   border-radius: 6px;
 }
 .guide-search-input button:hover {
@@ -218,7 +218,7 @@
   background: transparent;
   border: 0;
   border-radius: 7px;
-  font-size: 14px;
+  font-size: 15px;
   transition: background 0.15s;
 }
 .guide-results button:hover,
@@ -230,7 +230,7 @@
 }
 .guide-results small {
   display: block;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 400;
   color: #586e61;
   margin-top: 3px;
@@ -243,27 +243,27 @@
   padding: 24px;
 }
 .guide-item h3 {
-  font-size: 22px;
+  font-size: 23px;
   margin: 8px 0 20px;
 }
 .guide-item dt {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 650;
   margin-top: 18px;
 }
 .guide-item dd {
   margin: 6px 0 0;
   line-height: 1.7;
-  font-size: 14px;
+  font-size: 15px;
 }
 .guide-local {
-  font-size: 13px;
+  font-size: 14px;
   border-left: 3px solid #9bb18c;
   padding: 6px 0 6px 13px;
 }
 .guide-small,
 .guide-source {
-  font-size: 12.5px;
+  font-size: 13.5px;
   line-height: 1.6;
 }
 .guide-small {
@@ -282,7 +282,7 @@
   align-items: center;
   padding: 13px 0;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 14px;
 }
 .guide-section--prevention,
 .guide-section--facts {
@@ -317,10 +317,10 @@
   background: #ffffffa6;
   padding: 12px 14px;
   border-radius: 8px;
-  font-size: 13px;
+  font-size: 14px;
 }
 .guide-hierarchy button span {
-  font-size: 11px;
+  font-size: 12px;
   opacity: 0.8;
 }
 .guide-hierarchy button:hover {
@@ -336,13 +336,13 @@
 }
 .guide-hierarchy h3 {
   margin: 10px 0;
-  font-size: 22px;
+  font-size: 23px;
 }
 .guide-hierarchy p:not(.guide-small) {
-  font-size: 14px;
+  font-size: 15px;
 }
 .guide-hierarchy strong {
-  font-size: 12px;
+  font-size: 13px;
 }
 .guide-topic-grid {
   display: grid;
@@ -391,7 +391,7 @@
 }
 .guide-topic-body p,
 .guide-topic-body li {
-  font-size: 13px;
+  font-size: 14px;
   color: #53665a;
 }
 .guide-topic-body > p {
@@ -406,7 +406,7 @@
   margin-bottom: 8px;
 }
 .guide-topic-body > a:not(.guide-source) {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   text-decoration: none;
   border-top: 1px solid #e3e9de;
@@ -415,7 +415,7 @@
 .guide-topic-body .guide-source {
   display: block;
   margin-top: 8px;
-  font-size: 11.5px;
+  font-size: 12.5px;
   color: #536c50;
 }
 .guide-section--targets {
@@ -437,23 +437,23 @@
   border-left: 0;
 }
 .guide-targets article > span {
-  font-size: 12px;
+  font-size: 13px;
   color: #50694b;
 }
 .guide-targets strong {
   display: block;
-  font-size: clamp(25px, 2.4vw, 34px);
+  font-size: clamp(26px, 2.4vw, 35px);
   color: #205e47;
   margin-top: 8px;
   font-weight: 600;
   letter-spacing: -1px;
 }
 .guide-targets p {
-  font-size: 13px;
+  font-size: 14px;
   margin: 10px 0;
 }
 .guide-targets .guide-source {
-  font-size: 11.5px;
+  font-size: 12.5px;
 }
 .guide-facts {
   display: grid;
@@ -492,7 +492,7 @@
   flex-direction: column;
 }
 .guide-fact-topic {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 650;
   letter-spacing: 1.4px;
   text-transform: uppercase;
@@ -501,28 +501,28 @@
 .guide-fact h3 {
   display: block;
   margin: 10px 0 12px;
-  font-size: 19px;
+  font-size: 20px;
   letter-spacing: -0.4px;
 }
 .guide-fact p {
   margin: 0 0 12px;
-  font-size: 13px;
+  font-size: 14px;
   color: #52645a;
 }
 .guide-fact .guide-action {
-  font-size: 12.5px;
+  font-size: 13.5px;
   color: #356647;
 }
 .guide-action > span {
   color: #638853;
-  font-size: 16px;
+  font-size: 17px;
 }
 .guide-fact .guide-source {
   display: block;
   margin-top: auto;
   padding-top: 14px;
   border-top: 1px solid #e4eadd;
-  font-size: 11.5px;
+  font-size: 12.5px;
 }
 .guide-fact--2 {
   background: #edf3ef;
@@ -562,7 +562,7 @@
 }
 .guide-quiz-intro > p:not(.guide-eyebrow) {
   color: #536850;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.7;
 }
 .guide-quiz-mark {
@@ -585,7 +585,7 @@
   border-radius: 13px;
 }
 .guide-quiz h3 {
-  font-size: 18px;
+  font-size: 19px;
   margin: 10px 0 18px;
 }
 .guide-quiz fieldset {
@@ -605,7 +605,7 @@
   border-radius: 8px;
   cursor: pointer;
   line-height: 1.5;
-  font-size: 13px;
+  font-size: 14px;
 }
 .guide-answer input {
   accent-color: #205e47;
@@ -623,7 +623,7 @@
   border: 0;
   border-radius: 8px;
   padding: 12px 18px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
 }
 .guide-quiz > button:disabled {
@@ -634,16 +634,16 @@
   border-left: 3px solid #7fa36a;
   padding: 8px 14px;
   margin: 16px 0;
-  font-size: 13px;
+  font-size: 14px;
 }
 .guide-maintenance {
   color: #586e61;
-  font-size: 12.5px;
+  font-size: 13.5px;
   max-width: 950px;
   padding: 0 0 16px;
 }
 .guide-maintenance h2 {
-  font-size: 15px;
+  font-size: 16px;
 }
 .guide-maintenance p {
   line-height: 1.7;
@@ -699,7 +699,7 @@
     gap: 24px;
   }
   .guide-hero-copy > p:last-of-type {
-    font-size: 14px;
+    font-size: 15px;
   }
   .guide-hero-visual {
     max-width: 520px;
@@ -713,7 +713,7 @@
     left: auto;
     right: 12px;
     bottom: 10px;
-    font-size: 10px;
+    font-size: 11px;
     padding: 7px 10px;
   }
   .guide-hero-link {
@@ -727,7 +727,7 @@
     padding-bottom: 16px;
   }
   .guide-nav a {
-    font-size: 11px;
+    font-size: 12px;
     padding: 8px 9px;
   }
   .guide-section {
@@ -789,20 +789,20 @@
     padding: 18px;
   }
   .guide-fact h3 {
-    font-size: 18px;
+    font-size: 19px;
   }
   .guide-fact--featured .guide-fact-body {
     padding: 18px 14px;
   }
   .guide-hero-photo-label {
-    font-size: 9px;
+    font-size: 10px;
   }
   .guide-targets article {
     padding-right: 12px;
     padding-left: 16px;
   }
   .guide-targets strong {
-    font-size: 28px;
+    font-size: 29px;
   }
 }
 @media print {
@@ -836,7 +836,7 @@
   margin-top: 20px;
 }
 .guide-related h3 {
-  font-size: 13px;
+  font-size: 14px;
   margin: 0 0 10px;
   letter-spacing: 0;
 }
@@ -858,14 +858,14 @@
   background: #f5f8ef;
   border: 1px solid #dde6d4;
   border-radius: 7px;
-  font-size: 13px;
+  font-size: 14px;
 }
 .guide-related button:hover {
   background: #eaf1e1;
   border-color: #afc29b;
 }
 .guide-results button[aria-pressed='true'] > span:last-child {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
 }
 .guide-ppwr {
@@ -877,10 +877,10 @@
 }
 .guide-ppwr h3 {
   margin: 0 0 12px;
-  font-size: 20px;
+  font-size: 21px;
 }
 .guide-ppwr > p:not(.guide-eyebrow) {
-  font-size: 13px;
+  font-size: 14px;
   max-width: 860px;
 }
 .guide-ppwr-ideas {
@@ -901,13 +901,13 @@
   color: #4a7547;
 }
 .guide-ppwr-ideas h4 {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.5;
   margin: 0 0 6px;
   font-weight: 650;
 }
 .guide-ppwr-ideas p {
-  font-size: 12.5px;
+  font-size: 13.5px;
   margin: 0;
   color: #54674f;
 }
@@ -920,11 +920,11 @@
   border-top: 1px solid #e0e7d8;
 }
 .guide-ppwr-dates dt {
-  font-size: 11.5px;
+  font-size: 12.5px;
   color: #53664f;
 }
 .guide-ppwr-dates dd {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   margin: 5px 0 0;
 }
@@ -939,32 +939,32 @@
 }
 .guide-stat-number strong {
   display: block;
-  font-size: clamp(34px, 3vw, 42px);
+  font-size: clamp(35px, 3vw, 43px);
   line-height: 1.1;
   letter-spacing: -1.4px;
   font-weight: 650;
 }
 .guide-stat-number span {
   display: block;
-  font-size: 12.5px;
+  font-size: 13.5px;
   margin-top: 5px;
 }
 .guide-stat-year {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   color: #4e6846;
   margin-bottom: 12px;
 }
 .guide-stat-details {
   margin-top: 12px;
-  font-size: 11.5px;
+  font-size: 12.5px;
 }
 .guide-stat-details summary {
   color: #45663b;
   line-height: 1.5;
 }
 .guide-stat-details p {
-  font-size: 12px;
+  font-size: 13px;
   margin: 8px 0;
 }
 .guide-stat-details .guide-source {
@@ -996,17 +996,17 @@
 }
 .guide-food-statistic h3 {
   margin: 0 0 14px;
-  font-size: 17px;
+  font-size: 18px;
 }
 .guide-food-statistic p {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.65;
 }
 .guide-stat-copy > p:first-child {
   margin-top: 0;
 }
 .guide-food-statistic .guide-source {
-  font-size: 12px;
+  font-size: 13px;
 }
 @media (max-width: 760px) {
   .guide-food-statistic {
@@ -1036,7 +1036,7 @@
   padding: 20px 0 4px;
 }
 .module-guide .guide-hero h1 {
-  font-size: clamp(26px, 2.3vw, 32px);
+  font-size: clamp(27px, 2.3vw, 33px);
   max-width: none;
   margin-bottom: 10px;
   letter-spacing: -0.9px;
@@ -1044,11 +1044,11 @@
 }
 .guide-hero .guide-eyebrow {
   margin-bottom: 10px;
-  font-size: 10px;
+  font-size: 11px;
 }
 .guide-hero-copy > p:last-of-type {
   max-width: 760px;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.6;
 }
 .guide-compact-mark {
@@ -1086,7 +1086,7 @@
   background: transparent;
   color: #55685c;
   padding: 13px 4px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   min-height: 46px;
 }
@@ -1109,18 +1109,18 @@
   scroll-margin-top: 100px;
 }
 .guide-section > .guide-eyebrow {
-  font-size: 10px;
+  font-size: 11px;
   margin-bottom: 8px;
 }
 .guide-section h2 {
-  font-size: clamp(21px, 1.8vw, 25px);
+  font-size: clamp(22px, 1.8vw, 26px);
   margin-bottom: 8px;
 }
 .guide-section h3 {
-  font-size: 17px;
+  font-size: 18px;
 }
 .guide-section > p:not(.guide-eyebrow) {
-  font-size: 13px;
+  font-size: 14px;
   margin: 8px 0;
 }
 .guide-search-grid {
@@ -1135,11 +1135,11 @@
   border-radius: 8px;
 }
 .guide-search-input input {
-  font-size: 16px;
+  font-size: 17px;
   padding: 10px 4px;
 }
 .guide-search-grid label {
-  font-size: 12px;
+  font-size: 13px;
 }
 .guide-results {
   max-height: 278px;
@@ -1147,11 +1147,11 @@
 }
 .guide-results button {
   padding: 10px;
-  font-size: 13px;
+  font-size: 14px;
   min-height: 50px;
 }
 .guide-results small {
-  font-size: 11px;
+  font-size: 12px;
 }
 .guide-item {
   padding: 20px;
@@ -1161,24 +1161,24 @@
   border-radius: 10px;
 }
 .guide-item h3 {
-  font-size: 22px;
+  font-size: 23px;
   margin: 8px 0 16px;
 }
 .guide-item dd {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.6;
 }
 .guide-item dt {
   margin-top: 15px;
-  font-size: 12px;
+  font-size: 13px;
 }
 .guide-item .guide-eyebrow {
-  font-size: 10px;
+  font-size: 11px;
 }
 .guide-item .guide-small,
 .guide-item .guide-source,
 .guide-item .guide-local {
-  font-size: 11.5px;
+  font-size: 12.5px;
 }
 .guide-related {
   margin-top: 16px;
@@ -1191,12 +1191,12 @@
   height: 100%;
   padding: 9px;
   min-height: 44px;
-  font-size: 11px;
+  font-size: 12px;
   background: white;
   gap: 6px;
 }
 .guide-search-grid > div > .guide-small {
-  font-size: 11.5px;
+  font-size: 12.5px;
   margin: 10px 0;
 }
 .guide-hierarchy {
@@ -1218,7 +1218,7 @@
   width: 100%;
   border-radius: 6px;
   padding: 10px;
-  font-size: 12px;
+  font-size: 13px;
   min-height: 44px;
   background: white;
   gap: 10px;
@@ -1236,24 +1236,24 @@
   background: #205e47;
 }
 .guide-hierarchy button span {
-  font-size: 10px;
+  font-size: 11px;
   opacity: 1;
 }
 .guide-hierarchy > div:last-child {
   padding: 0;
 }
 .guide-hierarchy h3 {
-  font-size: 20px;
+  font-size: 21px;
   margin: 8px 0;
 }
 .guide-hierarchy p:not(.guide-small) {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.6;
   margin: 8px 0;
 }
 .guide-hierarchy .guide-small,
 .guide-hierarchy .guide-source {
-  font-size: 11px;
+  font-size: 12px;
 }
 .guide-topic-grid {
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1278,22 +1278,22 @@
   display: none;
 }
 .guide-topic-body h3 {
-  font-size: 17px;
+  font-size: 18px;
   margin-bottom: 8px;
 }
 .guide-topic-body > p {
-  font-size: 12px;
+  font-size: 13px;
   margin-bottom: 10px;
 }
 .guide-topic-body li {
-  font-size: 12px;
+  font-size: 13px;
   margin-bottom: 6px;
 }
 .guide-topic-body ul {
   margin-bottom: 12px;
 }
 .guide-topic-body .guide-source {
-  font-size: 10.5px;
+  font-size: 11.5px;
 }
 .guide-section--targets {
   background: white;
@@ -1312,19 +1312,19 @@
   background: #fafcf7;
 }
 .guide-targets article > span {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
 }
 .guide-targets strong {
-  font-size: 30px;
+  font-size: 31px;
   margin-top: 6px;
 }
 .guide-targets p {
-  font-size: 12px;
+  font-size: 13px;
   margin: 8px 0;
 }
 .guide-targets .guide-source {
-  font-size: 10.5px;
+  font-size: 11.5px;
 }
 .guide-targets .guide-target-landfill {
   grid-column: 1 / -1;
@@ -1336,7 +1336,7 @@
   padding: 12px 16px;
 }
 .guide-target-landfill strong {
-  font-size: 23px;
+  font-size: 24px;
   margin: 0;
 }
 .guide-target-landfill p {
@@ -1345,7 +1345,7 @@
 }
 .guide-section--targets > .guide-local {
   max-width: none;
-  font-size: 12px;
+  font-size: 13px;
 }
 .guide-ppwr {
   margin-top: 18px;
@@ -1356,7 +1356,7 @@
   background: white;
 }
 .guide-ppwr h3 {
-  font-size: 18px;
+  font-size: 19px;
 }
 .guide-ppwr-ideas {
   margin: 16px 0;
@@ -1364,7 +1364,7 @@
 }
 .guide-ppwr > p:not(.guide-eyebrow),
 .guide-ppwr-ideas p {
-  font-size: 12px;
+  font-size: 13px;
 }
 .guide-section--facts {
   background: white;
@@ -1395,19 +1395,19 @@
   background: #f7f9f4;
 }
 .guide-fact h3 {
-  font-size: 15px;
+  font-size: 16px;
   margin: 6px 0 0;
   letter-spacing: -0.2px;
 }
 .guide-fact-topic {
-  font-size: 9px;
+  font-size: 10px;
 }
 .guide-fact-toggle {
   position: absolute;
   top: 50%;
   right: 16px;
   transform: translateY(-50%);
-  font-size: 20px;
+  font-size: 21px;
   color: #52793e;
 }
 .guide-fact[open] .guide-fact-toggle {
@@ -1417,14 +1417,14 @@
   padding: 0 16px 16px;
 }
 .guide-fact p {
-  font-size: 12px;
+  font-size: 13px;
   margin-bottom: 10px;
 }
 .guide-fact .guide-action {
-  font-size: 12px;
+  font-size: 13px;
 }
 .guide-fact .guide-source {
-  font-size: 11px;
+  font-size: 12px;
   padding-top: 10px;
 }
 .guide-food-statistic {
@@ -1435,16 +1435,16 @@
   border-radius: 9px;
 }
 .guide-food-statistic h3 {
-  font-size: 16px;
+  font-size: 17px;
 }
 .guide-food-statistic p {
-  font-size: 12px;
+  font-size: 13px;
 }
 .guide-stat-number strong {
-  font-size: 36px;
+  font-size: 37px;
 }
 .guide-stat-number span {
-  font-size: 11px;
+  font-size: 12px;
 }
 .guide-section--quiz {
   background: white;
@@ -1457,10 +1457,10 @@
   border-radius: 10px;
 }
 .guide-quiz h3 {
-  font-size: 19px;
+  font-size: 20px;
 }
 .guide-quiz-intro > p:not(.guide-eyebrow) {
-  font-size: 13px;
+  font-size: 14px;
 }
 .guide-quiz-mark {
   padding: 16px;
@@ -1510,19 +1510,19 @@
 }
 .guide-quiz.is-complete h3 {
   color: #205e47;
-  font-size: 24px;
+  font-size: 25px;
 }
 .guide-quiz.is-complete > p:not(.guide-eyebrow) {
-  font-size: 13px;
+  font-size: 14px;
 }
 .guide-maintenance {
   border-top: 1px solid #dce5d5;
   padding-top: 16px;
   max-width: none;
-  font-size: 11px;
+  font-size: 12px;
 }
 .guide-maintenance h2 {
-  font-size: 12px;
+  font-size: 13px;
   margin: 0 0 6px;
 }
 .guide-maintenance p {
@@ -1530,7 +1530,7 @@
   max-width: 900px;
 }
 .guide-maintenance details .guide-source {
-  font-size: 11px;
+  font-size: 12px;
 }
 .guide-page [role='tab']:focus-visible,
 .guide-page summary:focus-visible {
@@ -1587,7 +1587,7 @@
     gap: 0 6px;
   }
   .guide-nav [role='tab'] {
-    font-size: 11px;
+    font-size: 12px;
     padding: 10px 2px;
     min-height: 44px;
   }
@@ -1595,7 +1595,7 @@
     padding: 18px 14px;
   }
   .guide-section h2 {
-    font-size: 22px;
+    font-size: 23px;
   }
   .guide-search-grid {
     gap: 16px;
@@ -1608,7 +1608,7 @@
     padding: 18px 14px;
   }
   .guide-item h3 {
-    font-size: 21px;
+    font-size: 22px;
   }
   .guide-related ul {
     grid-template-columns: 1fr;
@@ -1621,7 +1621,7 @@
   }
   .guide-hierarchy button {
     padding: 8px;
-    font-size: 11px;
+    font-size: 12px;
   }
   .guide-topic-grid {
     grid-template-columns: 1fr;
@@ -1642,7 +1642,7 @@
     padding: 14px 12px;
   }
   .guide-topic-body h3 {
-    font-size: 16px;
+    font-size: 17px;
   }
   .guide-targets {
     gap: 8px;
@@ -1653,14 +1653,14 @@
     padding: 10px 8px;
   }
   .guide-targets strong {
-    font-size: 23px;
+    font-size: 24px;
     letter-spacing: -0.7px;
   }
   .guide-targets p {
-    font-size: 11px;
+    font-size: 12px;
   }
   .guide-targets .guide-source {
-    font-size: 10px;
+    font-size: 11px;
   }
   .guide-targets .guide-target-landfill {
     padding: 12px;
@@ -1702,7 +1702,7 @@
   color: #3f6538;
 }
 .guide-item > p:not(.guide-small):not(.guide-local) {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.6;
   margin-bottom: 0;
 }
@@ -1764,10 +1764,10 @@
   .guide-results.is-popular button {
     min-height: 66px;
     padding: 9px;
-    font-size: 12px;
+    font-size: 13px;
   }
   .guide-results.is-popular small {
-    font-size: 10px;
+    font-size: 11px;
   }
 }
 
@@ -1784,14 +1784,14 @@
   min-width: 0;
 }
 .module-guide .guide-hero h1 {
-  font-size: clamp(28px, 2.7vw, 40px);
+  font-size: clamp(29px, 2.7vw, 41px);
   font-weight: 650;
   line-height: 1.15;
   letter-spacing: -1.3px;
   margin: 0 0 16px;
 }
 .guide-hero .guide-eyebrow {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 650;
   line-height: 1.6;
   letter-spacing: 1.7px;
@@ -1799,7 +1799,7 @@
 }
 .guide-hero-copy > p:last-of-type {
   max-width: 900px;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.6;
   margin: 0;
 }
@@ -1828,12 +1828,12 @@
 }
 #ciljevi .guide-eu-description {
   margin: 0 0 5px;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
 }
 #ciljevi .guide-eu-context {
   margin: 0;
-  font-size: 11.5px;
+  font-size: 12.5px;
   color: #586e61;
 }
 #ciljevi .guide-eu-timeline {
@@ -1862,24 +1862,24 @@
   box-shadow: 0 0 0 4px #fafcf7;
 }
 #ciljevi .guide-eu-year {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   color: #486345;
 }
 #ciljevi .guide-eu-threshold {
-  font-size: 11px;
+  font-size: 12px;
   color: #586e61;
   margin-top: 8px;
 }
 #ciljevi .guide-eu-timeline strong {
-  font-size: 38px;
+  font-size: 39px;
   line-height: 1.2;
   font-weight: 650;
   letter-spacing: -1px;
   color: #205e47;
 }
 #ciljevi .guide-eu-timeline strong span {
-  font-size: 24px;
+  font-size: 25px;
 }
 #ciljevi .guide-eu-landfill {
   display: flex;
@@ -1887,10 +1887,10 @@
   gap: 20px;
   padding: 16px 0 12px;
   border-top: 1px solid #dce5d5;
-  font-size: 13px;
+  font-size: 14px;
 }
 #ciljevi .guide-eu-landfill strong {
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 650;
   color: #205e47;
 }
@@ -1901,13 +1901,13 @@
   margin-top: 8px;
 }
 #ciljevi .guide-eu-sources .guide-source {
-  font-size: 11px;
+  font-size: 12px;
 }
 #ciljevi .guide-eu-note {
   margin: 14px 0 20px;
   padding-left: 12px;
   border-left: 2px solid #9bb18c;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.6;
   color: #486345;
   max-width: none;
@@ -1940,17 +1940,17 @@
   background: #f7f9f4;
 }
 #ciljevi .guide-eu-accordion h3 {
-  font-size: 16px;
+  font-size: 17px;
   margin: 0 0 5px;
 }
 #ciljevi .guide-eu-accordion summary p {
   margin: 0;
-  font-size: 12px;
+  font-size: 13px;
   color: #586e61;
 }
 #ciljevi .guide-eu-expand {
   flex-shrink: 0;
-  font-size: 23px;
+  font-size: 24px;
   color: #486345;
 }
 #ciljevi .guide-eu-accordion[open] .guide-eu-expand {
@@ -1961,7 +1961,7 @@
   border-top: 1px solid #e2e8dd;
 }
 #ciljevi .guide-eu-accordion-body > p {
-  font-size: 12px;
+  font-size: 13px;
 }
 #ciljevi .guide-ppwr-ideas {
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1976,16 +1976,16 @@
     padding: 16px 12px;
   }
   #ciljevi .guide-eu-description {
-    font-size: 14px;
+    font-size: 15px;
   }
   #ciljevi .guide-eu-timeline li {
     padding: 16px 3px 0;
   }
   #ciljevi .guide-eu-timeline strong {
-    font-size: 31px;
+    font-size: 32px;
   }
   #ciljevi .guide-eu-timeline strong span {
-    font-size: 18px;
+    font-size: 19px;
   }
   #ciljevi .guide-eu-landfill {
     gap: 12px;
@@ -2023,14 +2023,14 @@
 }
 #ciljevi .guide-ppwr-kicker {
   display: block;
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 650;
   letter-spacing: 1.2px;
   color: #486345;
   margin-bottom: 7px;
 }
 #ciljevi .guide-eu-accordion h3 {
-  font-size: 18px;
+  font-size: 19px;
   color: #20543e;
 }
 #ciljevi .guide-ppwr-control {
@@ -2043,11 +2043,11 @@
   border-radius: 7px;
   background: #fff;
   color: #20543e;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
 }
 #ciljevi .guide-eu-expand {
-  font-size: 20px;
+  font-size: 21px;
   line-height: 1;
 }
 #ciljevi .guide-ppwr-close-label {
@@ -2069,7 +2069,7 @@
     flex-basis: 100%;
   }
   #ciljevi .guide-eu-accordion h3 {
-    font-size: 17px;
+    font-size: 18px;
   }
   #ciljevi .guide-ppwr-control {
     padding: 8px 11px;
@@ -2091,11 +2091,11 @@
   background: #f0f4eb;
 }
 #ciljevi .guide-eu-accordion h3 {
-  font-size: 18px;
+  font-size: 19px;
   margin-bottom: 6px;
 }
 #ciljevi .guide-ppwr-kicker {
-  font-size: 9px;
+  font-size: 10px;
   color: #586e51;
   margin-bottom: 8px;
 }
@@ -2106,7 +2106,7 @@
   gap: 8px;
 }
 #ciljevi .guide-eu-expand {
-  font-size: 22px;
+  font-size: 23px;
 }
 #ciljevi .guide-eu-accordion[open] .guide-eu-expand {
   transform: rotate(180deg);
@@ -2120,14 +2120,14 @@
 }
 #ciljevi .guide-ppwr-section-label {
   margin: 0 0 12px;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 650;
   letter-spacing: 1px;
   text-transform: uppercase;
   color: #526b48;
 }
 #ciljevi .guide-ppwr-main > p:not(.guide-ppwr-section-label) {
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.7;
   margin: 0 0 16px;
 }
@@ -2145,10 +2145,10 @@
 }
 #ciljevi .guide-ppwr-ideas h4 {
   margin: 0 0 6px;
-  font-size: 12px;
+  font-size: 13px;
 }
 #ciljevi .guide-ppwr-ideas p {
-  font-size: 11.5px;
+  font-size: 12.5px;
   line-height: 1.6;
 }
 #ciljevi .guide-ppwr-timing {
@@ -2168,15 +2168,15 @@
   padding-top: 14px;
 }
 #ciljevi .guide-ppwr-dates dt {
-  font-size: 11px;
+  font-size: 12px;
 }
 #ciljevi .guide-ppwr-dates dd {
-  font-size: 14px;
+  font-size: 15px;
   margin-top: 5px;
   color: #20543e;
 }
 #ciljevi .guide-ppwr-timing > .guide-small {
-  font-size: 11px;
+  font-size: 12px;
   margin: 14px 0 0;
   color: #586e61;
 }
@@ -2187,7 +2187,7 @@
   gap: 8px 20px;
 }
 #ciljevi .guide-ppwr-sources .guide-source {
-  font-size: 11px;
+  font-size: 12px;
 }
 @media (max-width: 1000px) {
   #ciljevi .guide-eu-accordion-body {
@@ -2207,7 +2207,7 @@
     padding: 6px 0 0;
   }
   #ciljevi .guide-eu-accordion h3 {
-    font-size: 17px;
+    font-size: 18px;
   }
   #ciljevi .guide-eu-accordion-body {
     padding: 18px 16px 16px;
@@ -2254,7 +2254,7 @@
 }
 #ciljevi .guide-eu-landfill strong {
   flex-shrink: 0;
-  font-size: 24px;
+  font-size: 25px;
   letter-spacing: -0.5px;
 }
 #ciljevi .guide-eu-accordion + .guide-eu-accordion {
@@ -2265,12 +2265,12 @@
   gap: 20px;
 }
 #ciljevi .guide-green-body h4 {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.5;
   margin: 0 0 8px;
 }
 #ciljevi .guide-green-body p {
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.7;
   margin: 0;
 }
@@ -2294,7 +2294,7 @@
   border-radius: 0 0 6px 6px;
 }
 #ciljevi .guide-green-circular .guide-ppwr-kicker {
-  font-size: 8px;
+  font-size: 9px;
   line-height: 1.5;
 }
 #ciljevi .guide-green-practice {
@@ -2311,7 +2311,7 @@
   margin: 16px 0 10px;
 }
 #ciljevi .guide-green-steps li {
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.6;
   counter-increment: guide-green-step;
 }
@@ -2319,12 +2319,12 @@
   content: '0' counter(guide-green-step);
   display: block;
   color: #52793e;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 650;
   margin-bottom: 5px;
 }
 #ciljevi .guide-green-practice .guide-small {
-  font-size: 11px;
+  font-size: 12px;
   color: #586e61;
 }
 #ciljevi .guide-green-connection {
@@ -2341,7 +2341,7 @@
     display: block;
   }
   #ciljevi .guide-eu-landfill strong {
-    font-size: 23px;
+    font-size: 24px;
     display: block;
     margin-bottom: 4px;
   }
@@ -2375,7 +2375,7 @@
 .guide-quiz .guide-answer-mark {
   margin-left: auto;
   flex-shrink: 0;
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 600;
 }
 .guide-quiz .guide-answer.is-correct input {
@@ -2404,7 +2404,7 @@
 .guide-quiz.is-complete > button {
   margin-top: 14px;
   padding: 9px 14px;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 /* Facts tab: compact statistic and calmer, clearly expandable fact panels. */
@@ -2432,11 +2432,11 @@
 }
 #cinjenice .guide-stat-heading h3 {
   margin: 0;
-  font-size: 17px;
+  font-size: 18px;
 }
 #cinjenice .guide-stat-year {
   margin: 0;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
   color: #586e61;
 }
@@ -2445,19 +2445,19 @@
   align-self: start;
 }
 #cinjenice .guide-stat-number strong {
-  font-size: 36px;
+  font-size: 37px;
 }
 #cinjenice .guide-stat-number span {
   max-width: 18ch;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.5;
 }
 #cinjenice .guide-stat-copy > p {
-  font-size: 12px;
+  font-size: 13px;
   margin-bottom: 10px;
 }
 #cinjenice .guide-food-statistic .guide-source {
-  font-size: 11px;
+  font-size: 12px;
 }
 #cinjenice .guide-stat-details {
   margin-top: 10px;
@@ -2474,11 +2474,11 @@
 #cinjenice .guide-fact-topic {
   display: inline-block;
   color: #536c48;
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 1.1px;
 }
 #cinjenice .guide-fact h3 {
-  font-size: 16px;
+  font-size: 17px;
   margin: 7px 0 0;
   line-height: 1.4;
 }
@@ -2504,7 +2504,7 @@
 }
 #cinjenice .guide-fact-body > p {
   margin: 0 0 12px;
-  font-size: 12.5px;
+  font-size: 13.5px;
   line-height: 1.7;
 }
 #cinjenice .guide-fact .guide-action {
@@ -2514,7 +2514,7 @@
 }
 #cinjenice .guide-fact .guide-source {
   padding-top: 10px;
-  font-size: 11px;
+  font-size: 12px;
   border-top: 1px solid #e7ece2;
 }
 @media (max-width: 600px) {
@@ -2562,7 +2562,7 @@
   align-items: flex-start;
 }
 #cinjenice .guide-stat-heading h3 {
-  font-size: 13px;
+  font-size: 14px;
   margin-bottom: 6px;
 }
 #cinjenice .guide-stat-heading > .icon {
@@ -2572,7 +2572,7 @@
   flex-shrink: 0;
 }
 #cinjenice .guide-stat-year {
-  font-size: 11px;
+  font-size: 12px;
 }
 #cinjenice .guide-stat-number {
   display: block;
@@ -2580,12 +2580,12 @@
 }
 #cinjenice .guide-stat-number strong {
   display: block;
-  font-size: 44px;
+  font-size: 45px;
   line-height: 1.1;
   letter-spacing: -1.5px;
 }
 #cinjenice .guide-stat-number small {
-  font-size: 25px;
+  font-size: 26px;
   font-weight: 550;
   letter-spacing: -0.5px;
 }
@@ -2593,13 +2593,13 @@
   display: block;
   max-width: none;
   margin-top: 8px;
-  font-size: 12px;
+  font-size: 13px;
 }
 #cinjenice .guide-stat-copy {
   align-self: center;
 }
 #cinjenice .guide-stat-copy > p {
-  font-size: 13px;
+  font-size: 14px;
   margin: 0;
 }
 #cinjenice .guide-stat-tip {
@@ -2612,7 +2612,7 @@
   border-radius: 7px;
   margin: 0;
   color: #3d6040;
-  font-size: 12px;
+  font-size: 13px;
 }
 #cinjenice .guide-stat-tip .icon {
   width: 18px;
@@ -2637,7 +2637,7 @@
 }
 #cinjenice .guide-stat-details p {
   margin: 10px 0 0;
-  font-size: 11.5px;
+  font-size: 12.5px;
 }
 #cinjenice .guide-facts {
   display: grid;
@@ -2676,7 +2676,7 @@
   transform: rotate(180deg);
 }
 #cinjenice .guide-fact h3 {
-  font-size: 16px;
+  font-size: 17px;
   line-height: 1.4;
 }
 #cinjenice .guide-fact--1 .guide-fact-icon,
@@ -2701,7 +2701,7 @@
     display: flex;
   }
   #cinjenice .guide-stat-number strong {
-    font-size: 40px;
+    font-size: 41px;
   }
   #cinjenice .guide-stat-footer {
     grid-template-columns: 1fr;
@@ -2743,10 +2743,10 @@
   gap: 14px 24px;
 }
 #cinjenice .guide-stat-number strong {
-  font-size: 36px;
+  font-size: 37px;
 }
 #cinjenice .guide-stat-number small {
-  font-size: 22px;
+  font-size: 23px;
 }
 #cinjenice .guide-stat-number > span {
   margin-top: 5px;
@@ -2768,7 +2768,7 @@
 }
 #cinjenice > .guide-facts-intro {
   margin: 24px 0 14px;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.6;
   color: #486345;
 }
@@ -2781,10 +2781,10 @@
     gap: 13px;
   }
   #cinjenice .guide-stat-number strong {
-    font-size: 34px;
+    font-size: 35px;
   }
   #cinjenice > .guide-facts-intro {
-    font-size: 14px;
+    font-size: 15px;
     margin-top: 22px;
   }
 }
@@ -2827,7 +2827,7 @@
 
 #prevencija > .guide-hierarchy-intro {
   margin: 20px 0 8px;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.6;
 }
 #prevencija .guide-hierarchy { margin-top: 0; }
@@ -2841,7 +2841,7 @@
 #ciljevi .guide-ppwr-ideas h4 { margin-bottom: 3px; }
 #ciljevi .guide-ppwr-ideas p { margin: 0; }
 #ciljevi .guide-ppwr-timing { padding: 16px; background: #f5f7f1; border: 1px solid #e1e7da; }
-#ciljevi .guide-ppwr-main > p:last-child { font-size: 11.5px; margin-top: 12px; }
+#ciljevi .guide-ppwr-main > p:last-child { font-size: 12.5px; margin-top: 12px; }
 #ciljevi .guide-ppwr-sources { margin: 0; padding-top: 14px; }
 #ciljevi .guide-green-intro p { max-width: none; }
 #ciljevi .guide-green-goals { gap: 0; border: 1px solid #e1e7da; border-radius: 8px; overflow: hidden; background: #f7f9f4; }
@@ -2859,21 +2859,21 @@
   #ciljevi .guide-green-goals > div + div { border-left: 0; border-top: 1px solid #e1e7da; }
 }
 
-#prevencija > h2 + p { font-size: 14px; }
-#prevencija > .guide-hierarchy-intro { font-size: 16px; }
+#prevencija > h2 + p { font-size: 15px; }
+#prevencija > .guide-hierarchy-intro { font-size: 17px; }
 #prevencija .guide-topic-body > p,
-#prevencija .guide-topic-body li { font-size: 13px; }
-#prevencija .guide-topic-body .guide-source { font-size: 10.5px; }
+#prevencija .guide-topic-body li { font-size: 14px; }
+#prevencija .guide-topic-body .guide-source { font-size: 11.5px; }
 
-#cinjenice .guide-fact-body > p { font-size: 14px; }
+#cinjenice .guide-fact-body > p { font-size: 15px; }
 /* EU mini infographics: principles rather than additional large cards. */
 #ciljevi .guide-ppwr > .guide-eu-accordion-body { grid-template-columns: 1fr; gap: 18px; }
 #ciljevi .guide-ppwr-ideas { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; counter-reset: ppwr-idea; }
 #ciljevi .guide-ppwr-ideas > div { position: relative; counter-increment: ppwr-idea; padding: 0; border: 0; }
-#ciljevi .guide-ppwr-ideas > div::after { content: '0' counter(ppwr-idea); position: absolute; right: 0; top: 0; font-size: 11px; color: #697c64; }
+#ciljevi .guide-ppwr-ideas > div::after { content: '0' counter(ppwr-idea); position: absolute; right: 0; top: 0; font-size: 12px; color: #697c64; }
 #ciljevi .guide-ppwr-ideas .icon { width: 24px; height: 24px; color: #587e46; margin-bottom: 10px; }
-#ciljevi .guide-ppwr-ideas h4 { font-size: 14px; margin-bottom: 6px; }
-#ciljevi .guide-ppwr-ideas p { font-size: 13px; }
+#ciljevi .guide-ppwr-ideas h4 { font-size: 15px; margin-bottom: 6px; }
+#ciljevi .guide-ppwr-ideas p { font-size: 14px; }
 #ciljevi .guide-ppwr-timing { display: grid; grid-template-columns: 130px 1fr; gap: 10px 20px; padding: 14px 16px; border: 0; }
 #ciljevi .guide-ppwr-timing .guide-ppwr-section-label { margin: 0; align-self: center; }
 #ciljevi .guide-ppwr-dates { grid-template-columns: 1fr 1fr; gap: 20px; }
@@ -2881,20 +2881,20 @@
 #ciljevi .guide-ppwr-timing > .guide-small { grid-column: 2; margin: 0; }
 #ciljevi .guide-green-intro { display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: 24px; align-items: center; }
 #ciljevi .guide-green-year { text-align: center; padding: 12px 16px 12px 0; border-right: 1px solid #dce5d5; }
-#ciljevi .guide-green-year strong { display: block; font-size: 34px; line-height: 1.2; color: #205e47; }
-#ciljevi .guide-green-year span { display: block; font-size: 11px; margin-top: 6px; color: #586e61; }
+#ciljevi .guide-green-year strong { display: block; font-size: 35px; line-height: 1.2; color: #205e47; }
+#ciljevi .guide-green-year span { display: block; font-size: 12px; margin-top: 6px; color: #586e61; }
 #ciljevi .guide-green-goals { background: transparent; border: 0; border-radius: 0; gap: 22px; }
 #ciljevi .guide-green-goals > div,
 #ciljevi .guide-green-goals .guide-green-circular { padding: 14px 0; border: 0; border-top: 1px solid #dce5d5; }
 #ciljevi .guide-green-goals .icon { color: #587e46; margin-bottom: 8px; width: 23px; height: 23px; }
-#ciljevi .guide-green-body h4 { font-size: 14px; }
-#ciljevi .guide-green-body p { font-size: 13px; }
+#ciljevi .guide-green-body h4 { font-size: 15px; }
+#ciljevi .guide-green-body p { font-size: 14px; }
 #ciljevi .guide-green-steps { gap: 0; margin: 22px 0 14px; }
 #ciljevi .guide-green-steps li { position: relative; padding: 14px 16px 0 0; border-top: 1px solid #cbdac1; }
 #ciljevi .guide-green-steps li::before { position: absolute; right: 16px; top: 17px; margin: 0; }
 #ciljevi .guide-green-steps .icon { display: block; margin-bottom: 10px; color: #587e46; }
-#ciljevi .guide-green-steps strong { display: block; font-size: 14px; margin-bottom: 5px; }
-#ciljevi .guide-green-steps span { font-size: 13px; }
+#ciljevi .guide-green-steps strong { display: block; font-size: 15px; margin-bottom: 5px; }
+#ciljevi .guide-green-steps span { font-size: 14px; }
 @media (max-width: 600px) {
   #ciljevi .guide-ppwr-ideas { grid-template-columns: 1fr; gap: 18px; }
   #ciljevi .guide-ppwr-ideas > div { padding: 0 0 12px; border-bottom: 1px solid #e3e9dd; }
@@ -2917,12 +2917,12 @@
   background: #fafbf7;
 }
 #ciljevi .guide-ppwr-ideas > div::after { top: 16px; right: 16px; }
-#ciljevi .guide-ppwr-ideas h4 { font-size: 15px; }
+#ciljevi .guide-ppwr-ideas h4 { font-size: 16px; }
 #ciljevi .guide-ppwr-ideas p,
-#ciljevi .guide-ppwr-main > p:not(.guide-ppwr-section-label) { font-size: 14px; }
+#ciljevi .guide-ppwr-main > p:not(.guide-ppwr-section-label) { font-size: 15px; }
 #ciljevi .guide-ppwr-dates dt,
-#ciljevi .guide-ppwr-timing > .guide-small { font-size: 12px; }
-#ciljevi .guide-ppwr-dates dd { font-size: 15px; }
+#ciljevi .guide-ppwr-timing > .guide-small { font-size: 13px; }
+#ciljevi .guide-ppwr-dates dd { font-size: 16px; }
 #ciljevi .guide-ppwr-timing > .guide-small { grid-column: 1 / -1; }
 /* Dates share one heading and a clearly separated explanatory footer. */
 #ciljevi .guide-ppwr-timing {
@@ -2944,18 +2944,18 @@
 #ciljevi .guide-green-intro { grid-template-columns: 180px minmax(0, 1fr); }
 #ciljevi .guide-green-year { padding: 18px; border: 1px solid #e2e8dc; border-radius: 10px; background: #f3f6ef; text-align: left; display: grid; grid-template-columns: 30px 1fr; gap: 6px 10px; align-items: center; }
 #ciljevi .guide-green-year > .icon { width: 28px; height: 28px; color: #638354; }
-#ciljevi .guide-green-year strong { font-size: 34px; }
-#ciljevi .guide-green-year span { grid-column: 2; font-size: 12px; margin: 0; }
-#ciljevi .guide-green-body > .guide-green-areas-title { margin: 0 0 -8px; font-size: 16px; }
+#ciljevi .guide-green-year strong { font-size: 35px; }
+#ciljevi .guide-green-year span { grid-column: 2; font-size: 13px; margin: 0; }
+#ciljevi .guide-green-body > .guide-green-areas-title { margin: 0 0 -8px; font-size: 17px; }
 #ciljevi .guide-green-goals { gap: 14px; }
 #ciljevi .guide-green-goals > div,
 #ciljevi .guide-green-goals .guide-green-circular { display: grid; grid-template-columns: 40px 1fr; gap: 6px 12px; padding: 16px; border: 1px solid #e2e7dc; border-radius: 10px; background: #fafbf8; align-content: start; }
 #ciljevi .guide-green-goals > div + div { border-left: 1px solid #e2e7dc; }
 #ciljevi .guide-green-goals .icon { grid-row: 1 / 3; box-sizing: content-box; width: 24px; height: 24px; padding: 8px; margin: 0; background: #edf2e7; border-radius: 50%; }
-#ciljevi .guide-green-goals h4 { margin: 0; font-size: 14px; }
+#ciljevi .guide-green-goals h4 { margin: 0; font-size: 15px; }
 #ciljevi .guide-green-goals p { grid-column: 2; }
 #ciljevi .guide-green-practice { border: 1px solid #e5eadd; padding: 18px; border-radius: 10px; background: #f5f7f1; }
-#ciljevi .guide-green-practice > h4 { font-size: 17px; }
+#ciljevi .guide-green-practice > h4 { font-size: 18px; }
 #ciljevi .guide-green-steps { gap: 12px; margin-top: 18px; }
 #ciljevi .guide-green-steps li { padding: 14px; background: #fff; border: 1px solid #e5eadd; border-radius: 9px; }
 #ciljevi .guide-green-steps li::before { right: 14px; top: 17px; }
@@ -2986,14 +2986,14 @@
 #ciljevi .guide-ppwr-intro { display: grid; grid-template-columns: 150px minmax(0, 1fr); align-items: center; gap: 22px; margin-bottom: 20px; }
 #ciljevi .guide-packaging-art { width: 150px; height: auto; }
 #ciljevi .guide-ppwr-intro > div { border-left: 1px solid #dce5d5; padding-left: 22px; }
-#ciljevi .guide-ppwr-intro h4 { font-size: 18px; margin: 0 0 8px; }
-#ciljevi .guide-ppwr-intro p { font-size: 14px; line-height: 1.65; margin: 0; }
+#ciljevi .guide-ppwr-intro h4 { font-size: 19px; margin: 0 0 8px; }
+#ciljevi .guide-ppwr-intro p { font-size: 15px; line-height: 1.65; margin: 0; }
 #ciljevi .guide-ppwr-ideas > div > div { display: grid; grid-template-columns: 42px 1fr; gap: 6px 12px; }
 #ciljevi .guide-ppwr-ideas .icon { grid-row: 1 / 3; box-sizing: content-box; width: 26px; height: 26px; padding: 8px; margin: 0; background: #edf2e6; border-radius: 10px; }
 #ciljevi .guide-ppwr-ideas h4 { padding-right: 18px; margin: 0; }
 #ciljevi .guide-ppwr-ideas p { grid-column: 2; }
-#ciljevi .guide-ppwr-ideas > div::after { background: #edf2e6; padding: 3px 5px; border-radius: 6px; font-size: 10px; top: 10px; right: 10px; }
-#ciljevi .guide-ppwr-main > .guide-ppwr-practical { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; background: #f5f7f2; border-radius: 8px; font-size: 13px; }
+#ciljevi .guide-ppwr-ideas > div::after { background: #edf2e6; padding: 3px 5px; border-radius: 6px; font-size: 11px; top: 10px; right: 10px; }
+#ciljevi .guide-ppwr-main > .guide-ppwr-practical { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; background: #f5f7f2; border-radius: 8px; font-size: 14px; }
 #ciljevi .guide-ppwr-practical > .icon { flex-shrink: 0; margin-top: 2px; color: #638354; }
 @media (max-width: 600px) {
  #ciljevi .guide-ppwr-intro { grid-template-columns: 1fr; gap: 12px; }
@@ -3003,7 +3003,7 @@
 
 #ciljevi .guide-eu-context-note { display: flex; align-items: flex-start; gap: 10px; margin-top: 16px; padding: 12px 14px; border: 1px solid #e0e7da; border-radius: 8px; background: #f7f9f4; color: #526650; }
 #ciljevi .guide-eu-context-note > .icon { flex-shrink: 0; margin-top: 2px; }
-#ciljevi .guide-eu-context-note p { margin: 0; font-size: 13px; line-height: 1.6; }
+#ciljevi .guide-eu-context-note p { margin: 0; font-size: 14px; line-height: 1.6; }
 @media (min-width: 601px) {
   #ciljevi .guide-ppwr-dates { grid-template-columns: 0.85fr 1.15fr; }
 }
@@ -3020,12 +3020,12 @@
 #odvajanje .guide-results button[aria-pressed='true'] { background: #edf3e5; border-color: #9bb68a; }
 #odvajanje .guide-item { padding: 0; overflow: hidden; background: #fff; border: 1px solid #dce5d5; }
 #odvajanje .guide-item-heading { display: flex; gap: 16px; justify-content: space-between; align-items: center; padding: 22px; background: #f5f8ef; border-bottom: 1px solid #e1e8d9; }
-#odvajanje .guide-item-heading h3 { margin: 8px 0 0; font-size: 25px; line-height: 1.3; }
+#odvajanje .guide-item-heading h3 { margin: 8px 0 0; font-size: 26px; line-height: 1.3; }
 #odvajanje .guide-item-heading > .guide-item-symbol { width: 64px; height: 64px; color: #63864b; }
 #odvajanje .guide-item dl { margin: 0; padding: 6px 22px 0; }
-#odvajanje .guide-item dt { position: relative; padding-left: 40px; margin: 0; padding-top: 18px; font-size: 14px; }
+#odvajanje .guide-item dt { position: relative; padding-left: 40px; margin: 0; padding-top: 18px; font-size: 15px; }
 #odvajanje .guide-item dt .icon { position: absolute; left: 0; top: 18px; color: #63864b; }
-#odvajanje .guide-item dd { margin: 0; padding: 6px 0 16px 40px; border-bottom: 1px solid #e4e9df; font-size: 14px; }
+#odvajanje .guide-item dd { margin: 0; padding: 6px 0 16px 40px; border-bottom: 1px solid #e4e9df; font-size: 15px; }
 #odvajanje .guide-item dd:last-child { border-bottom: 0; }
 #odvajanje .guide-item > p,
 #odvajanje .guide-item > .guide-map-link { margin-left: 22px; margin-right: 22px; }
@@ -3035,21 +3035,110 @@
 #odvajanje .guide-sorting-art { display: block; width: min(100%, 310px); height: auto; margin: 0 auto 14px; }
 #odvajanje .is-empty .guide-item-heading { display: block; padding: 0; border: 0; background: transparent; }
 #odvajanje .is-empty .guide-eyebrow { display: none; }
-#odvajanje .is-empty .guide-item-heading h3 { font-size: 22px; margin: 0 0 12px; }
-#odvajanje .guide-item > .guide-empty-copy { margin: 0; font-size: 14px; line-height: 1.7; }
+#odvajanje .is-empty .guide-item-heading h3 { font-size: 23px; margin: 0 0 12px; }
+#odvajanje .guide-item > .guide-empty-copy { margin: 0; font-size: 15px; line-height: 1.7; }
 #odvajanje .guide-empty-features { list-style: none; display: flex; justify-content: center; flex-wrap: wrap; gap: 12px 18px; padding: 0; margin: 24px 0 0; }
-#odvajanje .guide-empty-features li { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #496944; }
+#odvajanje .guide-empty-features li { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #496944; }
 #odvajanje .guide-related ul { grid-template-columns: 1fr; }
-#odvajanje .guide-related button { display: flex; align-items: center; gap: 10px; font-size: 13px; padding: 10px; }
+#odvajanje .guide-related button { display: flex; align-items: center; gap: 10px; font-size: 14px; padding: 10px; }
 #odvajanje .guide-related button > span:first-of-type { flex: 1; text-align: left; }
-#odvajanje .guide-related small { display: block; font-size: 11px; margin-top: 4px; font-weight: 400; }
+#odvajanje .guide-related small { display: block; font-size: 12px; margin-top: 4px; font-weight: 400; }
 @media (max-width: 600px) {
  #odvajanje .guide-results.is-popular { grid-template-columns: 1fr; }
  #odvajanje .guide-results.is-popular button { min-height: 72px; }
  #odvajanje .guide-item-heading { padding: 18px; }
- #odvajanje .guide-item-heading h3 { font-size: 23px; }
+ #odvajanje .guide-item-heading h3 { font-size: 24px; }
  #odvajanje .guide-item-heading > .guide-item-symbol { width: 46px; height: 46px; }
  #odvajanje .guide-item dl { padding-left: 16px; padding-right: 16px; }
  #odvajanje .guide-item.is-empty { padding: 18px; }
  #odvajanje .guide-sorting-art { max-width: 230px; }
+}
+
+/* Keep the illustration aligned with the last row of item cards. */
+#odvajanje .guide-item.is-empty {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+#odvajanje .guide-results.is-popular {
+  margin-bottom: 0;
+}
+
+/* Slightly larger copy in the waste-prevention explanations and topic cards. */
+#prevencija .guide-hierarchy h3 {
+  font-size: 23px;
+}
+#prevencija .guide-hierarchy p:not(.guide-small),
+#prevencija .guide-hierarchy strong,
+#prevencija .guide-topic-body > p,
+#prevencija .guide-topic-body li {
+  font-size: 15px;
+}
+#prevencija .guide-topic-body h3 {
+  font-size: 20px;
+}
+
+/* Shared rows reserve the longest text at each width, preventing jumps between levels. */
+#prevencija #hierarchy-detail {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: repeat(4, auto);
+  align-content: start;
+  align-self: stretch;
+  gap: 12px;
+}
+#prevencija .guide-hierarchy-copy {
+  display: contents;
+  visibility: hidden;
+}
+#prevencija .guide-hierarchy-copy.is-active {
+  visibility: visible;
+}
+#prevencija #hierarchy-detail .guide-hierarchy-copy > * {
+  grid-column: 1;
+  margin: 0;
+}
+#prevencija .guide-hierarchy-copy > :nth-child(1) { grid-row: 1; }
+#prevencija .guide-hierarchy-copy > :nth-child(2) { grid-row: 2; }
+#prevencija .guide-hierarchy-copy > :nth-child(3) { grid-row: 3; }
+#prevencija .guide-hierarchy-copy > :nth-child(4) { grid-row: 4; }
+#prevencija .guide-hierarchy h3 { font-size: 25px; }
+#prevencija .guide-hierarchy p:not(.guide-small),
+#prevencija .guide-hierarchy strong,
+#prevencija .guide-topic-body > p,
+#prevencija .guide-topic-body li { font-size: 16px; }
+#prevencija .guide-hierarchy button { font-size: 15px; }
+#prevencija .guide-hierarchy button span { font-size: 13px; }
+#prevencija .guide-topic-body h3 { font-size: 21px; }
+
+/* Guide-wide typography and tab spacing share one visual rhythm. */
+.module-guide .guide-hero {
+  padding: 26px 0 16px;
+}
+.module-guide .guide-nav [role='tablist'] {
+  gap: 4px 18px;
+  align-items: stretch;
+}
+.module-guide .guide-nav [role='tab'] {
+  font-size: 16px;
+  line-height: 1.35;
+  padding: 12px 8px;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.module-guide .guide-section {
+  padding-top: 20px;
+}
+@media (max-width: 600px) {
+  .module-guide .guide-hero { padding: 22px 0 12px; }
+  .module-guide .guide-nav [role='tablist'] { gap: 0 6px; }
+  .module-guide .guide-nav [role='tab'] {
+    font-size: 13px;
+    padding: 10px 3px;
+    min-height: 48px;
+  }
+  .module-guide .guide-section { padding-top: 16px; }
 }
