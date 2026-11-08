@@ -3142,3 +3142,112 @@
   }
   .module-guide .guide-section { padding-top: 16px; }
 }
+
+/* Decorative symbols remain confined to the quiz introduction. */
+#kviz .guide-quiz-intro { overflow: hidden; }
+#kviz .guide-quiz-decoration { display: block; width: min(100%, 300px); height: auto; margin: 26px auto 0; color: #8ca873; opacity: .23; pointer-events: none; user-select: none; }
+@media (max-width: 1000px) {
+  #kviz .guide-quiz-decoration { width: 170px; height: 90px; margin: 12px 0 0 auto; }
+}
+
+/* Edge watermarks, confined to the quiz panel without adding layout height. */
+#kviz { position: relative; overflow: hidden; isolation: isolate; }
+#kviz .guide-quiz-intro { position: static; }
+#kviz .guide-quiz-decoration { position: absolute; inset: 0; width: auto; height: auto; margin: 0; opacity: 1; z-index: -1; pointer-events: none; }
+#kviz .quiz-watermark { position: absolute; color: #91ad77; opacity: .13; width: 130px; height: 130px; }
+#kviz .quiz-watermark--leaf { left: -30px; bottom: -25px; transform: rotate(-18deg); }
+#kviz .quiz-watermark--recycle { left: 27%; bottom: 30px; width: 76px; height: 76px; transform: rotate(12deg); opacity: .09; }
+@media (max-width: 1000px) {
+ #kviz .quiz-watermark--leaf { width: 100px; height: 100px; }
+ #kviz .quiz-watermark--recycle { display: none; }
+}
+
+#kviz .quiz-watermark--recycle {
+  display: block;
+  font-family: 'Arial Unicode MS', 'Segoe UI Symbol', sans-serif;
+  font-size: 78px;
+  line-height: 1;
+  text-align: center;
+  transform: none;
+  opacity: .12;
+}
+@media (max-width: 1000px) { #kviz .quiz-watermark--recycle { display: none; } }
+
+#kviz .quiz-watermark--sprout,
+#kviz .quiz-watermark--globe,
+#kviz .quiz-watermark--bulb { width: 54px; height: 54px; font-size: 42px; line-height: 1; filter: grayscale(1) sepia(.4) hue-rotate(35deg); opacity: .13; }
+#kviz .quiz-watermark--sprout { left: 5%; top: 56%; transform: rotate(-12deg); }
+#kviz .quiz-watermark--globe { left: 16%; bottom: 14px; }
+#kviz .quiz-watermark--bulb { left: 27%; top: 49%; transform: rotate(12deg); }
+@media (max-width: 1000px) {
+ #kviz .quiz-watermark--sprout { left: auto; right: 14px; top: 14px; font-size: 32px; width: 36px; height: 36px; opacity: .08; }
+ #kviz .quiz-watermark--globe, #kviz .quiz-watermark--bulb { display: none; }
+}
+
+#kviz .guide-quiz-decoration { inset: auto auto 0 0; width: 38%; height: auto; z-index: -1; }
+#kviz .guide-quiz-scene { display: block; width: 100%; height: auto; max-height: 220px; }
+@media (max-width: 1000px) {
+ #kviz .guide-quiz-decoration { width: 210px; opacity: .65; }
+}
+
+/* Reserve feedback space so answering does not resize the quiz. */
+#kviz .guide-quiz .is-pending { visibility: hidden; pointer-events: none; }
+#kviz .guide-quiz > h3 { min-height: 3em; }
+#kviz .guide-quiz .guide-answer { min-height: 58px; box-sizing: border-box; border-width: 2px; }
+#kviz .guide-quiz .guide-feedback--explanation { min-height: 100px; box-sizing: border-box; }
+@media (max-width: 600px) {
+ #kviz .guide-quiz > h3 { min-height: 4.5em; }
+ #kviz .guide-quiz .guide-answer { min-height: 82px; }
+ #kviz .guide-quiz .guide-feedback--explanation { min-height: 150px; }
+}
+
+#kviz .guide-answer > span:first-of-type { flex: 1; }
+#kviz .guide-answer-mark { flex-shrink: 0; width: 14px; }
+@media (max-width: 1000px) { #kviz .guide-quiz > h3 { min-height: 4.5em; } }
+@media (max-width: 600px) { #kviz .guide-quiz > h3 { min-height: 6em; } }
+#kviz .guide-quiz .guide-answer.is-selected { padding: 12px; }
+@media (max-width: 1000px) { #kviz .guide-quiz .guide-answer { min-height: 72px; } }
+@media (max-width: 600px) { #kviz .guide-quiz .guide-answer { min-height: 100px; } }
+@media (max-width: 360px) { #kviz .guide-quiz .guide-answer { min-height: 132px; } }
+/* Compact quiz with a stable overall footprint rather than oversized individual rows. */
+#kviz .guide-quiz { min-height: 460px; box-sizing: border-box; padding: 18px; }
+#kviz .guide-quiz > h3 { min-height: 0; margin-bottom: 14px; }
+#kviz .guide-quiz .guide-answer,
+#kviz .guide-quiz .guide-answer.is-selected { min-height: 44px; padding: 9px 10px; }
+#kviz .guide-quiz .guide-feedback--explanation { min-height: 70px; margin: 12px 0; }
+#kviz .guide-quiz-decoration { width: 34%; opacity: .65; }
+#kviz .guide-quiz-scene { max-height: 150px; }
+@media (max-width: 1000px) {
+ #kviz .guide-quiz { min-height: 510px; }
+}
+@media (max-width: 600px) {
+ #kviz .guide-quiz { min-height: 580px; padding: 16px 12px; }
+ #kviz .guide-quiz-decoration { width: 170px; opacity: .45; }
+ #kviz .guide-quiz .guide-feedback--explanation { min-height: 90px; }
+}
+@media (max-width: 360px) {
+ #kviz .guide-quiz { min-height: 660px; }
+}
+#kviz .guide-quiz-decoration { mask-image: linear-gradient(to right, #000 65%, transparent 100%); }
+/* Feather the illustration on every edge so its SVG rectangle is invisible. */
+#kviz .guide-quiz-decoration {
+  left: 0;
+  bottom: 0;
+  mask-image: none;
+}
+#kviz .guide-quiz-scene {
+  mask-image: radial-gradient(ellipse at 45% 53%, #000 34%, rgba(0, 0, 0, .85) 56%, transparent 78%);
+}
+/* Let the scene fill the left column instead of shrinking inside a capped SVG box. */
+#kviz .guide-quiz-decoration { width: 39%; }
+#kviz .guide-quiz-scene { max-height: none; }
+@media (max-width: 1000px) {
+  #kviz .guide-quiz-decoration { width: 240px; }
+}
+@media (max-width: 600px) {
+  #kviz .guide-quiz-decoration { width: 210px; }
+}
+#kviz .guide-quiz { min-height: 430px; }
+@media (max-width: 1000px) { #kviz .guide-quiz { min-height: 490px; } }
+@media (max-width: 600px) { #kviz .guide-quiz { min-height: 560px; } }
+@media (max-width: 360px) { #kviz .guide-quiz { min-height: 640px; } }

@@ -71,9 +71,7 @@ test('history Compare: every year, peer algorithm, missing official rate and mat
   await page.getByLabel('Godina usporedbe').selectOption('2017');
   await page.getByRole('button', { name: 'Predloži slične lokacije' }).click();
   await expect(page.locator('.peer-card')).toHaveCount(5);
-  await page.getByLabel('Pokazatelj usporedbe').selectOption('material_paper');
-  await page.getByRole('button', { name: 'Tablica', exact: true }).click();
-  await expect(page.getByRole('table')).toContainText('Nema podatka');
+  await expect(page.locator('#compare-metric option[value^="material_"]')).toHaveCount(0);
   await page.setViewportSize({ width: 390, height: 844 });
   expect(await page.evaluate(() => document.body.scrollWidth <= innerWidth)).toBe(true);
   expect(
@@ -310,4 +308,22 @@ test('2019 broad share: Zagreb/Split, percentage-point difference and history pr
   ).json();
   expect(profile.observations[0].metrics.separate_collection_pct.value).toBeNull();
   expect(profile.observations[0].target_rate_available).toBe(false);
+});
+
+
+test('Compare hides unavailable materials and resets the metric when changing year', async ({ page }) => {
+  const b = await id(page, 'Bjelovar');
+  const s = await id(page, 'Samobor');
+  await page.goto(`/compare?jls=${b}&usporedi=${s}&godina=2024`);
+  const selector = page.getByLabel('Pokazatelj usporedbe');
+  await expect(selector.locator('option[value="material_glass"]')).toHaveCount(1);
+  await selector.selectOption('material_glass');
+  await page.getByLabel('Godina usporedbe').selectOption('2019');
+  await expect(selector.locator('option[value^="material_"]')).toHaveCount(0);
+  await expect(selector).not.toHaveValue('material_glass');
+  await expect(page.getByText('Za ovaj pokazatelj i godinu podaci nedostaju', { exact: false })).toHaveCount(0);
+  await page.reload();
+  await expect(selector.locator('option[value^="material_"]')).toHaveCount(0);
+  await page.getByLabel('Godina usporedbe').selectOption('2024');
+  await expect(selector.locator('option[value="material_glass"]')).toHaveCount(1);
 });

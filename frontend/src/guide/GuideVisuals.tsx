@@ -86,6 +86,21 @@ export function QuizIntro() {
       <p className="guide-eyebrow">05 / Provjerite znanje</p>
       <h2 id="quiz-title">Što biste odabrali?</h2>
       <p>Šest kratkih pitanja s objašnjenjem nakon svakog odgovora.</p>
+      <div className="guide-quiz-decoration" aria-hidden="true">
+        <svg className="guide-quiz-scene" viewBox="0 0 420 210" fill="none" focusable="false">
+          <path d="M0 170c83-27 126-65 199-34 78 34 116-102 221-94v168H0Z" fill="#f7f9f3" />
+          <path d="M0 186c78-50 122-38 198-4 79 36 143 0 222-24v52H0Z" fill="#f0f5e9" />
+          <g stroke="#d5e5c6" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M71 163c1-36-5-48-23-63m24 37c2-19 12-31 26-42M68 141c-29 0-36-18-39-32 29-1 38 11 39 32Zm6-20c-2-31 18-41 42-42-1 25-15 39-42 42Z" />
+            <circle cx="188" cy="159" r="21" />
+            <path d="m178 142 7 6-3 8 8 4 2 11m11-28-7 7 7 5 5-1m-39 5 9 4-1 9" />
+            <g transform="translate(288 13)">
+              <path d="M11 34c-14-18 14-35 22-16 5 9-3 15-7 21v7H15v-7l-4-5ZM15 51h11m-8 5h5M20 1v-6M1 10l-5-5m42 5 5-5M-3 26h-7m53 0h7" />
+            </g>
+          </g>
+          <text x="344" y="170" fill="#d5e5c6" fontSize="65" textAnchor="middle" fontFamily="Arial Unicode MS, Segoe UI Symbol, sans-serif">♻</text>
+        </svg>
+      </div>
     </div>
   );
 }

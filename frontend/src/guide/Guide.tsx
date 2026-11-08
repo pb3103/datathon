@@ -119,9 +119,9 @@ function Quiz() {
                   }}
                 />
                 <span>{option}</span>
-                {submitted && (
+                {(
                   <>
-                    <span className="guide-answer-mark" aria-hidden="true">
+                    <span className={`guide-answer-mark ${submitted ? '' : 'is-pending'}`} aria-hidden="true">
                       {index === question.correct ? '✓' : '×'}
                     </span>
                     <span className="sr-only">
@@ -132,17 +132,17 @@ function Quiz() {
               </label>
             ))}
           </fieldset>
-          {submitted && (
-            <>
-              <div role="status" className="guide-feedback guide-feedback--explanation">
-                <p>{question.explanation}</p>
-                <Source id={question.source} />
-              </div>
-              <button onClick={next}>
-                {step === questions.length - 1 ? 'Prikaži rezultat' : 'Sljedeće pitanje'}
-              </button>
-            </>
-          )}
+          <div
+            role={submitted ? 'status' : undefined}
+            aria-hidden={!submitted}
+            className={`guide-feedback guide-feedback--explanation ${submitted ? '' : 'is-pending'}`}
+          >
+            <p>{question.explanation}</p>
+            <Source id={question.source} />
+          </div>
+          <button onClick={next} disabled={!submitted} className={submitted ? '' : 'is-pending'} aria-hidden={!submitted}>
+            {step === questions.length - 1 ? 'Prikaži rezultat' : 'Sljedeće pitanje'}
+          </button>
         </>
       )}
     </div>

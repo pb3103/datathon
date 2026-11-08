@@ -9,7 +9,7 @@ import {
 import { chartPalette } from '../chartPalette';
 import { RateEvidence } from '../components/RateEvidence';
 import { rateMetricKey } from '../domain';
-import { useId } from 'react';
+import { useEffect, useId } from 'react';
 import {
   Bar,
   BarChart,
@@ -48,7 +48,19 @@ export default function CompareCharts({
   const title = useId();
   const compact = useCompactChart();
   const { chartRef, tooltipInteraction } = useDismissibleChartTooltip();
-  const definition = data.metrics.find((m) => m.key === selectedMetric) ?? data.metrics[0];
+  const availableMetrics = data.metrics.filter(
+    (metric) =>
+      metric.family !== 'materials' ||
+      data.members.some((member) => {
+        const value = member.metrics[metric.key];
+        return value?.quality_status === 'available' && numeric(value) !== null;
+      }),
+  );
+  const materialMetrics = availableMetrics.filter((metric) => metric.family === 'materials');
+  const definition = availableMetrics.find((m) => m.key === selectedMetric) ?? availableMetrics[0];
+  useEffect(() => {
+    if (selectedMetric !== definition.key) onMetric(definition.key);
+  }, [selectedMetric, definition.key, onMetric]);
   const key = definition.key;
   const isRate = key === 'separate_collection_pct';
   const displayKey = isRate ? rateMetricKey(data.year) : key;
@@ -107,7 +119,7 @@ export default function CompareCharts({
           <label htmlFor="compare-metric">Pokazatelj usporedbe</label>
           <select id="compare-metric" value={key} onChange={(e) => onMetric(e.target.value)}>
             <optgroup label="Ključni pokazatelji">
-              {data.metrics
+              {availableMetrics
                 .filter((m) => m.family !== 'materials' && m.family !== 'historical_share')
                 .map((m) => (
                   <option key={m.key} value={m.key}>
@@ -116,16 +128,15 @@ export default function CompareCharts({
                   </option>
                 ))}
             </optgroup>
-            <optgroup label="Detaljno: materijalne kategorije">
-              {data.metrics
-                .filter((m) => m.family === 'materials')
-                .map((m) => (
+            {materialMetrics.length > 0 && (
+              <optgroup label="Detaljno: materijalne kategorije">
+                {materialMetrics.map((m) => (
                   <option key={m.key} value={m.key}>
-                    {m.key === 'separate_collection_pct' ? 'Otpad izvan miješanog toka' : m.label} (
-                    {unitLabel(m.unit)})
+                    {m.label} ({unitLabel(m.unit)})
                   </option>
                 ))}
-            </optgroup>
+              </optgroup>
+            )}
           </select>
         </div>
         <div className="view-switch" aria-label="Razdoblje usporedbe">

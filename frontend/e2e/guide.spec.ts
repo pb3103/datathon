@@ -581,3 +581,20 @@ test('Zanimljivosti: otvaranje kartice ne pomiče susjedni stupac', async ({ pag
   const following = await page.locator('.guide-fact--2').boundingBox();
   expect(following!.y - (expanded!.y + expanded!.height)).toBeLessThanOrEqual(15);
 });
+
+for (const width of [1440, 768, 390, 320]) {
+  test(`Quiz keeps its height while answering and advancing at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/guide#kviz');
+    const quiz = page.locator('.guide-quiz');
+    await expect(quiz).toBeVisible();
+    const heights: number[] = [];
+    for (let step = 0; step < 6; step++) {
+      heights.push((await quiz.boundingBox())!.height);
+      await quiz.locator('input[type="radio"]').first().check();
+      heights.push((await quiz.boundingBox())!.height);
+      if (step < 5) await quiz.getByRole('button', { name: 'Sljedeće pitanje' }).click();
+    }
+    expect(Math.max(...heights) - Math.min(...heights)).toBeLessThanOrEqual(1);
+  });
+}
