@@ -361,6 +361,9 @@ export default function CompareCharts({
           tabIndex={0}
           aria-label="Usporedni podaci, vodoravno pomicanje"
         >
+          {compact && (
+            <p className="compare-table-hint">Pomaknite tablicu vodoravno za sve stupce.</p>
+          )}
           <table>
             <caption className="sr-only">
               {isRate ? 'Otpad izvan miješanog toka' : definition.label} ({unit})

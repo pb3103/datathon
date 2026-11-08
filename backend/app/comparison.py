@@ -38,7 +38,13 @@ MATERIAL_LABELS = {
     "bio": "Biootpad",
 }
 CORE = [
-    ("calculated_nonmixed_share_pct", "Udio izvan miješanog toka · izračunato", "%", "pp", "historical_share"),
+    (
+        "calculated_nonmixed_share_pct",
+        "Udio izvan miješanog toka · izračunato",
+        "%",
+        "pp",
+        "historical_share",
+    ),
     (
         "total_kg_per_covered_person",
         "Ukupno po obuhvaćenom stanovniku",
@@ -321,10 +327,12 @@ def calculate_insights(members, catalog, year):
             relative_range=spread,
             available_count=len(values),
         )
-        candidates.append((-spread, index, definition.family, insight))
+        # Prioritize size-normalized descriptions; masses remain a fallback and in all charts.
+        priority = 1 if definition.family == "mass" else 0
+        candidates.append((priority, -spread, index, definition.family, insight))
     chosen = []
     families = set()
-    for _, _, family, insight in sorted(candidates, key=lambda item: (item[0], item[1])):
+    for _, _, _, family, insight in sorted(candidates, key=lambda item: item[:3]):
         if family not in families:
             chosen.append(insight)
             families.add(family)
@@ -477,7 +485,7 @@ def compare(
         metrics=CATALOG,
         members=members,
         insights=insights,
-        insight_method="relative-range-v1: (max-min)/max(abs(min),abs(max)); max one per metric family; top 3; descriptive only",
+        insight_method="normalized-first-relative-range-v2: per-person/rate/materials before mass; (max-min)/max(abs(min),abs(max)); max one per metric family; top 3; descriptive only",
         insight_exclusions=excluded,
         warnings=[
             "comparability_provisional",

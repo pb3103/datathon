@@ -415,8 +415,7 @@ export default function Simulator() {
               <article className="panel" key={label}>
                 <span>{label}</span>
                 <strong>
-                  {number(value, label === 'Izračunati postotak odvojenog sakupljanja' ? 4 : 2)}{' '}
-                  <small>{u}</small>
+                  {number(value)} <small>{u}</small>
                 </strong>
                 <span className="small-muted">{context.observation.year}. · početno stanje</span>
               </article>

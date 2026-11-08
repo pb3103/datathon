@@ -179,7 +179,7 @@ export function WorkspaceLayout({
                 </h1>
                 <p>
                   {module === 'guide'
-                    ? 'Sadržaj je u pripremi.'
+                    ? 'Praktične upute za smanjenje i odvajanje otpada.'
                     : module === 'compare'
                       ? 'Usporedba pokazatelja komunalnog otpada među gradovima i općinama.'
                       : module === 'simulator'

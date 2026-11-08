@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { WorkspaceLayout } from './components/Layout';
 import AreaSearch from './components/AreaSearch';
 import type { AreaSelection } from './recycling';
@@ -32,11 +32,18 @@ const steps = [
     name: 'Waste Guide',
     verb: 'Saznajte',
     icon: 'book' as const,
-    text: 'Savjeti o pravilnom odvajanju otpada, ciljevi i provjera znanja. Sadržaj je u pripremi.',
+    text: 'Saznajte kako smanjiti nastanak otpada, pravilno odvajati i provjerite svoje znanje.',
   },
 ];
 
 export default function Home() {
+  useEffect(() => {
+    if (window.location.hash === '#waste-map')
+      requestAnimationFrame(() => {
+        document.getElementById('map-search-title')?.focus({ preventScroll: true });
+        document.getElementById('waste-map')?.scrollIntoView({ block: 'start' });
+      });
+  }, []);
   const [mapSearch, setMapSearch] = useState<AreaSelection>(null);
   const hero = (
     <section className="home-hero" aria-labelledby="page-title">
@@ -108,7 +115,7 @@ export default function Home() {
                 <h3>{step.name}</h3>
                 <p>{step.text}</p>
                 <span className="home-step-link">
-                  {step.path === 'guide' ? 'U pripremi' : `Otvori ${step.name}`}
+                  {`Otvori ${step.name}`}
                   <span aria-hidden="true">↗</span>
                 </span>
               </a>

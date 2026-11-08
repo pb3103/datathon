@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
+import { locationHours, locationWebsite, locationNavigation } from '../mapLocationDetails';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
@@ -107,17 +108,40 @@ export default function RecyclingMap({ selection }: { selection?: AreaSelection 
       const hasName = yard.name.trim() && !yard.name.includes('naziv nije naveden');
       const address =
         yard.address && !yard.address.startsWith('Adresa nije navedena') ? yard.address : '';
-      const complete = hasName && address && yard.hours;
-      title.textContent = complete ? yard.name : labels[yard.kind];
+      const hours = locationHours(yard.hours);
+      title.textContent = hasName ? yard.name : labels[yard.kind];
       popup.append(title);
-      const details = complete
-        ? [address, `Radno vrijeme: ${yard.hours}`]
-        : [`${yard.municipality}, ${yard.county}`];
+      const details = [
+        address
+          ? address.includes(yard.municipality)
+            ? address
+            : `${address} · ${yard.municipality}`
+          : `${yard.municipality}, ${yard.county}`,
+        hours ? `Radno vrijeme: ${hours} (prema izvoru; provjerite prije dolaska)` : '',
+      ].filter(Boolean);
       details.forEach((text) => {
         const p = document.createElement('p');
         p.textContent = text;
         popup.append(p);
       });
+      const addLink = (label: string, href: string, external = true) => {
+        if (!href) return;
+        const p = document.createElement('p');
+        const link = document.createElement('a');
+        link.textContent = label;
+        link.href = href;
+        if (external) {
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+        }
+        p.append(link);
+        popup.append(p);
+      };
+      const phone = yard.phone.replace(/[^+0-9]/g, '');
+      if (phone.replace(/\D/g, '').length >= 5)
+        addLink(`Telefon: ${yard.phone}`, `tel:${phone}`, false);
+      addLink('Web-stranica lokacije ↗', locationWebsite(yard.website));
+      addLink('Upute za dolazak ↗', locationNavigation(yard.lat, yard.lon));
       const icon = L.divIcon({
         className: 'yard-marker-wrapper',
         html: `<span class="yard-marker ${yard.kind}"><span></span></span>`,
@@ -254,7 +278,9 @@ export default function RecyclingMap({ selection }: { selection?: AreaSelection 
                   ? yard.municipality
                   : `${yard.address} · ${yard.municipality}`}
               </span>
-              <small>{[labels[yard.kind], yard.hours].filter(Boolean).join(' · ')}</small>
+              <small>
+                {[labels[yard.kind], locationHours(yard.hours)].filter(Boolean).join(' · ')}
+              </small>
             </li>
           ))}
         </ul>

@@ -1,0 +1,62 @@
+[
+  {
+    "file": "frontend/public/images/guide/editorial-food-7267039.jpg",
+    "author": "Sarah Chai",
+    "source": "https://www.pexels.com/photo/crop-woman-choosing-assorted-healthy-fruits-in-street-market-7267039/",
+    "license": "Pexels",
+    "license_url": "https://www.pexels.com/license/",
+    "checked": "2026-11-08",
+    "width": 960,
+    "height": 640,
+    "bytes": 80902,
+    "sha256": "636413a06a50b0a3284697a9fae9e5757f294c860762add2eca9d35d301e51db"
+  },
+  {
+    "file": "frontend/public/images/guide/editorial-textile-11482132.jpg",
+    "author": "Gabriel Frank",
+    "source": "https://www.pexels.com/photo/a-person-sewing-11482132/",
+    "license": "Pexels",
+    "license_url": "https://www.pexels.com/license/",
+    "checked": "2026-11-08",
+    "width": 960,
+    "height": 1440,
+    "bytes": 93433,
+    "sha256": "d8cf78e80f51a32106a9b1626f296d5211ff93d31362f51ce5f12bfdc89ba4c4"
+  },
+  {
+    "file": "frontend/public/images/guide/editorial-electronics-F3t-AzyTbyU.jpg",
+    "author": "Albert Vinas",
+    "source": "https://unsplash.com/photos/a-person-using-a-cell-phone-to-repair-a-laptop-F3t-AzyTbyU",
+    "license": "Unsplash",
+    "license_url": "https://unsplash.com/license",
+    "checked": "2026-11-08",
+    "width": 960,
+    "height": 1200,
+    "bytes": 150806,
+    "sha256": "5960d1a3d4c410f58c7e5d704ae064d7b654ad720e5e7a348ba821d3d71e3731"
+  },
+  {
+    "file": "frontend/public/images/guide/editorial-pack-7262723.jpg",
+    "author": "Sarah Chai",
+    "source": "https://www.pexels.com/photo/photo-of-a-person-tying-a-white-bag-7262723/",
+    "license": "Pexels",
+    "license_url": "https://www.pexels.com/license/",
+    "checked": "2026-11-08",
+    "width": 960,
+    "height": 1440,
+    "bytes": 140678,
+    "sha256": "ce0f3beae721e517611b0143fa1612571d97cda196a69163ee539fd75617062a"
+  },
+  {
+    "file": "frontend/public/images/guide/hero-shvets-7512840.jpg",
+    "author": "SHVETS production",
+    "source": "https://www.pexels.com/de-de/foto/frau-hand-haus-tisch-7512840/",
+    "license": "Pexels",
+    "license_url": "https://www.pexels.com/license/",
+    "checked": "2026-11-08",
+    "width": 1200,
+    "height": 800,
+    "bytes": 64672,
+    "sha256": "7ef9515a90ffe2d395d144a5d734c72b7d2ac024e7e268539a21c0e088ab16eb"
+  }
+]

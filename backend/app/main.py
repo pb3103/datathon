@@ -1,6 +1,7 @@
 from backend.app.simulations import router as simulations_router
 from backend.app.comparison import router as comparison_router
 from pathlib import Path
+import unicodedata
 from uuid import UUID
 from alembic.config import Config
 from alembic.script import ScriptDirectory
@@ -86,7 +87,9 @@ def ready(session: Session = Depends(get_session)):
             .group_by(WasteObservation.year)
         ).all()
     )
-    if get_settings().environment == "production" and any(counts.get(year) != 556 for year in range(2017, 2025)):
+    if get_settings().environment == "production" and any(
+        counts.get(year) != 556 for year in range(2017, 2025)
+    ):
         raise HTTPException(503, detail={"code": "data_initialization_required"})
     return {
         "status": "ready",
@@ -94,12 +97,17 @@ def ready(session: Session = Depends(get_session)):
         "migrations": "current",
         "data": {
             "status": "loaded"
-            if set(counts).issuperset({2021, 2022, 2023, 2024}) and all(n == 556 for n in counts.values())
+            if set(counts).issuperset({2021, 2022, 2023, 2024})
+            and all(n == 556 for n in counts.values())
             else "empty"
             if not counts
             else "partial",
             "active_rows_by_year": counts,
-            "historical_status": "loaded" if all(counts.get(y)==556 for y in range(2017,2021)) else "partial" if any(y in counts for y in range(2017,2021)) else "missing",
+            "historical_status": "loaded"
+            if all(counts.get(y) == 556 for y in range(2017, 2021))
+            else "partial"
+            if any(y in counts for y in range(2017, 2021))
+            else "missing",
         },
     }
 
@@ -114,15 +122,33 @@ def municipalities(
 ):
     filters = []
     if q.strip():
-        token = normalize_name(q).replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+        # Search normalization is independent of ETL identity normalization.
+        query = (
+            "".join(
+                c
+                for c in unicodedata.normalize("NFD", normalize_name(q))
+                if not unicodedata.combining(c)
+            )
+            .replace("đ", "d")
+            .replace("dj", "d")
+        )
+        token = query.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
         alias_match = exists(
             select(MunicipalityAlias.id).where(
                 MunicipalityAlias.municipality_id == Municipality.id,
-                func.lower(MunicipalityAlias.source_name).like("%" + token + "%", escape="\\"),
+                func.translate(func.lower(MunicipalityAlias.source_name), "čćšžđ", "ccszd").like(
+                    "%" + token + "%", escape="\\"
+                ),
             )
         )
+        # Query-only transliteration; stored official names and ETL identity stay unchanged.
         filters.append(
-            or_(Municipality.normalized_name.like("%" + token + "%", escape="\\"), alias_match)
+            or_(
+                func.translate(Municipality.normalized_name, "čćšžđ", "ccszd").like(
+                    "%" + token + "%", escape="\\"
+                ),
+                alias_match,
+            )
         )
     if county:
         filters.append(Municipality.normalized_county == normalize_name(county))

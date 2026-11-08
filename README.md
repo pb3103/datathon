@@ -46,7 +46,7 @@ docker compose build frontend
 docker compose up -d frontend
 ```
 
-Otvorite **http://localhost:5173** (početna stranica). Explorer je na `/explorer`, Compare na `/compare`, Simulator na `/simulator`, a planirani Waste Guide na `/guide`. Karta je na početnoj stranici. Upišite `Bjelovar`, pritisnite Enter ili „Pretraži”, otvorite rezultat i promijenite godinu. Upute koriste postojeći checkout; ne izrađuju dodatni worktree. Frontend servis automatski pokreće API i bazu, ali ne izvršava migracije ni uvoz.
+Otvorite **http://localhost:5173** (početna stranica). Explorer je na `/explorer`, Compare na `/compare`, Simulator na `/simulator`, a Waste Guide na `/guide`. Karta je na početnoj stranici. Upišite `Bjelovar`, pritisnite Enter ili „Pretraži”, otvorite rezultat i promijenite godinu. Upute koriste postojeći checkout; ne izrađuju dodatni worktree. Frontend servis automatski pokreće API i bazu, ali ne izvršava migracije ni uvoz.
 
 React 18, TypeScript, Vite i Recharts koriste zaključane verzije u `frontend/package-lock.json`. Lokalni Docker image koristi Node 22.16.0; nije potrebno instalirati Node na računalo. Izmjene u `frontend/` vide se kroz Vite hot reload. Nakon promjene ovisnosti ponovno izgradite image i osvježite volumen ovisnosti naredbom `docker compose run --rm --no-deps frontend npm ci`, zatim ponovno pokrenite frontend.
 
@@ -227,7 +227,7 @@ Rezultati: [audit po retku](docs/simulator_data_audit.json) i [provjera Simulato
 
 ## Dovršeni korisnički tok i navigacija
 
-Početna stranica `/` prikazuje četiri kartice (Explorer, Compare, Simulator i planirani Guide), a ispod postojeću kartu s pretragom, filtrima i izvorima. Waste Guide (`/guide`) zasad je prazna stranica s oznakom „U pripremi”. Karta nema zasebnu stavku u navigaciji. Stare poveznice `/?jls=…` vode na Explorer uz očuvanje odabira.
+Početna stranica `/` prikazuje četiri kartice (Explorer, Compare, Simulator i Guide), a ispod postojeću kartu s pretragom, filtrima i izvorima. Waste Guide (`/guide`) sadrži pretraživanje predmeta, praktične savjete, europske ciljeve i kviz. Karta nema zasebnu stavku u navigaciji. Stare poveznice `/?jls=…` vode na Explorer uz očuvanje odabira.
 
 Navigacija prenosi samo odabir JLS-a, godine i usporedne skupine. Compare može zadržati vlastite filtre; reference izvora i scenarijski parametri ne kopiraju se u druge module. Promjena početnog odabira čisti stare reference, a usporednu skupinu zadržava do postojećeg ograničenja od pet JLS-ova. Nevaljana poveznica ima odabir dostupnih godina i akciju za novi scenarij; nepoznatu JLS moguće je zamijeniti pretragom. Za 2017.–2022. automatski model ostaje nedostupan.
 
@@ -379,3 +379,14 @@ Frontend i API dijele jednu HTTPS adresu; izgradnja, migracije i uvoz provjereni
 uključeni su u deploy. Kasnije izmjene objavljuju se pushom na povezanu GitHub granu.
 Koraci i sigurnosne postavke: [Render deployment](docs/render-deployment.md).
 **Besplatna Render baza istječe nakon 30 dana**; provjerite dostupnost prije predaje.
+
+
+## Waste Guide
+
+Na `/guide` dostupan je edukativni vodič s 32 predmeta, sinonimima i pretragom bez dijakritika, interaktivnom hijerarhijom otpada, četiri tematske cjeline, šest provjerenih činjenica, jednom statističkom karticom i kvizom od šest pitanja. Svaka uputa prikazuje izvor i datum provjere. Poveznica „Pronađi mjesto za odlaganje” otvara postojeću kartu na početnoj (`/#waste-map`); prihvat odabrane vrste otpada treba provjeriti kod upravitelja lokacije.
+
+Edukativni katalog i registar izvora održavaju se u `frontend/src/guide/data.ts`, a savjeti, činjenice i pitanja u `content.ts`. Pri izmjenama provjerite primarni izvor, lokalni obuhvat i datum; nemojte lokalne boje spremnika pretvarati u opće pravilo. Predmeti dijele pregledane upute po skupinama, uz moguće pojedinačne iznimke. Dodajte sinonime i testove za nove kategorije.
+
+EU ciljevi pripreme za ponovnu uporabu i recikliranja nisu izravno usporedivi s lokalnim stopama odvojenog sakupljanja. Guide ne mijenja analitičke podatke, ETL, API ni Simulator. Detalji izvora, pregled svih pet mentorovih prezentacija, ograničenja i provedene provjere: [Waste Guide — provjera](docs/waste_guide_verification.md).
+
+Završni Guide polish dodaje PPWR karticu, povezane predmete i nacionalnu procjenu otpada od hrane iz kućanstava za 2025., uz izvore, obuhvat i godinu. Katalog ostaje na 32 predmeta; [sadržajni audit svakog predmeta](docs/waste_guide_content_audit.md) razlikuje potvrđene rute od lokalno ovisnih uputa. Statistika je edukativna i ne proširuje analitičke podatke Explorera, Comparea i Simulatora.

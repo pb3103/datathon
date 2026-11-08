@@ -5,9 +5,18 @@ test('production serves all modules on one origin with complete data and CSP', a
   request,
 }) => {
   test.setTimeout(90000);
-  await expect.poll(async () => {
-    try { return (await request.get('/api/v1/health/ready')).status(); } catch { return 0; }
-  }, { timeout: 60000 }).toBe(200);
+  await expect
+    .poll(
+      async () => {
+        try {
+          return (await request.get('/api/v1/health/ready')).status();
+        } catch {
+          return 0;
+        }
+      },
+      { timeout: 60000 },
+    )
+    .toBe(200);
   const health = await request.get('/api/v1/health/ready');
   expect(health.ok()).toBeTruthy();
   const readiness = await health.json();
@@ -40,7 +49,7 @@ test('production serves all modules on one origin with complete data and CSP', a
   await page.goto('/');
   await expect(page.locator('.leaflet-container')).toBeVisible();
   await page.goto('/guide');
-  await expect(page.getByRole('heading', { name: 'Waste Guide.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Male navike. Velike promjene.' })).toBeVisible();
   await page.goto(`/explorer?jls=${zagreb}&godina=2023`);
   await expect(page.locator('.metric-card')).toHaveCount(4);
   await page.locator('#selected-year').selectOption('2017');

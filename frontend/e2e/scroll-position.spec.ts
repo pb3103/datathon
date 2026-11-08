@@ -104,12 +104,12 @@ test('location cards align shared fields and show plain-language population cont
   await expect(cards.getByRole('link', { name: 'Simuliraj ovaj cilj', exact: true })).toHaveCount(
     0,
   );
-  for (const selector of ['.reference-rate', '.profile-link', '.quality-details']) {
+  for (const selector of ['.reference-rate', '.profile-link', '.reference-dataset']) {
     const first = await cards.nth(0).locator(selector).boundingBox();
     const second = await cards.nth(1).locator(selector).boundingBox();
     expect(Math.abs(first!.y - second!.y)).toBeLessThan(2);
   }
-  const details = await cards.nth(1).locator('.quality-details').boundingBox();
+  const details = await cards.nth(1).locator('.reference-dataset').boundingBox();
   const warning = await cards.nth(1).locator('.reference-warnings').boundingBox();
   expect(warning!.y).toBeGreaterThan(details!.y + details!.height);
 });

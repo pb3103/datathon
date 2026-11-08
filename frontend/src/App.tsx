@@ -13,6 +13,8 @@ const Trends = lazy(() =>
   import('./components/Trends').then((module) => ({ default: module.Trends })),
 );
 
+const Guide = lazy(() => import('./guide/Guide'));
+
 type DataState =
   | { status: 'idle' | 'loading' }
   | { status: 'error'; message: string }
@@ -212,9 +214,9 @@ export default function App() {
     );
   if (window.location.pathname === '/guide')
     return (
-      <WorkspaceLayout module="guide">
-        <span className="sr-only">Waste Guide — u pripremi</span>
-      </WorkspaceLayout>
+      <Suspense fallback={<Loading />}>
+        <Guide />
+      </Suspense>
     );
   if (window.location.pathname === '/compare')
     return (

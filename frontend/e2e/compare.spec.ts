@@ -108,13 +108,13 @@ test('Compare real API: seven materials, discrete histories and traceable source
   await page.getByRole('button', { name: 'Grafikon', exact: true }).click();
   await expect(page.locator('.recharts-line')).toHaveCount(0);
   await expect(page.locator('#source-2023 a')).toHaveCount(2);
-  await page.locator('.comparison-reference .quality-details').first().locator('summary').click();
-  await expect(page.locator('.comparison-reference .quality-details').first()).toContainText(
-    'Prilog 2._KO_2024.',
-  );
-  await expect(page.locator('.comparison-reference .quality-details').first()).toContainText(
-    'SHA-256',
-  );
+  const datasetLinks = page.locator('.comparison-reference .reference-dataset a');
+  await expect(datasetLinks).toHaveCount(2);
+  for (const link of await datasetLinks.all()) {
+    await expect(link).toHaveAttribute('href', /^https:\/\//);
+    await expect(link).toHaveAttribute('target', '_blank');
+  }
+  await expect(page.locator('#source-2024 a')).toHaveCount(2);
 });
 
 test('Compare real API: questionable population excludes peers and per-person results', async ({

@@ -265,3 +265,45 @@ def test_material_failed_import_rolls_back_and_retry_preserves_audit(
             )
             == 3892
         )
+
+
+def test_insights_prioritize_normalized_values_and_fall_back_to_mass():
+    from types import SimpleNamespace
+    from backend.app.comparison import CATALOG, calculate_insights
+    from backend.app.schemas import MunicipalityOut
+
+    members = []
+    for i in range(2):
+        metrics = {d.key: SimpleNamespace(value=None, quality_status="available") for d in CATALOG}
+        for key, values in {
+            "total_t": ["1", "10000"],
+            "total_kg_per_covered_person": ["300", "301"],
+            "separate_collection_pct": ["40", "41"],
+            "material_paper": ["10", "11"],
+        }.items():
+            metrics[key].value = Decimal(values[i])
+        members.append(
+            SimpleNamespace(
+                municipality=MunicipalityOut(
+                    id=uuid.UUID(int=i + 1),
+                    name=f"JLS {i}",
+                    county="Županija",
+                    official_code=None,
+                    code_system=None,
+                    municipality_type=None,
+                ),
+                metrics=metrics,
+            )
+        )
+    insights, _ = calculate_insights(members, CATALOG, 2024)
+    assert {i.metric for i in insights} == {
+        "total_kg_per_covered_person",
+        "separate_collection_pct",
+        "material_paper",
+    }
+    for member in members:
+        member.metrics["material_paper"].quality_status = "requires_review"
+    insights, _ = calculate_insights(members, CATALOG, 2024)
+    assert insights[-1].metric == "total_t"
+    assert insights[-1].difference == Decimal("9999")
+    assert all(i.year == 2024 for i in insights)

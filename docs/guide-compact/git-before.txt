@@ -1,0 +1,39 @@
+ M .DS_Store
+ M README.md
+ M backend/app/comparison.py
+ M backend/app/main.py
+ M frontend/e2e/chart-labels.spec.ts
+ M frontend/e2e/compare.spec.ts
+ M frontend/e2e/product.spec.ts
+ M frontend/e2e/production.spec.ts
+ M frontend/e2e/recycling.spec.ts
+ M frontend/e2e/scroll-position.spec.ts
+ M frontend/package.json
+ M frontend/src/App.tsx
+ M frontend/src/Home.tsx
+ M frontend/src/chartPalette.ts
+ M frontend/src/compare/Compare.tsx
+ M frontend/src/compare/CompareCharts.tsx
+ M frontend/src/components/Layout.tsx
+ M frontend/src/components/RecyclingMap.tsx
+ M frontend/src/placeSearch.ts
+ M frontend/src/simulator/Simulator.tsx
+ M frontend/src/styles.css
+ M tests/test_compare.py
+ M tests/test_postgres.py
+?? docs/external_review_verification.md
+?? docs/guide-compact/
+?? docs/guide-redesign/
+?? docs/guide_hero_sorting.md
+?? docs/guide_unique_images.md
+?? docs/guide_visual_assets.md
+?? docs/waste_guide_content_audit.md
+?? docs/waste_guide_verification.md
+?? frontend/e2e/guide.spec.ts
+?? frontend/e2e/review.spec.ts
+?? frontend/public/images/
+?? frontend/src/guide/
+?? frontend/src/mapLocationDetails.ts
+?? frontend/tests/guide.test.ts
+?? frontend/tests/map-details.test.ts
+?? frontend/tests/place-search.test.ts

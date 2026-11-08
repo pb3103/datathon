@@ -1,0 +1,14 @@
+{
+  "restore": {
+    "frontend/src/guide/Guide.tsx": "0c03b95374a642fa2366d4ef659b1fa1700c8cb69af1d8c509ea6ba048dff68c",
+    "frontend/src/guide/GuideVisuals.tsx": "ebf17fccd2334056301ba6c115cd3bf9f8d4767afeeda4079d1e3793248bc9e6",
+    "frontend/src/guide/guide.css": "f68a85f0cafa26709186521847cc9c7e93d98fd4b14cc6a236830060b33176e6",
+    "frontend/e2e/guide.spec.ts": "8534a59867ffb110a543f67cb4344666172810ca8c5c46ca3b842d10165c0461"
+  },
+  "remove": {
+    "frontend/public/images/guide/editorial-food-7267039.jpg": "636413a06a50b0a3284697a9fae9e5757f294c860762add2eca9d35d301e51db",
+    "frontend/public/images/guide/editorial-textile-11482132.jpg": "d8cf78e80f51a32106a9b1626f296d5211ff93d31362f51ce5f12bfdc89ba4c4",
+    "frontend/public/images/guide/editorial-electronics-F3t-AzyTbyU.jpg": "5960d1a3d4c410f58c7e5d704ae064d7b654ad720e5e7a348ba821d3d71e3731",
+    "frontend/public/images/guide/editorial-pack-7262723.jpg": "ce0f3beae721e517611b0143fa1612571d97cda196a69163ee539fd75617062a"
+  }
+}

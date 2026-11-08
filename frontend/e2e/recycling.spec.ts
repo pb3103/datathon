@@ -75,9 +75,12 @@ test('home: nationwide autocomplete, map sources, filters and mobile layout', as
   await page.locator('.recycling-map .leaflet-marker-icon[title="RD JAKUŠEVEC"]').click();
   await expect(page.locator('.leaflet-popup-content')).toContainText('RD JAKUŠEVEC');
   await expect(page.locator('.leaflet-popup-content')).toContainText('Radno vrijeme:');
-  await expect(page.locator('.leaflet-popup-content')).not.toContainText('Telefon');
+  await expect(page.locator('.leaflet-popup-content')).toContainText('Telefon:');
+  await expect(
+    page.locator('.leaflet-popup-content a[href^="https://www.google.com/maps/dir/"]'),
+  ).toBeVisible();
   await expect(page.locator('.leaflet-popup-content')).not.toContainText('Izvor');
-  await expect(page.locator('.leaflet-popup-content p')).toHaveCount(2);
+  await expect(page.locator('.leaflet-popup-content')).toContainText('Sajmišna cesta');
   await page.getByRole('button', { name: 'Prikaži cijelu Hrvatsku' }).click();
   await page.getByRole('button', { name: 'OpenStreetMap', exact: true }).click();
   await expect(page.getByTestId('map-count')).toHaveText(`${data.summary.osm_added} lokacija`);

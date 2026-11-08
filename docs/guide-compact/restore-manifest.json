@@ -1,0 +1,6 @@
+{
+  "frontend/src/guide/Guide.tsx": "d9c3d31872458748f6911840bb5f377483057f807f82c6965e7a0dc8fb2c9b18",
+  "frontend/src/guide/GuideVisuals.tsx": "ebf17fccd2334056301ba6c115cd3bf9f8d4767afeeda4079d1e3793248bc9e6",
+  "frontend/src/guide/guide.css": "3e2a3254149c07f5762db12140b6d64a9c0f13b183cf444e0e30e2033ab13ccf",
+  "frontend/e2e/guide.spec.ts": "a32da1d4c1b887280eff642069b73f07f4fa4a4b20d14262e1d3208c57a7437b"
+}

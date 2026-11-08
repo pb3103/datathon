@@ -198,3 +198,24 @@ def test_health_without_loaded_data_and_pending_migration(pg_engine):
         assert client.get("/api/v1/health/ready").status_code == 503
     finally:
         app.dependency_overrides.clear()
+
+
+def test_city_search_transliteration_preserves_official_identity(client):
+    for official, queries in [
+        ("Čakovec", ["Čakovec", "Cakovec", "CAKOVEC", "Cakov"]),
+        ("Šibenik", ["Šibenik", "Sibenik", "SIBENIK", "Sib"]),
+        ("Poreč - Parenzo", ["Poreč", "Porec", "POREC"]),
+        ("Đakovo", ["Đakovo", "Djakovo", "Dakovo", "DJAKOVO", "Djak"]),
+        ("Zagreb", ["Zagreb", "ZAGREB"]),
+    ]:
+        identity = None
+        for query in queries:
+            response = client.get("/api/v1/municipalities", params={"q": query})
+            assert response.status_code == 200
+            item = next(m for m in response.json()["items"] if m["name"] == official)
+            identity = identity or item["id"]
+            assert item["id"] == identity
+    assert client.get("/api/v1/municipalities", params={"q": ""}).json()["total"] == 556
+    assert (
+        client.get("/api/v1/municipalities", params={"q": "NepostojeceMjesto"}).json()["total"] == 0
+    )

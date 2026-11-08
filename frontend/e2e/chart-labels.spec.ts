@@ -15,8 +15,8 @@ test('chart axes, units and legends stay visible across modules and mobile layou
   await expect(chart.locator('.recharts-label').filter({ hasText: 'Grad / općina' })).toHaveCount(
     1,
   );
-  await expect(chart.getByLabel('Legenda zajednica')).toContainText('Bjelovar');
-  await expect(chart.getByLabel('Legenda zajednica')).toContainText('Daruvar');
+  await expect(chart.getByLabel('Legenda grafa')).toContainText('Bjelovar');
+  await expect(chart.getByLabel('Legenda grafa')).toContainText('Daruvar');
   for (const width of [1440, 390]) {
     await page.setViewportSize({ width, height: 900 });
     await chart.screenshot({ path: `test-results/chart-compare-${width}.png` });
@@ -25,21 +25,21 @@ test('chart axes, units and legends stay visible across modules and mobile layou
   await page.getByRole('button', { name: 'Kroz godine', exact: true }).click();
   await expect(chart.locator('.recharts-label').nth(0)).toHaveText('Godina');
   await expect(chart.locator('.recharts-label').nth(1)).toHaveText('%');
-  await expect(chart.locator('.recharts-legend-wrapper')).toContainText('Daruvar');
+  await expect(chart.getByLabel('Legenda grafa')).toContainText('Daruvar');
   await chart.screenshot({ path: 'test-results/chart-compare-history-mobile.png' });
   await page.goto(`/explorer?jls=${b}&godina=2024`);
   const explorer = page.locator('.trend-panel');
   await expect(explorer.locator('.recharts-label').nth(0)).toHaveText('Godina');
   await expect(explorer.locator('.recharts-label').nth(1)).toHaveText('t');
-  await expect(explorer.locator('.recharts-legend-wrapper')).toContainText('Miješani otpad');
+  await expect(explorer.getByLabel('Legenda grafa')).toContainText('Miješani otpad');
   await explorer.screenshot({ path: 'test-results/chart-explorer-mobile.png' });
   await page.goto(`/simulator?jls=${b}&godina=2024`);
-  const simulator = page.locator('.simulator-chart');
+  const simulator = page.locator('#scenario-comparison');
   await expect(simulator.locator('.recharts-label').filter({ hasText: /^tone$/ })).toHaveCount(1);
   await expect(
     simulator.locator('.recharts-label').filter({ hasText: 'Početno stanje / scenarij' }),
   ).toHaveCount(1);
-  await expect(simulator.locator('.recharts-legend-wrapper')).toContainText('Odvojeno sakupljeno');
+  await expect(simulator.getByLabel('Legenda grafa')).toContainText('Odvojeno sakupljeno');
   await page.getByLabel('Jedinica grafa').selectOption('kg');
   await expect(
     simulator.locator('.recharts-label').filter({ hasText: 'kg/obuhv. stan.' }),

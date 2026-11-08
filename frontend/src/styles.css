@@ -5839,3 +5839,31 @@ a.button:focus-visible {
     height: 18px;
   }
 }
+
+/* Keep the comparison year readable instead of shrinking its select on narrow screens. */
+.compare-heading-context .compare-global-year {
+  flex-shrink: 0;
+  width: auto;
+}
+.compare-heading-context .compare-global-year select {
+  flex: 0 0 92px;
+  min-width: 92px;
+}
+@media (max-width: 600px) {
+  .compare-chart .table-scroll table {
+    min-width: 560px;
+  }
+  .compare-table-hint {
+    font-size: 12px;
+    color: #60715e;
+    margin: 0 0 12px;
+  }
+}
+
+.simulator-toolbar .button[aria-pressed='true'],
+.simulator-toolbar .button[aria-pressed='true']:hover {
+  background: #e8f0e0;
+  color: #1c5e45;
+  border-color: #b6cba7;
+  box-shadow: inset 0 0 0 1px #b6cba7;
+}

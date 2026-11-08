@@ -486,9 +486,11 @@ export default function Compare() {
               <div>
                 <p>
                   Za svaku metriku računa se raspon (najveća − najmanja vrijednost), podijeljen
-                  najvećom apsolutnom vrijednošću. Prikazuju se do tri najveća relativna raspona,
-                  najviše jedan iz svake skupine metrika. Objavljeni ukupni kg/stanovnik
-                  izostavljeni su iz uvida kako se isti pokazatelj ne bi brojio dvaput.
+                  najvećom apsolutnom vrijednošću. Prednost imaju pokazatelji po stanovniku i
+                  razlike u postotnim bodovima; apsolutne mase prikazuju se ako nema dovoljno takvih
+                  razlika. Unutar tog izbora prikazuju se do tri najveća relativna raspona, najviše
+                  jedan iz svake skupine metrika. Objavljeni ukupni kg/stanovnik izostavljeni su iz
+                  uvida kako se isti pokazatelj ne bi brojio dvaput.
                 </p>
                 <p>
                   Koriste se samo dostupne vrijednosti koje ne zahtijevaju provjeru. To nije

@@ -196,7 +196,12 @@ test('home: no automatic data requests, keyboard search, cards and responsive la
     await page.goto('/');
     await page.getByRole('link', { name: `Otvori ${name}`, exact: true }).click();
     await expect(page).toHaveURL(new RegExp(`/${path}$`));
-    await expect(page.getByRole('heading', { name: `${name}.`, exact: true })).toBeVisible();
+    await expect(
+      page.getByRole('heading', {
+        name: path === 'guide' ? 'Male navike. Velike promjene.' : `${name}.`,
+        exact: true,
+      }),
+    ).toBeVisible();
   }
   const { default: AxeBuilder } = await import('@axe-core/playwright');
   for (const [width, height] of [
@@ -233,5 +238,5 @@ test('home: four aligned cards, restored map, full sources and no navigation dot
   await expect(page.getByRole('link', { name: 'Waste Map', exact: true })).toHaveCount(0);
   await page.getByRole('link', { name: 'Otvori Waste Guide', exact: true }).click();
   await expect(page).toHaveURL(/\/guide$/);
-  await expect(page.getByText('Sadržaj je u pripremi.', { exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Male navike. Velike promjene.' })).toBeVisible();
 });
