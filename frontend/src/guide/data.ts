@@ -1,5 +1,9 @@
 export const checkedDate = '2026-11-07';
 export const sources = {
+  greenDeal: {
+    title: 'Vijeće EU-a · Europski zeleni plan',
+    url: 'https://www.consilium.europa.eu/en/policies/european-green-deal/',
+  },
   ppwr: {
     title: 'EUR-Lex · Uredba (EU) 2025/40, čl. 71.',
     url: 'https://eur-lex.europa.eu/eli/reg/2025/40/oj',

@@ -1,0 +1,8 @@
+ M docs/guide-compact/README.md
+ M docs/guide-compact/restore-manifest.json
+ M frontend/e2e/guide.spec.ts
+ M frontend/src/guide/Guide.tsx
+ M frontend/src/guide/guide.css
+?? docs/guide-compact/previews/header-desktop.png
+?? docs/guide-compact/previews/header-mobile.png
+?? docs/guide-eu-polish/

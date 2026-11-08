@@ -1,5 +1,3 @@
-import { Icon } from '../components/Icon';
-
 export const topicPhotos: Record<string, string> = {
   date: 'editorial-food-7267039',
   textile: 'editorial-textile-11482132',
@@ -88,9 +86,47 @@ export function QuizIntro() {
       <p className="guide-eyebrow">05 / Provjerite znanje</p>
       <h2 id="quiz-title">Što biste odabrali?</h2>
       <p>Šest kratkih pitanja s objašnjenjem nakon svakog odgovora.</p>
-      <span className="guide-quiz-mark" aria-hidden="true">
-        <Icon name="book" />
-      </span>
     </div>
+  );
+}
+
+export function FactIcon({ index }: { index: number }) {
+  const shapes = [
+    <>
+      <path d="m8 5 4-2 4 7M12 3l-2 5M19 10l3 4-4 7h-7M22 14l-5-1M8 20H3l-2-7 4-6M3 20l3-4" />
+    </>,
+    <>
+      <rect x="3" y="5" width="18" height="16" rx="2" />
+      <path d="M7 3v4m10-4v4M3 11h18M7 15h1m4 0h1m4 0h1M7 18h1m4 0h1" />
+    </>,
+    <>
+      <path d="M9 3h6v5l3 4v8a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-8l3-4V3ZM9 6h6M6 14h12" />
+    </>,
+    <>
+      <rect x="6" y="2" width="12" height="20" rx="2" />
+      <path d="M10 5h4" />
+      <circle cx="12" cy="18.5" r=".6" />
+    </>,
+    <>
+      <rect x="2" y="7" width="18" height="10" rx="2" />
+      <path d="M22 10v4M11 8l-3 5h6l-3 4" />
+    </>,
+    <>
+      <path d="M20 7a8 8 0 0 0-14-1L3 9m0-5v5h5M4 17a8 8 0 0 0 14 1l3-3m0 5v-5h-5" />
+    </>,
+  ];
+  return (
+    <svg
+      className="guide-fact-icon"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {shapes[index]}
+    </svg>
   );
 }

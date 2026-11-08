@@ -1770,3 +1770,1286 @@
     font-size: 10px;
   }
 }
+
+/* Keep the Guide header aligned with Home and the shared module artwork. */
+.module-guide .guide-hero {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 32px;
+  padding: 36px 0;
+}
+.guide-hero-copy {
+  flex: 1;
+  min-width: 0;
+}
+.module-guide .guide-hero h1 {
+  font-size: clamp(28px, 2.7vw, 40px);
+  font-weight: 650;
+  line-height: 1.15;
+  letter-spacing: -1.3px;
+  margin: 0 0 16px;
+}
+.guide-hero .guide-eyebrow {
+  font-size: 10px;
+  font-weight: 650;
+  line-height: 1.6;
+  letter-spacing: 1.7px;
+  margin: 0 0 12px;
+}
+.guide-hero-copy > p:last-of-type {
+  max-width: 900px;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+}
+.module-guide .guide-heading-art {
+  flex-shrink: 0;
+  align-self: center;
+}
+@media (max-width: 900px) {
+  .module-guide .guide-heading-art {
+    display: none;
+  }
+}
+@media (max-width: 600px) {
+  .module-guide .guide-hero {
+    padding: 26px 0;
+  }
+}
+
+/* EU tab only: shared targets overview and compact regulatory disclosure. */
+#ciljevi .guide-eu-overview {
+  margin-top: 20px;
+  padding: 22px;
+  border: 1px solid #dce5d5;
+  border-radius: 10px;
+  background: #fafcf7;
+}
+#ciljevi .guide-eu-description {
+  margin: 0 0 5px;
+  font-size: 15px;
+  font-weight: 600;
+}
+#ciljevi .guide-eu-context {
+  margin: 0;
+  font-size: 11.5px;
+  color: #586e61;
+}
+#ciljevi .guide-eu-timeline {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  list-style: none;
+  margin: 26px 0 20px;
+  padding: 0;
+}
+#ciljevi .guide-eu-timeline li {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-top: 1px solid #a7bc98;
+  padding: 18px 10px 0;
+}
+#ciljevi .guide-eu-timeline li::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #52793e;
+  box-shadow: 0 0 0 4px #fafcf7;
+}
+#ciljevi .guide-eu-year {
+  font-size: 13px;
+  font-weight: 600;
+  color: #486345;
+}
+#ciljevi .guide-eu-threshold {
+  font-size: 11px;
+  color: #586e61;
+  margin-top: 8px;
+}
+#ciljevi .guide-eu-timeline strong {
+  font-size: 38px;
+  line-height: 1.2;
+  font-weight: 650;
+  letter-spacing: -1px;
+  color: #205e47;
+}
+#ciljevi .guide-eu-timeline strong span {
+  font-size: 24px;
+}
+#ciljevi .guide-eu-landfill {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  padding: 16px 0 12px;
+  border-top: 1px solid #dce5d5;
+  font-size: 13px;
+}
+#ciljevi .guide-eu-landfill strong {
+  font-size: 17px;
+  font-weight: 650;
+  color: #205e47;
+}
+#ciljevi .guide-eu-sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+  margin-top: 8px;
+}
+#ciljevi .guide-eu-sources .guide-source {
+  font-size: 11px;
+}
+#ciljevi .guide-eu-note {
+  margin: 14px 0 20px;
+  padding-left: 12px;
+  border-left: 2px solid #9bb18c;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #486345;
+  max-width: none;
+}
+#ciljevi .guide-eu-note span {
+  color: #586e61;
+}
+#ciljevi .guide-eu-accordion {
+  margin: 0;
+  padding: 0;
+  border: 1px solid #dce5d5;
+  border-radius: 9px;
+  overflow: hidden;
+  background: white;
+}
+#ciljevi .guide-eu-accordion summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 18px;
+  cursor: pointer;
+  list-style: none;
+  min-height: 70px;
+}
+#ciljevi .guide-eu-accordion summary::-webkit-details-marker {
+  display: none;
+}
+#ciljevi .guide-eu-accordion summary:hover {
+  background: #f7f9f4;
+}
+#ciljevi .guide-eu-accordion h3 {
+  font-size: 16px;
+  margin: 0 0 5px;
+}
+#ciljevi .guide-eu-accordion summary p {
+  margin: 0;
+  font-size: 12px;
+  color: #586e61;
+}
+#ciljevi .guide-eu-expand {
+  flex-shrink: 0;
+  font-size: 23px;
+  color: #486345;
+}
+#ciljevi .guide-eu-accordion[open] .guide-eu-expand {
+  transform: rotate(45deg);
+}
+#ciljevi .guide-eu-accordion-body {
+  padding: 0 18px 18px;
+  border-top: 1px solid #e2e8dd;
+}
+#ciljevi .guide-eu-accordion-body > p {
+  font-size: 12px;
+}
+#ciljevi .guide-ppwr-ideas {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+#ciljevi .guide-ppwr-ideas > div {
+  border-left: 2px solid #dce5d5;
+  padding-left: 12px;
+}
+@media (max-width: 600px) {
+  #ciljevi .guide-eu-overview {
+    padding: 16px 12px;
+  }
+  #ciljevi .guide-eu-description {
+    font-size: 14px;
+  }
+  #ciljevi .guide-eu-timeline li {
+    padding: 16px 3px 0;
+  }
+  #ciljevi .guide-eu-timeline strong {
+    font-size: 31px;
+  }
+  #ciljevi .guide-eu-timeline strong span {
+    font-size: 18px;
+  }
+  #ciljevi .guide-eu-landfill {
+    gap: 12px;
+    align-items: flex-start;
+  }
+  #ciljevi .guide-eu-landfill .guide-eu-year {
+    padding-top: 3px;
+  }
+  #ciljevi .guide-eu-landfill strong {
+    display: block;
+  }
+  #ciljevi .guide-eu-accordion summary {
+    padding: 16px 12px;
+  }
+  #ciljevi .guide-eu-accordion-body {
+    padding: 0 12px 16px;
+  }
+  #ciljevi .guide-ppwr-ideas {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}
+
+/* Give the PPWR disclosure a clearer entry point without enlarging the section. */
+#ciljevi .guide-eu-accordion {
+  border-color: #b6cba9;
+  border-left: 4px solid #52793e;
+}
+#ciljevi .guide-eu-accordion summary {
+  background: #edf3e7;
+  padding: 20px;
+}
+#ciljevi .guide-eu-accordion summary:hover {
+  background: #e5eedc;
+}
+#ciljevi .guide-ppwr-kicker {
+  display: block;
+  font-size: 9px;
+  font-weight: 650;
+  letter-spacing: 1.2px;
+  color: #486345;
+  margin-bottom: 7px;
+}
+#ciljevi .guide-eu-accordion h3 {
+  font-size: 18px;
+  color: #20543e;
+}
+#ciljevi .guide-ppwr-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  padding: 9px 12px;
+  border: 1px solid #bacdae;
+  border-radius: 7px;
+  background: #fff;
+  color: #20543e;
+  font-size: 12px;
+  font-weight: 600;
+}
+#ciljevi .guide-eu-expand {
+  font-size: 20px;
+  line-height: 1;
+}
+#ciljevi .guide-ppwr-close-label {
+  display: none;
+}
+#ciljevi .guide-eu-accordion[open] .guide-ppwr-open-label {
+  display: none;
+}
+#ciljevi .guide-eu-accordion[open] .guide-ppwr-close-label {
+  display: inline;
+}
+@media (max-width: 600px) {
+  #ciljevi .guide-eu-accordion summary {
+    padding: 16px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  #ciljevi .guide-eu-accordion summary > div {
+    flex-basis: 100%;
+  }
+  #ciljevi .guide-eu-accordion h3 {
+    font-size: 17px;
+  }
+  #ciljevi .guide-ppwr-control {
+    padding: 8px 11px;
+  }
+}
+
+/* PPWR: a quiet header, practical changes on the left and dates on the right. */
+#ciljevi .guide-eu-accordion {
+  border: 1px solid #d3dfcb;
+  border-top: 3px solid #6d8b58;
+  border-radius: 10px;
+}
+#ciljevi .guide-eu-accordion summary {
+  background: #f7f9f4;
+  padding: 20px 22px;
+  gap: 24px;
+}
+#ciljevi .guide-eu-accordion summary:hover {
+  background: #f0f4eb;
+}
+#ciljevi .guide-eu-accordion h3 {
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+#ciljevi .guide-ppwr-kicker {
+  font-size: 9px;
+  color: #586e51;
+  margin-bottom: 8px;
+}
+#ciljevi .guide-ppwr-control {
+  background: transparent;
+  border: 0;
+  padding: 9px 0 9px 12px;
+  gap: 8px;
+}
+#ciljevi .guide-eu-expand {
+  font-size: 22px;
+}
+#ciljevi .guide-eu-accordion[open] .guide-eu-expand {
+  transform: rotate(180deg);
+}
+#ciljevi .guide-eu-accordion-body {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(220px, 1fr);
+  gap: 22px 28px;
+  padding: 24px 22px 18px;
+  border-top: 1px solid #dfe6d9;
+}
+#ciljevi .guide-ppwr-section-label {
+  margin: 0 0 12px;
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #526b48;
+}
+#ciljevi .guide-ppwr-main > p:not(.guide-ppwr-section-label) {
+  font-size: 12px;
+  line-height: 1.7;
+  margin: 0 0 16px;
+}
+#ciljevi .guide-ppwr-main > p:last-child {
+  margin: 16px 0 0;
+  color: #586e61;
+}
+#ciljevi .guide-ppwr-ideas {
+  gap: 16px;
+  margin: 18px 0;
+}
+#ciljevi .guide-ppwr-ideas > div {
+  border: 0;
+  padding: 0;
+}
+#ciljevi .guide-ppwr-ideas h4 {
+  margin: 0 0 6px;
+  font-size: 12px;
+}
+#ciljevi .guide-ppwr-ideas p {
+  font-size: 11.5px;
+  line-height: 1.6;
+}
+#ciljevi .guide-ppwr-timing {
+  background: #f4f7ef;
+  border-radius: 8px;
+  padding: 18px;
+}
+#ciljevi .guide-ppwr-dates {
+  display: grid;
+  gap: 14px;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+#ciljevi .guide-ppwr-dates > div + div {
+  border-top: 1px solid #dce5d5;
+  padding-top: 14px;
+}
+#ciljevi .guide-ppwr-dates dt {
+  font-size: 11px;
+}
+#ciljevi .guide-ppwr-dates dd {
+  font-size: 14px;
+  margin-top: 5px;
+  color: #20543e;
+}
+#ciljevi .guide-ppwr-timing > .guide-small {
+  font-size: 11px;
+  margin: 14px 0 0;
+  color: #586e61;
+}
+#ciljevi .guide-ppwr-sources {
+  grid-column: 1 / -1;
+  border-top: 1px solid #e0e7da;
+  padding-top: 12px;
+  gap: 8px 20px;
+}
+#ciljevi .guide-ppwr-sources .guide-source {
+  font-size: 11px;
+}
+@media (max-width: 1000px) {
+  #ciljevi .guide-eu-accordion-body {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}
+@media (max-width: 600px) {
+  #ciljevi .guide-eu-accordion summary {
+    padding: 16px;
+    gap: 8px;
+  }
+  #ciljevi .guide-eu-accordion summary > div {
+    flex-basis: 100%;
+  }
+  #ciljevi .guide-ppwr-control {
+    padding: 6px 0 0;
+  }
+  #ciljevi .guide-eu-accordion h3 {
+    font-size: 17px;
+  }
+  #ciljevi .guide-eu-accordion-body {
+    padding: 18px 16px 16px;
+  }
+  #ciljevi .guide-ppwr-ideas {
+    gap: 12px;
+  }
+  #ciljevi .guide-ppwr-ideas > div {
+    border-left: 2px solid #dce5d5;
+    padding-left: 12px;
+  }
+}
+
+/* Align the disclosure chevron optically with its label. */
+#ciljevi .guide-ppwr-control {
+  align-items: center;
+  line-height: 1.25;
+  gap: 8px;
+}
+#ciljevi .guide-ppwr-control .guide-eu-expand {
+  display: block;
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+}
+
+/* Final EU polish and a matching, independent Green Deal disclosure. */
+#ciljevi .guide-eu-timeline {
+  margin: 22px 0 16px;
+}
+#ciljevi .guide-eu-timeline li {
+  padding-top: 15px;
+}
+#ciljevi .guide-eu-threshold {
+  margin-top: 6px;
+}
+#ciljevi .guide-eu-landfill {
+  align-items: center;
+}
+#ciljevi .guide-eu-landfill > div {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+#ciljevi .guide-eu-landfill strong {
+  flex-shrink: 0;
+  font-size: 24px;
+  letter-spacing: -0.5px;
+}
+#ciljevi .guide-eu-accordion + .guide-eu-accordion {
+  margin-top: 14px;
+}
+#ciljevi .guide-green-body {
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+#ciljevi .guide-green-body h4 {
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0 0 8px;
+}
+#ciljevi .guide-green-body p {
+  font-size: 12px;
+  line-height: 1.7;
+  margin: 0;
+}
+#ciljevi .guide-green-intro p {
+  max-width: 95ch;
+}
+#ciljevi .guide-green-goals {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  align-items: stretch;
+}
+#ciljevi .guide-green-goals > div {
+  padding: 16px 0;
+  border-top: 2px solid #dce5d5;
+}
+#ciljevi .guide-green-goals .guide-green-circular {
+  padding: 16px;
+  background: #f0f5e9;
+  border-top-color: #6d8b58;
+  border-radius: 0 0 6px 6px;
+}
+#ciljevi .guide-green-circular .guide-ppwr-kicker {
+  font-size: 8px;
+  line-height: 1.5;
+}
+#ciljevi .guide-green-practice {
+  padding-top: 18px;
+  border-top: 1px solid #e0e7da;
+}
+#ciljevi .guide-green-steps {
+  list-style: none;
+  counter-reset: guide-green-step;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  padding: 0;
+  margin: 16px 0 10px;
+}
+#ciljevi .guide-green-steps li {
+  font-size: 12px;
+  line-height: 1.6;
+  counter-increment: guide-green-step;
+}
+#ciljevi .guide-green-steps li::before {
+  content: '0' counter(guide-green-step);
+  display: block;
+  color: #52793e;
+  font-size: 10px;
+  font-weight: 650;
+  margin-bottom: 5px;
+}
+#ciljevi .guide-green-practice .guide-small {
+  font-size: 11px;
+  color: #586e61;
+}
+#ciljevi .guide-green-connection {
+  color: #586e61;
+}
+@media (max-width: 600px) {
+  #ciljevi .guide-eu-timeline li {
+    padding-top: 13px;
+  }
+  #ciljevi .guide-eu-landfill {
+    align-items: flex-start;
+  }
+  #ciljevi .guide-eu-landfill > div {
+    display: block;
+  }
+  #ciljevi .guide-eu-landfill strong {
+    font-size: 23px;
+    display: block;
+    margin-bottom: 4px;
+  }
+  #ciljevi .guide-green-goals {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  #ciljevi .guide-green-goals > div {
+    padding: 12px 0;
+  }
+  #ciljevi .guide-green-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Quiz: immediate, subtle answer feedback; explanation stays neutral. */
+.guide-quiz .guide-answer.is-correct {
+  background: #edf5eb;
+  border-color: #9bb991;
+  color: #294f32;
+}
+.guide-quiz .guide-answer.is-incorrect {
+  background: #fcf0ef;
+  border-color: #dfbdb7;
+  color: #734b47;
+}
+.guide-quiz .guide-answer.is-selected {
+  border-width: 2px;
+  padding: 10px;
+}
+.guide-quiz .guide-answer-mark {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-size: 17px;
+  font-weight: 600;
+}
+.guide-quiz .guide-answer.is-correct input {
+  accent-color: #527b45;
+}
+.guide-quiz .guide-answer.is-incorrect input {
+  accent-color: #a86c63;
+}
+.guide-quiz .guide-answer input:disabled {
+  opacity: 1;
+}
+.guide-quiz .guide-feedback--explanation {
+  border-left: 2px solid #c5d4bb;
+  background: transparent;
+  padding: 0 0 0 12px;
+  color: #486345;
+}
+.guide-quiz .guide-feedback--explanation p {
+  margin-top: 0;
+}
+
+#ciljevi .guide-eu-overview + .guide-eu-accordion {
+  margin-top: 16px;
+}
+
+.guide-quiz.is-complete > button {
+  margin-top: 14px;
+  padding: 9px 14px;
+  font-size: 12px;
+}
+
+/* Facts tab: compact statistic and calmer, clearly expandable fact panels. */
+#cinjenice .guide-facts {
+  gap: 14px;
+  margin-top: 22px;
+}
+#cinjenice .guide-food-statistic {
+  grid-template-columns: minmax(170px, 0.55fr) minmax(0, 1.45fr);
+  gap: 16px 28px;
+  padding: 22px;
+  background: #f8faf5;
+  border: 1px solid #dce5d5;
+  border-left: 4px solid #7c9a64;
+}
+#cinjenice .guide-stat-heading {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #e0e7da;
+}
+#cinjenice .guide-stat-heading h3 {
+  margin: 0;
+  font-size: 17px;
+}
+#cinjenice .guide-stat-year {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 500;
+  color: #586e61;
+}
+#cinjenice .guide-stat-number {
+  margin: 0;
+  align-self: start;
+}
+#cinjenice .guide-stat-number strong {
+  font-size: 36px;
+}
+#cinjenice .guide-stat-number span {
+  max-width: 18ch;
+  font-size: 12px;
+  line-height: 1.5;
+}
+#cinjenice .guide-stat-copy > p {
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+#cinjenice .guide-food-statistic .guide-source {
+  font-size: 11px;
+}
+#cinjenice .guide-stat-details {
+  margin-top: 10px;
+}
+#cinjenice .guide-fact {
+  border: 1px solid #dde5d8;
+  border-radius: 10px;
+  background: #fff;
+}
+#cinjenice .guide-fact summary {
+  padding: 18px 50px 18px 18px;
+  min-height: 88px;
+}
+#cinjenice .guide-fact-topic {
+  display: inline-block;
+  color: #536c48;
+  font-size: 9px;
+  letter-spacing: 1.1px;
+}
+#cinjenice .guide-fact h3 {
+  font-size: 16px;
+  margin: 7px 0 0;
+  line-height: 1.4;
+}
+#cinjenice .guide-fact-toggle {
+  display: block;
+  position: absolute;
+  right: 17px;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  color: #527348;
+  transform: translateY(-50%);
+}
+#cinjenice .guide-fact[open] .guide-fact-toggle {
+  transform: translateY(-50%) rotate(180deg);
+}
+#cinjenice .guide-fact[open] summary {
+  background: #f5f8f0;
+}
+#cinjenice .guide-fact-body {
+  padding: 16px 18px 18px;
+  border-top: 1px solid #e3e9de;
+}
+#cinjenice .guide-fact-body > p {
+  margin: 0 0 12px;
+  font-size: 12.5px;
+  line-height: 1.7;
+}
+#cinjenice .guide-fact .guide-action {
+  padding-left: 10px;
+  border-left: 2px solid #b9cdaa;
+  color: #3d6444;
+}
+#cinjenice .guide-fact .guide-source {
+  padding-top: 10px;
+  font-size: 11px;
+  border-top: 1px solid #e7ece2;
+}
+@media (max-width: 600px) {
+  #cinjenice .guide-food-statistic {
+    grid-template-columns: 1fr;
+    padding: 18px 16px;
+    gap: 16px;
+  }
+  #cinjenice .guide-stat-heading {
+    display: block;
+  }
+  #cinjenice .guide-stat-year {
+    display: block;
+    margin-top: 8px;
+  }
+  #cinjenice .guide-stat-number {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  #cinjenice .guide-stat-number span {
+    margin: 0;
+  }
+  #cinjenice .guide-fact summary {
+    padding: 16px 46px 16px 16px;
+  }
+  #cinjenice .guide-fact-body {
+    padding: 16px;
+  }
+}
+
+/* Facts: a compact lead statistic and independent columns with no stretched neighbours. */
+#cinjenice .guide-food-statistic {
+  margin-top: 20px;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 20px 28px;
+  padding: 24px;
+  background: #f6f9f2;
+  border: 1px solid #d6e2cc;
+  border-radius: 12px;
+}
+#cinjenice .guide-stat-heading {
+  border: 0;
+  padding: 0;
+  align-items: flex-start;
+}
+#cinjenice .guide-stat-heading h3 {
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+#cinjenice .guide-stat-heading > .icon {
+  width: 22px;
+  height: 22px;
+  color: #52793e;
+  flex-shrink: 0;
+}
+#cinjenice .guide-stat-year {
+  font-size: 11px;
+}
+#cinjenice .guide-stat-number {
+  display: block;
+  margin: 0;
+}
+#cinjenice .guide-stat-number strong {
+  display: block;
+  font-size: 44px;
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+}
+#cinjenice .guide-stat-number small {
+  font-size: 25px;
+  font-weight: 550;
+  letter-spacing: -0.5px;
+}
+#cinjenice .guide-stat-number > span {
+  display: block;
+  max-width: none;
+  margin-top: 8px;
+  font-size: 12px;
+}
+#cinjenice .guide-stat-copy {
+  align-self: center;
+}
+#cinjenice .guide-stat-copy > p {
+  font-size: 13px;
+  margin: 0;
+}
+#cinjenice .guide-stat-tip {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 13px 14px;
+  background: #eaf1e2;
+  border-radius: 7px;
+  margin: 0;
+  color: #3d6040;
+  font-size: 12px;
+}
+#cinjenice .guide-stat-tip .icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+#cinjenice .guide-stat-footer {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(180px, 0.7fr);
+  align-items: baseline;
+  gap: 12px 20px;
+  border-top: 1px solid #e0e7d9;
+  padding-top: 13px;
+}
+#cinjenice .guide-stat-details {
+  margin: 0;
+}
+#cinjenice .guide-stat-details summary {
+  text-align: right;
+}
+#cinjenice .guide-stat-details p {
+  margin: 10px 0 0;
+  font-size: 11.5px;
+}
+#cinjenice .guide-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+#cinjenice .guide-fact-column {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+#cinjenice .guide-fact {
+  flex-shrink: 0;
+}
+#cinjenice .guide-fact summary {
+  position: relative;
+  padding: 18px 42px 18px 18px;
+  min-height: 128px;
+}
+#cinjenice .guide-fact-icon {
+  display: block;
+  width: 23px;
+  height: 23px;
+  margin-bottom: 14px;
+  color: #52793e;
+}
+#cinjenice .guide-fact-toggle {
+  top: 20px;
+  transform: none;
+  width: 18px;
+  height: 18px;
+}
+#cinjenice .guide-fact[open] .guide-fact-toggle {
+  transform: rotate(180deg);
+}
+#cinjenice .guide-fact h3 {
+  font-size: 16px;
+  line-height: 1.4;
+}
+#cinjenice .guide-fact--1 .guide-fact-icon,
+#cinjenice .guide-fact--3 .guide-fact-icon {
+  color: #577783;
+}
+#cinjenice .guide-fact--4 .guide-fact-icon {
+  color: #816c50;
+}
+#cinjenice .guide-fact summary:focus-visible {
+  outline: 2px solid #6b8c52;
+  outline-offset: -3px;
+  border-radius: 9px;
+}
+@media (max-width: 600px) {
+  #cinjenice .guide-food-statistic {
+    grid-template-columns: 1fr;
+    padding: 18px 16px;
+    gap: 16px;
+  }
+  #cinjenice .guide-stat-heading {
+    display: flex;
+  }
+  #cinjenice .guide-stat-number strong {
+    font-size: 40px;
+  }
+  #cinjenice .guide-stat-footer {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  #cinjenice .guide-stat-details summary {
+    text-align: left;
+  }
+  #cinjenice .guide-facts {
+    display: flex;
+    flex-direction: column;
+  }
+  #cinjenice .guide-fact-column {
+    display: contents;
+  }
+  #cinjenice .guide-fact summary {
+    min-height: 120px;
+    padding: 16px 40px 16px 16px;
+  }
+}
+#cinjenice .guide-stat-number strong {
+  white-space: nowrap;
+}
+#cinjenice .guide-stat-number small {
+  display: inline;
+}
+
+/* The search wrapper already provides a focus indicator; avoid a second inner frame. */
+.guide-page .guide-search-input input:focus,
+.guide-page .guide-search-input input:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Compact lead statistic; introduce the six facts immediately before their cards. */
+#cinjenice .guide-food-statistic {
+  margin-top: 16px;
+  padding: 18px 20px;
+  gap: 14px 24px;
+}
+#cinjenice .guide-stat-number strong {
+  font-size: 36px;
+}
+#cinjenice .guide-stat-number small {
+  font-size: 22px;
+}
+#cinjenice .guide-stat-number > span {
+  margin-top: 5px;
+}
+#cinjenice .guide-stat-tip {
+  padding: 10px 12px;
+}
+#cinjenice .guide-stat-footer {
+  grid-template-columns: 1fr;
+  gap: 9px;
+  padding-top: 10px;
+}
+#cinjenice .guide-stat-details summary {
+  text-align: left;
+}
+#cinjenice .guide-stat-details p {
+  max-width: 90ch;
+  text-align: left;
+}
+#cinjenice > .guide-facts-intro {
+  margin: 24px 0 14px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #486345;
+}
+#cinjenice .guide-facts {
+  margin-top: 0;
+}
+@media (max-width: 600px) {
+  #cinjenice .guide-food-statistic {
+    padding: 16px;
+    gap: 13px;
+  }
+  #cinjenice .guide-stat-number strong {
+    font-size: 34px;
+  }
+  #cinjenice > .guide-facts-intro {
+    font-size: 14px;
+    margin-top: 22px;
+  }
+}
+
+/* Targeted finishing touches for the prevention panel only. */
+#prevencija .guide-hierarchy button {
+  border-left: 3px solid #92ad7e;
+  background: #eaf1e2;
+  color: #304b37;
+}
+#prevencija .guide-hierarchy button:nth-child(2) { background: #eff4e9; border-left-color: #a0b58f; }
+#prevencija .guide-hierarchy button:nth-child(3) { background: #f3f5ee; border-left-color: #adbba2; }
+#prevencija .guide-hierarchy button:nth-child(4) { background: #f4f4ef; border-left-color: #b8bdae; }
+#prevencija .guide-hierarchy button:nth-child(5) { background: #f2f2ee; border-left-color: #c2c3b9; }
+#prevencija .guide-hierarchy button:hover { border-left-color: #426f50; }
+#prevencija .guide-hierarchy button[aria-pressed='true'] {
+  background: #205e47;
+  color: white;
+  border-left-color: #b9d29e;
+  font-weight: 700;
+}
+#prevencija .guide-topic-photo {
+  height: 110px;
+  aspect-ratio: auto;
+  object-fit: cover;
+  object-position: center;
+}
+#prevencija .guide-topic-body { padding: 16px; }
+#prevencija .guide-topic-body h3 { margin: 0 0 8px; line-height: 1.3; }
+#prevencija .guide-topic-body > p { margin: 0 0 12px; line-height: 1.6; }
+#prevencija .guide-topic-body ul { padding-left: 17px; margin: 0 0 14px; }
+#prevencija .guide-topic-body li { padding-left: 2px; line-height: 1.6; margin-bottom: 7px; }
+#prevencija .guide-topic-body > a:first-of-type { margin-top: auto; }
+#prevencija .guide-topic-body .guide-source { margin-top: 8px; line-height: 1.5; }
+@media (max-width: 600px) {
+  #prevencija .guide-topic-photo { width: 60px; height: 60px; }
+  #prevencija .guide-topic-body { padding: 14px; }
+  #prevencija .guide-topic-body ul { margin-top: 14px; }
+}
+
+#prevencija > .guide-hierarchy-intro {
+  margin: 20px 0 8px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+#prevencija .guide-hierarchy { margin-top: 0; }
+/* Consistent editorial rhythm inside the two EU disclosures. */
+#ciljevi .guide-eu-accordion { border-top: 1px solid #d3dfcb; overflow: hidden; }
+#ciljevi .guide-eu-accordion > summary { padding: 18px 20px; background: #f5f8f1; }
+#ciljevi .guide-eu-accordion-body { padding: 20px; gap: 20px; align-items: start; }
+#ciljevi .guide-ppwr-ideas { grid-template-columns: 1fr; gap: 0; margin: 16px 0; }
+#ciljevi .guide-ppwr-ideas > div { padding: 10px 0; border: 0; border-bottom: 1px solid #e3e9dd; }
+#ciljevi .guide-ppwr-ideas > div:first-child { padding-top: 0; }
+#ciljevi .guide-ppwr-ideas h4 { margin-bottom: 3px; }
+#ciljevi .guide-ppwr-ideas p { margin: 0; }
+#ciljevi .guide-ppwr-timing { padding: 16px; background: #f5f7f1; border: 1px solid #e1e7da; }
+#ciljevi .guide-ppwr-main > p:last-child { font-size: 11.5px; margin-top: 12px; }
+#ciljevi .guide-ppwr-sources { margin: 0; padding-top: 14px; }
+#ciljevi .guide-green-intro p { max-width: none; }
+#ciljevi .guide-green-goals { gap: 0; border: 1px solid #e1e7da; border-radius: 8px; overflow: hidden; background: #f7f9f4; }
+#ciljevi .guide-green-goals > div,
+#ciljevi .guide-green-goals .guide-green-circular { padding: 16px; border: 0; border-radius: 0; background: transparent; }
+#ciljevi .guide-green-goals > div + div { border-left: 1px solid #e1e7da; }
+#ciljevi .guide-green-circular .guide-ppwr-kicker { display: none; }
+#ciljevi .guide-green-goals h4 { margin-bottom: 6px; }
+#ciljevi .guide-green-practice { padding-top: 16px; }
+#ciljevi .guide-green-steps { gap: 12px; margin: 14px 0; }
+#ciljevi .guide-green-connection { padding: 12px 14px; background: #f7f9f4; border-left: 2px solid #a4b993; }
+@media (max-width: 600px) {
+  #ciljevi .guide-eu-accordion > summary { padding: 16px; }
+  #ciljevi .guide-eu-accordion-body { padding: 16px; gap: 16px; }
+  #ciljevi .guide-green-goals > div + div { border-left: 0; border-top: 1px solid #e1e7da; }
+}
+
+#prevencija > h2 + p { font-size: 14px; }
+#prevencija > .guide-hierarchy-intro { font-size: 16px; }
+#prevencija .guide-topic-body > p,
+#prevencija .guide-topic-body li { font-size: 13px; }
+#prevencija .guide-topic-body .guide-source { font-size: 10.5px; }
+
+#cinjenice .guide-fact-body > p { font-size: 14px; }
+/* EU mini infographics: principles rather than additional large cards. */
+#ciljevi .guide-ppwr > .guide-eu-accordion-body { grid-template-columns: 1fr; gap: 18px; }
+#ciljevi .guide-ppwr-ideas { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; counter-reset: ppwr-idea; }
+#ciljevi .guide-ppwr-ideas > div { position: relative; counter-increment: ppwr-idea; padding: 0; border: 0; }
+#ciljevi .guide-ppwr-ideas > div::after { content: '0' counter(ppwr-idea); position: absolute; right: 0; top: 0; font-size: 11px; color: #697c64; }
+#ciljevi .guide-ppwr-ideas .icon { width: 24px; height: 24px; color: #587e46; margin-bottom: 10px; }
+#ciljevi .guide-ppwr-ideas h4 { font-size: 14px; margin-bottom: 6px; }
+#ciljevi .guide-ppwr-ideas p { font-size: 13px; }
+#ciljevi .guide-ppwr-timing { display: grid; grid-template-columns: 130px 1fr; gap: 10px 20px; padding: 14px 16px; border: 0; }
+#ciljevi .guide-ppwr-timing .guide-ppwr-section-label { margin: 0; align-self: center; }
+#ciljevi .guide-ppwr-dates { grid-template-columns: 1fr 1fr; gap: 20px; }
+#ciljevi .guide-ppwr-dates > div + div { border: 0; padding-top: 0; }
+#ciljevi .guide-ppwr-timing > .guide-small { grid-column: 2; margin: 0; }
+#ciljevi .guide-green-intro { display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: 24px; align-items: center; }
+#ciljevi .guide-green-year { text-align: center; padding: 12px 16px 12px 0; border-right: 1px solid #dce5d5; }
+#ciljevi .guide-green-year strong { display: block; font-size: 34px; line-height: 1.2; color: #205e47; }
+#ciljevi .guide-green-year span { display: block; font-size: 11px; margin-top: 6px; color: #586e61; }
+#ciljevi .guide-green-goals { background: transparent; border: 0; border-radius: 0; gap: 22px; }
+#ciljevi .guide-green-goals > div,
+#ciljevi .guide-green-goals .guide-green-circular { padding: 14px 0; border: 0; border-top: 1px solid #dce5d5; }
+#ciljevi .guide-green-goals .icon { color: #587e46; margin-bottom: 8px; width: 23px; height: 23px; }
+#ciljevi .guide-green-body h4 { font-size: 14px; }
+#ciljevi .guide-green-body p { font-size: 13px; }
+#ciljevi .guide-green-steps { gap: 0; margin: 22px 0 14px; }
+#ciljevi .guide-green-steps li { position: relative; padding: 14px 16px 0 0; border-top: 1px solid #cbdac1; }
+#ciljevi .guide-green-steps li::before { position: absolute; right: 16px; top: 17px; margin: 0; }
+#ciljevi .guide-green-steps .icon { display: block; margin-bottom: 10px; color: #587e46; }
+#ciljevi .guide-green-steps strong { display: block; font-size: 14px; margin-bottom: 5px; }
+#ciljevi .guide-green-steps span { font-size: 13px; }
+@media (max-width: 600px) {
+  #ciljevi .guide-ppwr-ideas { grid-template-columns: 1fr; gap: 18px; }
+  #ciljevi .guide-ppwr-ideas > div { padding: 0 0 12px; border-bottom: 1px solid #e3e9dd; }
+  #ciljevi .guide-ppwr-timing { grid-template-columns: 1fr; }
+  #ciljevi .guide-ppwr-timing > .guide-small { grid-column: 1; }
+  #ciljevi .guide-ppwr-dates { grid-template-columns: 1fr; gap: 12px; }
+  #ciljevi .guide-green-intro { grid-template-columns: 1fr; gap: 16px; }
+  #ciljevi .guide-green-year { text-align: left; border: 0; padding: 0; }
+  #ciljevi .guide-green-goals { gap: 0; }
+  #ciljevi .guide-green-steps { gap: 18px 8px; }
+}
+#ciljevi .guide-green-goals > div + div { border-left: 0; }
+/* Subtle framing and more readable PPWR copy. */
+#ciljevi .guide-ppwr-ideas { gap: 14px; }
+#ciljevi .guide-ppwr-ideas > div,
+#ciljevi .guide-ppwr-ideas > div:first-child {
+  padding: 16px;
+  border: 1px solid #dfe7d8;
+  border-radius: 8px;
+  background: #fafbf7;
+}
+#ciljevi .guide-ppwr-ideas > div::after { top: 16px; right: 16px; }
+#ciljevi .guide-ppwr-ideas h4 { font-size: 15px; }
+#ciljevi .guide-ppwr-ideas p,
+#ciljevi .guide-ppwr-main > p:not(.guide-ppwr-section-label) { font-size: 14px; }
+#ciljevi .guide-ppwr-dates dt,
+#ciljevi .guide-ppwr-timing > .guide-small { font-size: 12px; }
+#ciljevi .guide-ppwr-dates dd { font-size: 15px; }
+#ciljevi .guide-ppwr-timing > .guide-small { grid-column: 1 / -1; }
+/* Dates share one heading and a clearly separated explanatory footer. */
+#ciljevi .guide-ppwr-timing {
+  grid-template-columns: 1fr;
+  gap: 14px;
+  padding: 18px;
+}
+#ciljevi .guide-ppwr-timing .guide-ppwr-section-label { align-self: start; }
+#ciljevi .guide-ppwr-dates { gap: 18px 28px; }
+#ciljevi .guide-ppwr-timing > .guide-small {
+  grid-column: 1;
+  border-top: 1px solid #dfe7d8;
+  padding-top: 12px;
+  margin: 0;
+  line-height: 1.6;
+}
+/* Green Deal: calm, scannable visual groups. */
+#ciljevi .guide-green-body { gap: 20px; }
+#ciljevi .guide-green-intro { grid-template-columns: 180px minmax(0, 1fr); }
+#ciljevi .guide-green-year { padding: 18px; border: 1px solid #e2e8dc; border-radius: 10px; background: #f3f6ef; text-align: left; display: grid; grid-template-columns: 30px 1fr; gap: 6px 10px; align-items: center; }
+#ciljevi .guide-green-year > .icon { width: 28px; height: 28px; color: #638354; }
+#ciljevi .guide-green-year strong { font-size: 34px; }
+#ciljevi .guide-green-year span { grid-column: 2; font-size: 12px; margin: 0; }
+#ciljevi .guide-green-body > .guide-green-areas-title { margin: 0 0 -8px; font-size: 16px; }
+#ciljevi .guide-green-goals { gap: 14px; }
+#ciljevi .guide-green-goals > div,
+#ciljevi .guide-green-goals .guide-green-circular { display: grid; grid-template-columns: 40px 1fr; gap: 6px 12px; padding: 16px; border: 1px solid #e2e7dc; border-radius: 10px; background: #fafbf8; align-content: start; }
+#ciljevi .guide-green-goals > div + div { border-left: 1px solid #e2e7dc; }
+#ciljevi .guide-green-goals .icon { grid-row: 1 / 3; box-sizing: content-box; width: 24px; height: 24px; padding: 8px; margin: 0; background: #edf2e7; border-radius: 50%; }
+#ciljevi .guide-green-goals h4 { margin: 0; font-size: 14px; }
+#ciljevi .guide-green-goals p { grid-column: 2; }
+#ciljevi .guide-green-practice { border: 1px solid #e5eadd; padding: 18px; border-radius: 10px; background: #f5f7f1; }
+#ciljevi .guide-green-practice > h4 { font-size: 17px; }
+#ciljevi .guide-green-steps { gap: 12px; margin-top: 18px; }
+#ciljevi .guide-green-steps li { padding: 14px; background: #fff; border: 1px solid #e5eadd; border-radius: 9px; }
+#ciljevi .guide-green-steps li::before { right: 14px; top: 17px; }
+#ciljevi .guide-green-steps .icon { width: 25px; height: 25px; padding: 7px; background: #f0f4e9; border-radius: 8px; }
+#ciljevi .guide-green-practice .guide-small { margin-top: 14px; line-height: 1.6; }
+@media (max-width: 1100px) {
+ #ciljevi .guide-green-goals { grid-template-columns: 1fr; }
+ #ciljevi .guide-green-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+ #ciljevi .guide-green-intro { grid-template-columns: 1fr; gap: 16px; }
+ #ciljevi .guide-green-year { max-width: 200px; }
+ #ciljevi .guide-green-practice { padding: 14px; }
+}
+@media (max-width: 360px) {
+ #ciljevi .guide-green-steps { grid-template-columns: 1fr; }
+}
+#ciljevi .guide-green-intro { grid-template-columns: 180px minmax(0, 1fr) 230px; }
+#ciljevi .guide-green-landscape { display: block; width: 100%; height: auto; align-self: end; }
+@media (max-width: 1100px) {
+ #ciljevi .guide-green-intro { grid-template-columns: 160px minmax(0, 1fr); }
+ #ciljevi .guide-green-landscape { grid-column: 2; width: 180px; justify-self: end; }
+}
+@media (max-width: 600px) {
+ #ciljevi .guide-green-intro { grid-template-columns: 1fr; }
+ #ciljevi .guide-green-landscape { grid-column: 1; width: 160px; margin-top: -4px; }
+}
+#ciljevi .guide-ppwr-intro { display: grid; grid-template-columns: 150px minmax(0, 1fr); align-items: center; gap: 22px; margin-bottom: 20px; }
+#ciljevi .guide-packaging-art { width: 150px; height: auto; }
+#ciljevi .guide-ppwr-intro > div { border-left: 1px solid #dce5d5; padding-left: 22px; }
+#ciljevi .guide-ppwr-intro h4 { font-size: 18px; margin: 0 0 8px; }
+#ciljevi .guide-ppwr-intro p { font-size: 14px; line-height: 1.65; margin: 0; }
+#ciljevi .guide-ppwr-ideas > div > div { display: grid; grid-template-columns: 42px 1fr; gap: 6px 12px; }
+#ciljevi .guide-ppwr-ideas .icon { grid-row: 1 / 3; box-sizing: content-box; width: 26px; height: 26px; padding: 8px; margin: 0; background: #edf2e6; border-radius: 10px; }
+#ciljevi .guide-ppwr-ideas h4 { padding-right: 18px; margin: 0; }
+#ciljevi .guide-ppwr-ideas p { grid-column: 2; }
+#ciljevi .guide-ppwr-ideas > div::after { background: #edf2e6; padding: 3px 5px; border-radius: 6px; font-size: 10px; top: 10px; right: 10px; }
+#ciljevi .guide-ppwr-main > .guide-ppwr-practical { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; background: #f5f7f2; border-radius: 8px; font-size: 13px; }
+#ciljevi .guide-ppwr-practical > .icon { flex-shrink: 0; margin-top: 2px; color: #638354; }
+@media (max-width: 600px) {
+ #ciljevi .guide-ppwr-intro { grid-template-columns: 1fr; gap: 12px; }
+ #ciljevi .guide-packaging-art { width: 110px; }
+ #ciljevi .guide-ppwr-intro > div { padding-left: 0; border: 0; }
+}
+
+#ciljevi .guide-eu-context-note { display: flex; align-items: flex-start; gap: 10px; margin-top: 16px; padding: 12px 14px; border: 1px solid #e0e7da; border-radius: 8px; background: #f7f9f4; color: #526650; }
+#ciljevi .guide-eu-context-note > .icon { flex-shrink: 0; margin-top: 2px; }
+#ciljevi .guide-eu-context-note p { margin: 0; font-size: 13px; line-height: 1.6; }
+@media (min-width: 601px) {
+  #ciljevi .guide-ppwr-dates { grid-template-columns: 0.85fr 1.15fr; }
+}
+/* Sorting guide: visual entry points and a structured instruction panel. */
+#odvajanje .guide-search-grid { align-items: start; }
+#odvajanje .guide-results.is-popular { max-height: none; gap: 10px; }
+#odvajanje .guide-results button { display: flex; gap: 12px; align-items: center; }
+#odvajanje .guide-results .guide-result-copy { flex: 1; min-width: 0; text-align: left; font-weight: 650; }
+#odvajanje .guide-results small { display: block; font-weight: 400; line-height: 1.5; margin-top: 4px; }
+#odvajanje .guide-item-symbol { width: 25px; height: 25px; flex-shrink: 0; color: #527940; }
+#odvajanje .guide-results .guide-item-symbol,
+#odvajanje .guide-related .guide-item-symbol { box-sizing: content-box; padding: 10px; background: #edf3e7; border-radius: 50%; }
+#odvajanje .guide-results.is-popular button { min-height: 86px; padding: 12px; background: #fafbf8; border-radius: 10px; }
+#odvajanje .guide-results button[aria-pressed='true'] { background: #edf3e5; border-color: #9bb68a; }
+#odvajanje .guide-item { padding: 0; overflow: hidden; background: #fff; border: 1px solid #dce5d5; }
+#odvajanje .guide-item-heading { display: flex; gap: 16px; justify-content: space-between; align-items: center; padding: 22px; background: #f5f8ef; border-bottom: 1px solid #e1e8d9; }
+#odvajanje .guide-item-heading h3 { margin: 8px 0 0; font-size: 25px; line-height: 1.3; }
+#odvajanje .guide-item-heading > .guide-item-symbol { width: 64px; height: 64px; color: #63864b; }
+#odvajanje .guide-item dl { margin: 0; padding: 6px 22px 0; }
+#odvajanje .guide-item dt { position: relative; padding-left: 40px; margin: 0; padding-top: 18px; font-size: 14px; }
+#odvajanje .guide-item dt .icon { position: absolute; left: 0; top: 18px; color: #63864b; }
+#odvajanje .guide-item dd { margin: 0; padding: 6px 0 16px 40px; border-bottom: 1px solid #e4e9df; font-size: 14px; }
+#odvajanje .guide-item dd:last-child { border-bottom: 0; }
+#odvajanje .guide-item > p,
+#odvajanje .guide-item > .guide-map-link { margin-left: 22px; margin-right: 22px; }
+#odvajanje .guide-item > p:last-child { margin-bottom: 22px; }
+#odvajanje .guide-item .guide-local { background: #f1f6e9; padding: 12px 14px; border-left: 3px solid #b3c99d; border-radius: 5px; line-height: 1.6; }
+#odvajanje .guide-item.is-empty { background: #f8faf5; padding: 22px; text-align: center; }
+#odvajanje .guide-sorting-art { display: block; width: min(100%, 310px); height: auto; margin: 0 auto 14px; }
+#odvajanje .is-empty .guide-item-heading { display: block; padding: 0; border: 0; background: transparent; }
+#odvajanje .is-empty .guide-eyebrow { display: none; }
+#odvajanje .is-empty .guide-item-heading h3 { font-size: 22px; margin: 0 0 12px; }
+#odvajanje .guide-item > .guide-empty-copy { margin: 0; font-size: 14px; line-height: 1.7; }
+#odvajanje .guide-empty-features { list-style: none; display: flex; justify-content: center; flex-wrap: wrap; gap: 12px 18px; padding: 0; margin: 24px 0 0; }
+#odvajanje .guide-empty-features li { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #496944; }
+#odvajanje .guide-related ul { grid-template-columns: 1fr; }
+#odvajanje .guide-related button { display: flex; align-items: center; gap: 10px; font-size: 13px; padding: 10px; }
+#odvajanje .guide-related button > span:first-of-type { flex: 1; text-align: left; }
+#odvajanje .guide-related small { display: block; font-size: 11px; margin-top: 4px; font-weight: 400; }
+@media (max-width: 600px) {
+ #odvajanje .guide-results.is-popular { grid-template-columns: 1fr; }
+ #odvajanje .guide-results.is-popular button { min-height: 72px; }
+ #odvajanje .guide-item-heading { padding: 18px; }
+ #odvajanje .guide-item-heading h3 { font-size: 23px; }
+ #odvajanje .guide-item-heading > .guide-item-symbol { width: 46px; height: 46px; }
+ #odvajanje .guide-item dl { padding-left: 16px; padding-right: 16px; }
+ #odvajanje .guide-item.is-empty { padding: 18px; }
+ #odvajanje .guide-sorting-art { max-width: 230px; }
+}

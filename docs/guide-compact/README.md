@@ -82,3 +82,9 @@ docker compose exec -T frontend npm run build
 ```
 
 Skripta unaprijed provjerava sve SHA-256 vrijednosti. Naknadne izmjene zaustavljaju je bez pisanja. Vraća samo četiri arhivirane datoteke Guidea/testa, ne koristi Git i ne briše slike ili druge datoteke. `original` vraća i tadašnji izbor vizuala; sadašnji mali licencirani vizuali dio su nove kompaktne verzije. Izvorni arhiv je `docs/guide-redesign/before-source.tar.gz`, a stanje prije ovog koraka `docs/guide-compact/before-source.tar.gz`. Nemoj ih brisati dok želiš mogućnost vraćanja.
+
+### Naknadno usklađenje zaglavlja
+
+Na zahtjev korisnice naslov sada koristi istu veličinu, težinu, prored i gornji razmak kao Home. Ikona knjige prikazana je zajedničkim `heading-art` okvirom s dvije kružne linije i točkom, umjesto zasebnog četvrtastog okvira. Natpis je „EKO VODIČ · ODRŽIVOST”, a opis „Naučite kako pravilno odvajati otpad, smanjiti njegov nastanak i svakodnevnim odlukama pridonijeti održivijoj budućnosti.”
+
+Proširena browser provjera uspoređuje font naslova i položaj nadnaslova prema donjem rubu gornje trake s Homeom na 1440, 820 i 390 px. Prolazi; također prolaze preostalih 18 Guide provjera, uključujući prvi prikaz pretrage na četiri širine. TypeScript i build prolaze. [Zaglavlje desktop](previews/header-desktop.png), [zaglavlje mobitel](previews/header-mobile.png). Manifest vraćanja ažuriran je na ovo konačno stanje.
