@@ -435,7 +435,7 @@ export default function Simulator() {
               </label>
               <p className="draft-status" role="status">
                 {dirty
-                  ? 'Nespremljene promjene · valjani nacrt obnavlja se u ovoj kartici preglednika.'
+                  ? 'Promjene se čuvaju privremeno; za trajno spremanje izvezite PDF izvještaj.'
                   : 'Radni scenarij · izvještaj možete spremiti kao PDF.'}
               </p>
               <fieldset>
@@ -545,8 +545,7 @@ export default function Simulator() {
                 />
               )}
               <p className="small-muted scenario-input-note">
-                Promjena cilja stvara vlastiti cilj. Račun koristi nezaokruženu početnu stopu iz
-                masa. Scenariji su neovisne alternative, ne uzastopni koraci.
+                Svaki scenarij prikazuje zasebnu mogućnost promjene u odnosu na isto početno stanje.
               </p>
               <div className="scenario-add-action">
                 <button
@@ -835,19 +834,47 @@ export default function Simulator() {
                   {compact && chartData.length > 3 && (
                     <p className="chart-scroll-hint">Pomaknite graf vodoravno za sve scenarije.</p>
                   )}
-                  <div className="simulator-rates">
-                    {data.scenarios.map((s, i) => (
-                      <article key={i}>
-                        <span>{s.input.name}</span>
-                        <strong>{number(s.result.rate_pct)} %</strong>
-                        <small>
-                          {number(s.initial.rate_pct)} % → {number(s.result.rate_pct)} %
-                        </small>
-                      </article>
-                    ))}
-                  </div>
                 </>
               ) : null}
+              <div className="simulator-rates">
+                {data.scenarios.map((s, i) => (
+                  <article key={i}>
+                    <div className="scenario-summary-result">
+                      <span>
+                        {s.input.name} · {modelName(s.input.model)}
+                      </span>
+                      <strong>{number(s.result.rate_pct)} %</strong>
+                    </div>
+                    <dl className="scenario-summary-facts">
+                      <div>
+                        <dt>Odvojeno sakupljanje</dt>
+                        <dd>
+                          {number(s.initial.rate_pct)} % → {number(s.result.rate_pct)} %
+                        </dd>
+                      </div>
+                      <div>
+                        <dt>
+                          {s.input.kind === 'target'
+                            ? 'Ciljni postotak odvojenog sakupljanja'
+                            : 'Smanjenje miješanog otpada'}
+                        </dt>
+                        <dd>
+                          {number(Number(s.input.value) * (s.input.kind === 'fraction' ? 100 : 1))}{' '}
+                          {s.input.kind === 'tonnes' ? 't' : '%'}
+                        </dd>
+                      </div>
+                      <div>
+                        <dt>
+                          {s.input.model === 'diversion'
+                            ? 'Preusmjereno u odvojeno sakupljanje'
+                            : 'Spriječen nastanak miješanog otpada'}
+                        </dt>
+                        <dd>{number(s.change_t)} t</dd>
+                      </div>
+                    </dl>
+                  </article>
+                ))}
+              </div>
               <div
                 className={`simulator-table ${table ? '' : 'print-only'}`}
                 tabIndex={0}
@@ -912,34 +939,6 @@ export default function Simulator() {
                     ))}
                   </tbody>
                 </table>
-              </div>
-              <div className="simulator-report-inputs">
-                {data.scenarios.map((s, i) => (
-                  <details key={i}>
-                    <summary>
-                      {s.input.name} · {modelName(s.input.model)}
-                    </summary>
-                    <p>
-                      Unos:{' '}
-                      {s.input.kind === 'target'
-                        ? 'ciljna stopa (%)'
-                        : s.input.kind === 'fraction'
-                          ? 'udio miješanog (0–1)'
-                          : 'tone'}{' '}
-                      = {number(s.input.value)}. Potrebna promjena: {number(s.change_t)} t.
-                    </p>
-                    {s.reference && (
-                      <p>
-                        Referenca: {s.reference.municipality.name}, {s.reference.observation.year}.,
-                        objavljena stopa{' '}
-                        {number(s.reference.observation.metrics.separate_collection_pct.value)} %.
-                        Izvor: {s.reference.observation.source.path}, redak{' '}
-                        {s.reference.observation.source_row}, SHA-256:{' '}
-                        {s.reference.observation.source.sha256}.
-                      </p>
-                    )}
-                  </details>
-                ))}
               </div>
               <div className="simulator-toolbar no-print">
                 <button className="button secondary" onClick={() => window.print()}>

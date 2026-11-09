@@ -144,7 +144,7 @@ export function Trends({
         </div>
         <span className={`badge ${connected ? 'neutral' : 'warning'}`}>
           <Icon name="info" />
-          {connected ? 'Usporedivi podaci' : 'Uvjetna usporedivost'}
+          {connected ? 'Usporedivi podaci' : 'Podaci među godinama nisu potpuno usporedivi'}
         </span>
       </div>
       {view === 'chart' ? (

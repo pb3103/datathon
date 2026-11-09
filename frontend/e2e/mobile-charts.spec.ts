@@ -44,18 +44,18 @@ async function legendFits(panel: import('@playwright/test').Locator) {
   await expect(panel.locator('.recharts-label').last()).toBeVisible();
 }
 
-test('mobile search and map fit together in one viewport', async ({ page }) => {
+test('mobile search and taller map fit within the page width', async ({ page }) => {
   for (const width of [320, 390]) {
     await page.setViewportSize({ width, height: 844 });
     await page.goto('/');
     const discovery = page.locator('.home-discovery');
     await discovery.scrollIntoViewIfNeeded();
     const panel = await discovery.boundingBox();
-    expect(panel!.height).toBeLessThan(720);
+    expect(panel!.height).toBeLessThan(940);
     await expect(discovery.getByRole('combobox', { name: 'Grad ili općina' })).toBeVisible();
     const map = await page.locator('.recycling-map').boundingBox();
-    expect(map!.height).toBeGreaterThanOrEqual(210);
-    expect(map!.height).toBeLessThanOrEqual(265);
+    expect(map!.height).toBeGreaterThanOrEqual(320);
+    expect(map!.height).toBeLessThanOrEqual(440);
     await noOverflow(page);
     await discovery.screenshot({ path: `test-results/mobile-map-${width}.png` });
   }

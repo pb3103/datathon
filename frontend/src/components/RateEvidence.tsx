@@ -10,9 +10,6 @@ export function RateEvidence({
   if (!historical.length) return null;
   return (
     <div className="rate-method-note rate-evidence-compact">
-      <a className="rate-notes-link" href="#data-notes">
-        O udjelima, stopama i usporedivosti ↑
-      </a>
       <details>
         <summary>Kako se izračunava udio?</summary>
         <p>

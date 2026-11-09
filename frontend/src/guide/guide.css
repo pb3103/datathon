@@ -27,7 +27,7 @@
   margin: 0;
 }
 .guide-eyebrow {
-  font-size: 12px;
+  font-size: var(--desktop-text-12, 12px);
   letter-spacing: 1.7px;
   text-transform: uppercase;
   font-weight: 650;
@@ -73,7 +73,7 @@
   border: 1px solid #dce5d5;
   border-radius: 10px;
   color: #365e43;
-  font-size: 12px;
+  font-size: var(--desktop-text-12, 12px);
   box-shadow: 0 5px 18px #263f2b0a;
 }
 .guide-hero-photo-label svg {
@@ -101,13 +101,13 @@
   border: 1px solid transparent;
   border-radius: 8px;
   text-decoration: none;
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
   transition:
     background 0.15s,
     border-color 0.15s;
 }
 .guide-nav a > span {
-  font-size: 11px;
+  font-size: var(--desktop-text-11, 11px);
   color: #526b48;
 }
 .guide-nav a:hover {
@@ -190,7 +190,7 @@
   padding: 8px;
   border: 0;
   background: transparent;
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
   border-radius: 6px;
 }
 .guide-search-input button:hover {
@@ -230,7 +230,7 @@
 }
 .guide-results small {
   display: block;
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
   font-weight: 400;
   color: #586e61;
   margin-top: 3px;
@@ -247,7 +247,7 @@
   margin: 8px 0 20px;
 }
 .guide-item dt {
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
   font-weight: 650;
   margin-top: 18px;
 }
@@ -263,7 +263,7 @@
 }
 .guide-small,
 .guide-source {
-  font-size: 13.5px;
+  font-size: var(--desktop-text-13-5, 13.5px);
   line-height: 1.6;
 }
 .guide-small {
@@ -320,7 +320,7 @@
   font-size: 14px;
 }
 .guide-hierarchy button span {
-  font-size: 12px;
+  font-size: var(--desktop-text-12, 12px);
   opacity: 0.8;
 }
 .guide-hierarchy button:hover {
@@ -342,7 +342,7 @@
   font-size: 15px;
 }
 .guide-hierarchy strong {
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
 }
 .guide-topic-grid {
   display: grid;
@@ -406,7 +406,7 @@
   margin-bottom: 8px;
 }
 .guide-topic-body > a:not(.guide-source) {
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
   font-weight: 600;
   text-decoration: none;
   border-top: 1px solid #e3e9de;
@@ -415,7 +415,7 @@
 .guide-topic-body .guide-source {
   display: block;
   margin-top: 8px;
-  font-size: 12.5px;
+  font-size: var(--desktop-text-12-5, 12.5px);
   color: #536c50;
 }
 .guide-section--targets {
@@ -437,7 +437,7 @@
   border-left: 0;
 }
 .guide-targets article > span {
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
   color: #50694b;
 }
 .guide-targets strong {
@@ -453,7 +453,7 @@
   margin: 10px 0;
 }
 .guide-targets .guide-source {
-  font-size: 12.5px;
+  font-size: var(--desktop-text-12-5, 12.5px);
 }
 .guide-facts {
   display: grid;
@@ -492,7 +492,7 @@
   flex-direction: column;
 }
 .guide-fact-topic {
-  font-size: 11px;
+  font-size: var(--desktop-text-11, 11px);
   font-weight: 650;
   letter-spacing: 1.4px;
   text-transform: uppercase;
@@ -510,7 +510,7 @@
   color: #52645a;
 }
 .guide-fact .guide-action {
-  font-size: 13.5px;
+  font-size: var(--desktop-text-13-5, 13.5px);
   color: #356647;
 }
 .guide-action > span {
@@ -522,7 +522,7 @@
   margin-top: auto;
   padding-top: 14px;
   border-top: 1px solid #e4eadd;
-  font-size: 12.5px;
+  font-size: var(--desktop-text-12-5, 12.5px);
 }
 .guide-fact--2 {
   background: #edf3ef;
@@ -638,7 +638,7 @@
 }
 .guide-maintenance {
   color: #586e61;
-  font-size: 13.5px;
+  font-size: var(--desktop-text-13-5, 13.5px);
   max-width: 950px;
   padding: 0 0 16px;
 }
@@ -713,7 +713,7 @@
     left: auto;
     right: 12px;
     bottom: 10px;
-    font-size: 11px;
+    font-size: var(--desktop-text-11, 11px);
     padding: 7px 10px;
   }
   .guide-hero-link {
@@ -727,7 +727,7 @@
     padding-bottom: 16px;
   }
   .guide-nav a {
-    font-size: 12px;
+    font-size: var(--desktop-text-12, 12px);
     padding: 8px 9px;
   }
   .guide-section {
@@ -795,7 +795,7 @@
     padding: 18px 14px;
   }
   .guide-hero-photo-label {
-    font-size: 10px;
+    font-size: var(--desktop-text-10, 10px);
   }
   .guide-targets article {
     padding-right: 12px;
@@ -865,7 +865,7 @@
   border-color: #afc29b;
 }
 .guide-results button[aria-pressed='true'] > span:last-child {
-  font-size: 12px;
+  font-size: var(--desktop-text-12, 12px);
   font-weight: 600;
 }
 .guide-ppwr {
@@ -907,7 +907,7 @@
   font-weight: 650;
 }
 .guide-ppwr-ideas p {
-  font-size: 13.5px;
+  font-size: var(--desktop-text-13-5, 13.5px);
   margin: 0;
   color: #54674f;
 }
@@ -920,7 +920,7 @@
   border-top: 1px solid #e0e7d8;
 }
 .guide-ppwr-dates dt {
-  font-size: 12.5px;
+  font-size: var(--desktop-text-12-5, 12.5px);
   color: #53664f;
 }
 .guide-ppwr-dates dd {
@@ -946,25 +946,25 @@
 }
 .guide-stat-number span {
   display: block;
-  font-size: 13.5px;
+  font-size: var(--desktop-text-13-5, 13.5px);
   margin-top: 5px;
 }
 .guide-stat-year {
-  font-size: 12px;
+  font-size: var(--desktop-text-12, 12px);
   font-weight: 600;
   color: #4e6846;
   margin-bottom: 12px;
 }
 .guide-stat-details {
   margin-top: 12px;
-  font-size: 12.5px;
+  font-size: var(--desktop-text-12-5, 12.5px);
 }
 .guide-stat-details summary {
   color: #45663b;
   line-height: 1.5;
 }
 .guide-stat-details p {
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
   margin: 8px 0;
 }
 .guide-stat-details .guide-source {
@@ -1006,7 +1006,7 @@
   margin-top: 0;
 }
 .guide-food-statistic .guide-source {
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
 }
 @media (max-width: 760px) {
   .guide-food-statistic {
@@ -1044,7 +1044,7 @@
 }
 .guide-hero .guide-eyebrow {
   margin-bottom: 10px;
-  font-size: 11px;
+  font-size: var(--desktop-text-11, 11px);
 }
 .guide-hero-copy > p:last-of-type {
   max-width: 760px;
@@ -1109,7 +1109,7 @@
   scroll-margin-top: 100px;
 }
 .guide-section > .guide-eyebrow {
-  font-size: 11px;
+  font-size: var(--desktop-text-11, 11px);
   margin-bottom: 8px;
 }
 .guide-section h2 {
@@ -1139,7 +1139,7 @@
   padding: 10px 4px;
 }
 .guide-search-grid label {
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
 }
 .guide-results {
   max-height: 278px;
@@ -1151,7 +1151,7 @@
   min-height: 50px;
 }
 .guide-results small {
-  font-size: 12px;
+  font-size: var(--desktop-text-12, 12px);
 }
 .guide-item {
   padding: 20px;
@@ -1170,15 +1170,15 @@
 }
 .guide-item dt {
   margin-top: 15px;
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
 }
 .guide-item .guide-eyebrow {
-  font-size: 11px;
+  font-size: var(--desktop-text-11, 11px);
 }
 .guide-item .guide-small,
 .guide-item .guide-source,
 .guide-item .guide-local {
-  font-size: 12.5px;
+  font-size: var(--desktop-text-12-5, 12.5px);
 }
 .guide-related {
   margin-top: 16px;
@@ -1191,12 +1191,12 @@
   height: 100%;
   padding: 9px;
   min-height: 44px;
-  font-size: 12px;
+  font-size: var(--desktop-text-12, 12px);
   background: white;
   gap: 6px;
 }
 .guide-search-grid > div > .guide-small {
-  font-size: 12.5px;
+  font-size: var(--desktop-text-12-5, 12.5px);
   margin: 10px 0;
 }
 .guide-hierarchy {
@@ -1218,7 +1218,7 @@
   width: 100%;
   border-radius: 6px;
   padding: 10px;
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
   min-height: 44px;
   background: white;
   gap: 10px;
@@ -1236,7 +1236,7 @@
   background: #205e47;
 }
 .guide-hierarchy button span {
-  font-size: 11px;
+  font-size: var(--desktop-text-11, 11px);
   opacity: 1;
 }
 .guide-hierarchy > div:last-child {
@@ -1253,7 +1253,7 @@
 }
 .guide-hierarchy .guide-small,
 .guide-hierarchy .guide-source {
-  font-size: 12px;
+  font-size: var(--desktop-text-12, 12px);
 }
 .guide-topic-grid {
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1282,18 +1282,18 @@
   margin-bottom: 8px;
 }
 .guide-topic-body > p {
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
   margin-bottom: 10px;
 }
 .guide-topic-body li {
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
   margin-bottom: 6px;
 }
 .guide-topic-body ul {
   margin-bottom: 12px;
 }
 .guide-topic-body .guide-source {
-  font-size: 11.5px;
+  font-size: var(--desktop-text-11-5, 11.5px);
 }
 .guide-section--targets {
   background: white;
@@ -1312,7 +1312,7 @@
   background: #fafcf7;
 }
 .guide-targets article > span {
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
   font-weight: 600;
 }
 .guide-targets strong {
@@ -1320,11 +1320,11 @@
   margin-top: 6px;
 }
 .guide-targets p {
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
   margin: 8px 0;
 }
 .guide-targets .guide-source {
-  font-size: 11.5px;
+  font-size: var(--desktop-text-11-5, 11.5px);
 }
 .guide-targets .guide-target-landfill {
   grid-column: 1 / -1;
@@ -1345,7 +1345,7 @@
 }
 .guide-section--targets > .guide-local {
   max-width: none;
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
 }
 .guide-ppwr {
   margin-top: 18px;
@@ -1364,7 +1364,7 @@
 }
 .guide-ppwr > p:not(.guide-eyebrow),
 .guide-ppwr-ideas p {
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
 }
 .guide-section--facts {
   background: white;
@@ -1400,7 +1400,7 @@
   letter-spacing: -0.2px;
 }
 .guide-fact-topic {
-  font-size: 10px;
+  font-size: var(--desktop-text-10, 10px);
 }
 .guide-fact-toggle {
   position: absolute;
@@ -1417,14 +1417,14 @@
   padding: 0 16px 16px;
 }
 .guide-fact p {
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
   margin-bottom: 10px;
 }
 .guide-fact .guide-action {
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
 }
 .guide-fact .guide-source {
-  font-size: 12px;
+  font-size: var(--desktop-text-12, 12px);
   padding-top: 10px;
 }
 .guide-food-statistic {
@@ -1438,13 +1438,13 @@
   font-size: 17px;
 }
 .guide-food-statistic p {
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
 }
 .guide-stat-number strong {
   font-size: 37px;
 }
 .guide-stat-number span {
-  font-size: 12px;
+  font-size: var(--desktop-text-12, 12px);
 }
 .guide-section--quiz {
   background: white;
@@ -1519,10 +1519,10 @@
   border-top: 1px solid #dce5d5;
   padding-top: 16px;
   max-width: none;
-  font-size: 12px;
+  font-size: var(--desktop-text-12, 12px);
 }
 .guide-maintenance h2 {
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
   margin: 0 0 6px;
 }
 .guide-maintenance p {
@@ -1530,7 +1530,7 @@
   max-width: 900px;
 }
 .guide-maintenance details .guide-source {
-  font-size: 12px;
+  font-size: var(--desktop-text-12, 12px);
 }
 .guide-page [role='tab']:focus-visible,
 .guide-page summary:focus-visible {
@@ -1587,7 +1587,7 @@
     gap: 0 6px;
   }
   .guide-nav [role='tab'] {
-    font-size: 12px;
+    font-size: var(--desktop-text-12, 12px);
     padding: 10px 2px;
     min-height: 44px;
   }
@@ -1621,7 +1621,7 @@
   }
   .guide-hierarchy button {
     padding: 8px;
-    font-size: 12px;
+    font-size: var(--desktop-text-12, 12px);
   }
   .guide-topic-grid {
     grid-template-columns: 1fr;
@@ -1657,10 +1657,10 @@
     letter-spacing: -0.7px;
   }
   .guide-targets p {
-    font-size: 12px;
+    font-size: var(--desktop-text-12, 12px);
   }
   .guide-targets .guide-source {
-    font-size: 11px;
+    font-size: var(--desktop-text-11, 11px);
   }
   .guide-targets .guide-target-landfill {
     padding: 12px;
@@ -1764,10 +1764,10 @@
   .guide-results.is-popular button {
     min-height: 66px;
     padding: 9px;
-    font-size: 13px;
+    font-size: var(--desktop-text-13, 13px);
   }
   .guide-results.is-popular small {
-    font-size: 11px;
+    font-size: var(--desktop-text-11, 11px);
   }
 }
 
@@ -1791,7 +1791,7 @@
   margin: 0 0 16px;
 }
 .guide-hero .guide-eyebrow {
-  font-size: 11px;
+  font-size: var(--desktop-text-11, 11px);
   font-weight: 650;
   line-height: 1.6;
   letter-spacing: 1.7px;
@@ -1833,7 +1833,7 @@
 }
 #ciljevi .guide-eu-context {
   margin: 0;
-  font-size: 12.5px;
+  font-size: var(--desktop-text-12-5, 12.5px);
   color: #586e61;
 }
 #ciljevi .guide-eu-timeline {
@@ -1867,7 +1867,7 @@
   color: #486345;
 }
 #ciljevi .guide-eu-threshold {
-  font-size: 12px;
+  font-size: var(--desktop-text-12, 12px);
   color: #586e61;
   margin-top: 8px;
 }
@@ -1901,13 +1901,13 @@
   margin-top: 8px;
 }
 #ciljevi .guide-eu-sources .guide-source {
-  font-size: 12px;
+  font-size: var(--desktop-text-12, 12px);
 }
 #ciljevi .guide-eu-note {
   margin: 14px 0 20px;
   padding-left: 12px;
   border-left: 2px solid #9bb18c;
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
   line-height: 1.6;
   color: #486345;
   max-width: none;
@@ -1945,7 +1945,7 @@
 }
 #ciljevi .guide-eu-accordion summary p {
   margin: 0;
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
   color: #586e61;
 }
 #ciljevi .guide-eu-expand {
@@ -1961,7 +1961,7 @@
   border-top: 1px solid #e2e8dd;
 }
 #ciljevi .guide-eu-accordion-body > p {
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
 }
 #ciljevi .guide-ppwr-ideas {
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -2023,7 +2023,7 @@
 }
 #ciljevi .guide-ppwr-kicker {
   display: block;
-  font-size: 10px;
+  font-size: var(--desktop-text-10, 10px);
   font-weight: 650;
   letter-spacing: 1.2px;
   color: #486345;
@@ -2043,7 +2043,7 @@
   border-radius: 7px;
   background: #fff;
   color: #20543e;
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
   font-weight: 600;
 }
 #ciljevi .guide-eu-expand {
@@ -2095,7 +2095,7 @@
   margin-bottom: 6px;
 }
 #ciljevi .guide-ppwr-kicker {
-  font-size: 10px;
+  font-size: var(--desktop-text-10, 10px);
   color: #586e51;
   margin-bottom: 8px;
 }
@@ -2120,14 +2120,14 @@
 }
 #ciljevi .guide-ppwr-section-label {
   margin: 0 0 12px;
-  font-size: 11px;
+  font-size: var(--desktop-text-11, 11px);
   font-weight: 650;
   letter-spacing: 1px;
   text-transform: uppercase;
   color: #526b48;
 }
 #ciljevi .guide-ppwr-main > p:not(.guide-ppwr-section-label) {
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
   line-height: 1.7;
   margin: 0 0 16px;
 }
@@ -2145,10 +2145,10 @@
 }
 #ciljevi .guide-ppwr-ideas h4 {
   margin: 0 0 6px;
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
 }
 #ciljevi .guide-ppwr-ideas p {
-  font-size: 12.5px;
+  font-size: var(--desktop-text-12-5, 12.5px);
   line-height: 1.6;
 }
 #ciljevi .guide-ppwr-timing {
@@ -2168,7 +2168,7 @@
   padding-top: 14px;
 }
 #ciljevi .guide-ppwr-dates dt {
-  font-size: 12px;
+  font-size: var(--desktop-text-12, 12px);
 }
 #ciljevi .guide-ppwr-dates dd {
   font-size: 15px;
@@ -2176,7 +2176,7 @@
   color: #20543e;
 }
 #ciljevi .guide-ppwr-timing > .guide-small {
-  font-size: 12px;
+  font-size: var(--desktop-text-12, 12px);
   margin: 14px 0 0;
   color: #586e61;
 }
@@ -2187,7 +2187,7 @@
   gap: 8px 20px;
 }
 #ciljevi .guide-ppwr-sources .guide-source {
-  font-size: 12px;
+  font-size: var(--desktop-text-12, 12px);
 }
 @media (max-width: 1000px) {
   #ciljevi .guide-eu-accordion-body {
@@ -2270,7 +2270,7 @@
   margin: 0 0 8px;
 }
 #ciljevi .guide-green-body p {
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
   line-height: 1.7;
   margin: 0;
 }
@@ -2311,7 +2311,7 @@
   margin: 16px 0 10px;
 }
 #ciljevi .guide-green-steps li {
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
   line-height: 1.6;
   counter-increment: guide-green-step;
 }
@@ -2319,12 +2319,12 @@
   content: '0' counter(guide-green-step);
   display: block;
   color: #52793e;
-  font-size: 11px;
+  font-size: var(--desktop-text-11, 11px);
   font-weight: 650;
   margin-bottom: 5px;
 }
 #ciljevi .guide-green-practice .guide-small {
-  font-size: 12px;
+  font-size: var(--desktop-text-12, 12px);
   color: #586e61;
 }
 #ciljevi .guide-green-connection {
@@ -2404,7 +2404,7 @@
 .guide-quiz.is-complete > button {
   margin-top: 14px;
   padding: 9px 14px;
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
 }
 
 /* Facts tab: compact statistic and calmer, clearly expandable fact panels. */
@@ -2436,7 +2436,7 @@
 }
 #cinjenice .guide-stat-year {
   margin: 0;
-  font-size: 12px;
+  font-size: var(--desktop-text-12, 12px);
   font-weight: 500;
   color: #586e61;
 }
@@ -2449,15 +2449,15 @@
 }
 #cinjenice .guide-stat-number span {
   max-width: 18ch;
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
   line-height: 1.5;
 }
 #cinjenice .guide-stat-copy > p {
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
   margin-bottom: 10px;
 }
 #cinjenice .guide-food-statistic .guide-source {
-  font-size: 12px;
+  font-size: var(--desktop-text-12, 12px);
 }
 #cinjenice .guide-stat-details {
   margin-top: 10px;
@@ -2474,7 +2474,7 @@
 #cinjenice .guide-fact-topic {
   display: inline-block;
   color: #536c48;
-  font-size: 10px;
+  font-size: var(--desktop-text-10, 10px);
   letter-spacing: 1.1px;
 }
 #cinjenice .guide-fact h3 {
@@ -2504,7 +2504,7 @@
 }
 #cinjenice .guide-fact-body > p {
   margin: 0 0 12px;
-  font-size: 13.5px;
+  font-size: var(--desktop-text-13-5, 13.5px);
   line-height: 1.7;
 }
 #cinjenice .guide-fact .guide-action {
@@ -2514,7 +2514,7 @@
 }
 #cinjenice .guide-fact .guide-source {
   padding-top: 10px;
-  font-size: 12px;
+  font-size: var(--desktop-text-12, 12px);
   border-top: 1px solid #e7ece2;
 }
 @media (max-width: 600px) {
@@ -2572,7 +2572,7 @@
   flex-shrink: 0;
 }
 #cinjenice .guide-stat-year {
-  font-size: 12px;
+  font-size: var(--desktop-text-12, 12px);
 }
 #cinjenice .guide-stat-number {
   display: block;
@@ -2593,7 +2593,7 @@
   display: block;
   max-width: none;
   margin-top: 8px;
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
 }
 #cinjenice .guide-stat-copy {
   align-self: center;
@@ -2612,7 +2612,7 @@
   border-radius: 7px;
   margin: 0;
   color: #3d6040;
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
 }
 #cinjenice .guide-stat-tip .icon {
   width: 18px;
@@ -2637,7 +2637,7 @@
 }
 #cinjenice .guide-stat-details p {
   margin: 10px 0 0;
-  font-size: 12.5px;
+  font-size: var(--desktop-text-12-5, 12.5px);
 }
 #cinjenice .guide-facts {
   display: grid;
@@ -2827,7 +2827,7 @@
 
 #prevencija > .guide-hierarchy-intro {
   margin: 20px 0 8px;
-  font-size: 13px;
+  font-size: var(--desktop-text-13, 13px);
   line-height: 1.6;
 }
 #prevencija .guide-hierarchy { margin-top: 0; }
@@ -2841,7 +2841,7 @@
 #ciljevi .guide-ppwr-ideas h4 { margin-bottom: 3px; }
 #ciljevi .guide-ppwr-ideas p { margin: 0; }
 #ciljevi .guide-ppwr-timing { padding: 16px; background: #f5f7f1; border: 1px solid #e1e7da; }
-#ciljevi .guide-ppwr-main > p:last-child { font-size: 12.5px; margin-top: 12px; }
+#ciljevi .guide-ppwr-main > p:last-child { font-size: var(--desktop-text-12-5, 12.5px); margin-top: 12px; }
 #ciljevi .guide-ppwr-sources { margin: 0; padding-top: 14px; }
 #ciljevi .guide-green-intro p { max-width: none; }
 #ciljevi .guide-green-goals { gap: 0; border: 1px solid #e1e7da; border-radius: 8px; overflow: hidden; background: #f7f9f4; }
@@ -2863,14 +2863,14 @@
 #prevencija > .guide-hierarchy-intro { font-size: 17px; }
 #prevencija .guide-topic-body > p,
 #prevencija .guide-topic-body li { font-size: 14px; }
-#prevencija .guide-topic-body .guide-source { font-size: 11.5px; }
+#prevencija .guide-topic-body .guide-source { font-size: var(--desktop-text-11-5, 11.5px); }
 
 #cinjenice .guide-fact-body > p { font-size: 15px; }
 /* EU mini infographics: principles rather than additional large cards. */
 #ciljevi .guide-ppwr > .guide-eu-accordion-body { grid-template-columns: 1fr; gap: 18px; }
 #ciljevi .guide-ppwr-ideas { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; counter-reset: ppwr-idea; }
 #ciljevi .guide-ppwr-ideas > div { position: relative; counter-increment: ppwr-idea; padding: 0; border: 0; }
-#ciljevi .guide-ppwr-ideas > div::after { content: '0' counter(ppwr-idea); position: absolute; right: 0; top: 0; font-size: 12px; color: #697c64; }
+#ciljevi .guide-ppwr-ideas > div::after { content: '0' counter(ppwr-idea); position: absolute; right: 0; top: 0; font-size: var(--desktop-text-12, 12px); color: #697c64; }
 #ciljevi .guide-ppwr-ideas .icon { width: 24px; height: 24px; color: #587e46; margin-bottom: 10px; }
 #ciljevi .guide-ppwr-ideas h4 { font-size: 15px; margin-bottom: 6px; }
 #ciljevi .guide-ppwr-ideas p { font-size: 14px; }
@@ -2882,7 +2882,7 @@
 #ciljevi .guide-green-intro { display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: 24px; align-items: center; }
 #ciljevi .guide-green-year { text-align: center; padding: 12px 16px 12px 0; border-right: 1px solid #dce5d5; }
 #ciljevi .guide-green-year strong { display: block; font-size: 35px; line-height: 1.2; color: #205e47; }
-#ciljevi .guide-green-year span { display: block; font-size: 12px; margin-top: 6px; color: #586e61; }
+#ciljevi .guide-green-year span { display: block; font-size: var(--desktop-text-12, 12px); margin-top: 6px; color: #586e61; }
 #ciljevi .guide-green-goals { background: transparent; border: 0; border-radius: 0; gap: 22px; }
 #ciljevi .guide-green-goals > div,
 #ciljevi .guide-green-goals .guide-green-circular { padding: 14px 0; border: 0; border-top: 1px solid #dce5d5; }
@@ -2921,7 +2921,7 @@
 #ciljevi .guide-ppwr-ideas p,
 #ciljevi .guide-ppwr-main > p:not(.guide-ppwr-section-label) { font-size: 15px; }
 #ciljevi .guide-ppwr-dates dt,
-#ciljevi .guide-ppwr-timing > .guide-small { font-size: 13px; }
+#ciljevi .guide-ppwr-timing > .guide-small { font-size: var(--desktop-text-13, 13px); }
 #ciljevi .guide-ppwr-dates dd { font-size: 16px; }
 #ciljevi .guide-ppwr-timing > .guide-small { grid-column: 1 / -1; }
 /* Dates share one heading and a clearly separated explanatory footer. */
@@ -2945,7 +2945,7 @@
 #ciljevi .guide-green-year { padding: 18px; border: 1px solid #e2e8dc; border-radius: 10px; background: #f3f6ef; text-align: left; display: grid; grid-template-columns: 30px 1fr; gap: 6px 10px; align-items: center; }
 #ciljevi .guide-green-year > .icon { width: 28px; height: 28px; color: #638354; }
 #ciljevi .guide-green-year strong { font-size: 35px; }
-#ciljevi .guide-green-year span { grid-column: 2; font-size: 13px; margin: 0; }
+#ciljevi .guide-green-year span { grid-column: 2; font-size: var(--desktop-text-13, 13px); margin: 0; }
 #ciljevi .guide-green-body > .guide-green-areas-title { margin: 0 0 -8px; font-size: 17px; }
 #ciljevi .guide-green-goals { gap: 14px; }
 #ciljevi .guide-green-goals > div,
@@ -2992,7 +2992,7 @@
 #ciljevi .guide-ppwr-ideas .icon { grid-row: 1 / 3; box-sizing: content-box; width: 26px; height: 26px; padding: 8px; margin: 0; background: #edf2e6; border-radius: 10px; }
 #ciljevi .guide-ppwr-ideas h4 { padding-right: 18px; margin: 0; }
 #ciljevi .guide-ppwr-ideas p { grid-column: 2; }
-#ciljevi .guide-ppwr-ideas > div::after { background: #edf2e6; padding: 3px 5px; border-radius: 6px; font-size: 11px; top: 10px; right: 10px; }
+#ciljevi .guide-ppwr-ideas > div::after { background: #edf2e6; padding: 3px 5px; border-radius: 6px; font-size: var(--desktop-text-11, 11px); top: 10px; right: 10px; }
 #ciljevi .guide-ppwr-main > .guide-ppwr-practical { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; background: #f5f7f2; border-radius: 8px; font-size: 14px; }
 #ciljevi .guide-ppwr-practical > .icon { flex-shrink: 0; margin-top: 2px; color: #638354; }
 @media (max-width: 600px) {
@@ -3038,11 +3038,11 @@
 #odvajanje .is-empty .guide-item-heading h3 { font-size: 23px; margin: 0 0 12px; }
 #odvajanje .guide-item > .guide-empty-copy { margin: 0; font-size: 15px; line-height: 1.7; }
 #odvajanje .guide-empty-features { list-style: none; display: flex; justify-content: center; flex-wrap: wrap; gap: 12px 18px; padding: 0; margin: 24px 0 0; }
-#odvajanje .guide-empty-features li { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #496944; }
+#odvajanje .guide-empty-features li { display: flex; align-items: center; gap: 6px; font-size: var(--desktop-text-12, 12px); color: #496944; }
 #odvajanje .guide-related ul { grid-template-columns: 1fr; }
 #odvajanje .guide-related button { display: flex; align-items: center; gap: 10px; font-size: 14px; padding: 10px; }
 #odvajanje .guide-related button > span:first-of-type { flex: 1; text-align: left; }
-#odvajanje .guide-related small { display: block; font-size: 12px; margin-top: 4px; font-weight: 400; }
+#odvajanje .guide-related small { display: block; font-size: var(--desktop-text-12, 12px); margin-top: 4px; font-weight: 400; }
 @media (max-width: 600px) {
  #odvajanje .guide-results.is-popular { grid-template-columns: 1fr; }
  #odvajanje .guide-results.is-popular button { min-height: 72px; }
@@ -3109,7 +3109,7 @@
 #prevencija .guide-topic-body > p,
 #prevencija .guide-topic-body li { font-size: 16px; }
 #prevencija .guide-hierarchy button { font-size: 15px; }
-#prevencija .guide-hierarchy button span { font-size: 13px; }
+#prevencija .guide-hierarchy button span { font-size: var(--desktop-text-13, 13px); }
 #prevencija .guide-topic-body h3 { font-size: 21px; }
 
 /* Guide-wide typography and tab spacing share one visual rhythm. */
@@ -3136,7 +3136,7 @@
   .module-guide .guide-hero { padding: 22px 0 12px; }
   .module-guide .guide-nav [role='tablist'] { gap: 0 6px; }
   .module-guide .guide-nav [role='tab'] {
-    font-size: 13px;
+    font-size: var(--desktop-text-13, 13px);
     padding: 10px 3px;
     min-height: 48px;
   }
