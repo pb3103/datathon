@@ -7,6 +7,7 @@ import json
 from collections import Counter
 from decimal import Decimal, localcontext
 from pathlib import Path
+from pipeline.source_paths import resolve_source_path
 from backend.app.config import get_settings
 from backend.app.db import get_engine
 from pipeline.extract import ROOT, Row, Issue, canonical_identity, normalize_name, parse_decimal
@@ -40,12 +41,12 @@ def load_historical(data_dir: Path):
         entry = next(e for e in manifest if e["year"] == year and e["path"].endswith(".csv"))
         check = proof[str(year)]
         for path_key, hash_key in [("csv_path", "csv_sha256"), ("pdf_path", "pdf_sha256")]:
-            path = data_dir / str(year) / Path(check[path_key]).name
+            path = resolve_source_path(data_dir / str(year) / Path(check[path_key]).name)
             if hashlib.sha256(path.read_bytes()).hexdigest() != check[hash_key]:
                 raise ValueError(f"Povijesni izvor promijenjen bez nove provjere: {path}")
         if entry["sha256"] != check["csv_sha256"]:
             raise ValueError("Manifest i PDF provjera nisu usklađeni.")
-        path = data_dir / str(year) / Path(entry["path"]).name
+        path = resolve_source_path(data_dir / str(year) / Path(entry["path"]).name)
         with path.open(encoding="utf-8-sig", newline="") as handle:
             reader = csv.DictReader(handle)
             expected = FIELDS + (

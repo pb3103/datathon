@@ -11,6 +11,7 @@ from collections import Counter
 from dataclasses import asdict, dataclass, field
 from decimal import Decimal, InvalidOperation, localcontext
 from pathlib import Path
+from pipeline.source_paths import resolve_source_path
 from xml.etree import ElementTree as ET
 from openpyxl import load_workbook
 
@@ -293,7 +294,7 @@ def load_sources(data_dir: Path, manifest_path: Path):
         if len(entries) != 1:
             raise ValueError(f"Očekivan točno jedan XLSX u manifestu za {year}.")
         entry = entries[0]
-        path = data_dir / str(year) / Path(entry["path"]).name
+        path = resolve_source_path(data_dir / str(year) / Path(entry["path"]).name)
         actual = hashlib.sha256(path.read_bytes()).hexdigest()
         if actual != entry["sha256"]:
             raise ValueError(f"Checksum nije jednak pregledanom manifestu: {path}")

@@ -7,6 +7,7 @@ from collections import Counter
 from datetime import datetime, timezone
 from decimal import Decimal
 from pathlib import Path
+from pipeline.source_paths import resolve_source_path
 from sqlalchemy import select, text, update
 from sqlalchemy.orm import Session
 from backend.app.config import get_settings
@@ -69,7 +70,7 @@ def load_material_sources(data_dir):
     result = []
     for year, config in maps.items():
         entry = next(m for m in manifest if m["year"] == int(year) and m["path"].endswith(".xlsx"))
-        path = data_dir / year / Path(entry["path"]).name
+        path = resolve_source_path(data_dir / year / Path(entry["path"]).name)
         if hashlib.sha256(path.read_bytes()).hexdigest() != entry["sha256"]:
             raise ValueError("Materijalni checksum ne odgovara manifestu.")
         proof = evidence["years"].get(year, {})
@@ -77,7 +78,7 @@ def load_material_sources(data_dir):
         if proof.get("xlsx_sha256") != entry["sha256"] or proof.get("pdf_sha256") != pdf["sha256"]:
             raise ValueError("Potrebna nova metodološka provjera za ovu verziju izvora.")
         if (
-            hashlib.sha256((data_dir / year / Path(pdf["path"]).name).read_bytes()).hexdigest()
+            hashlib.sha256(resolve_source_path(data_dir / year / Path(pdf["path"]).name).read_bytes()).hexdigest()
             != pdf["sha256"]
         ):
             raise ValueError("PDF checksum ne odgovara provjeri.")
