@@ -114,6 +114,3 @@ docker compose ps
 docker compose logs --tail=100 api frontend db
 ```
 
-## Objavljivanje
-
-Upute za objavljivanje aplikacije dostupne su u [Render deployment](docs/render-deployment.md).
